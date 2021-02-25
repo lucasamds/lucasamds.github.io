@@ -12,8 +12,9 @@ Neste post vamos realizar algumas manipulações com os pixels de uma dada image
 
 ## Encontrando o negativo
 
-Nosso primeiro objetivo é solicitar dois pontos **P<sub>1</sub>** e **P<sub>2</sub>** que estejam localizados dentro dos limites da imagem passada, em seguida devemos exibir a imagem de tal forma que os pixels contidos na região formada pelo retângulo de vértices opostos, definidos pelos pontos **P<sub>1</sub>** e **P<sub>2</sub>**, serão exibidos com o negativo da imagem na região correspondente. Para esse estudo iremos utilizar a imagem <a href="https://raw.githubusercontent.com/lucasamds/lucasamds.github.io/main/public/images/cat.jpg">*cat.jpg*</a>. A **Listagem 1** mostra o código do programa *negativo.py*.
+Nosso primeiro objetivo é solicitar dois pontos **P<sub>1</sub>** e **P<sub>2</sub>** que estejam localizados dentro dos limites da imagem passada, em seguida devemos exibir a imagem de tal forma que os pixels contidos na região formada pelo retângulo de vértices opostos, definidos pelos pontos **P<sub>1</sub>** e **P<sub>2</sub>**, serão exibidos com o negativo da imagem na região correspondente. Para esse estudo iremos utilizar a imagem <a href="https://raw.githubusercontent.com/lucasamds/lucasamds.github.io/main/public/images/cat.jpg">*cat.jpg*</a>.
 
+#### Listagem 1. negativo.py
 {% highlight python %}
 import cv2 as cv
 import sys
@@ -56,8 +57,9 @@ for i in range(x1,x2):
 #Aprensentando a imagem
 cv.imshow("Imagem", img)
 k = cv.waitKey(0)
+
 {% endhighlight %}
-#### Listagem 1. negativo.py
+
 
 > Curabitur blandit tempus porttitor. Nullam quis risus eget urna mollis ornare vel eu leo. Nullam id dolor id nibh ultricies vehicula ut id elit.
 

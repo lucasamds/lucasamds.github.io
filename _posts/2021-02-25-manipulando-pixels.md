@@ -12,7 +12,7 @@ Neste post vamos realizar algumas manipulações com os pixels de uma dada image
 
 ## Encontrando o negativo
 
-Nosso primeiro objetivo é solicitar dois pontos **P<sub>1</sub>** e **P<sub>2</sub>** que estejam localizados dentro dos limites, em seguida devemos exibir a imagem de tal forma que os pixels contidos na região formada pelo retângulo de vértices opostos, definidos pelos pontos **P<sub>1</sub>** e **P<sub>2</sub>**, serão exibidos com o negativo da imagem na região correspondente. Para esse estudo iremos utilizar a imagem <a href="https://raw.githubusercontent.com/lucasamds/lucasamds.github.io/main/public/images/cat-gray.jpg">*cat.jpg*</a>.
+Nosso primeiro objetivo é solicitar dois pontos **P<sub>1</sub>** e **P<sub>2</sub>** que estejam localizados dentro dos limites, em seguida devemos exibir a imagem de tal forma que os pixels contidos na região formada pelo retângulo de vértices opostos, definidos pelos pontos **P<sub>1</sub>** e **P<sub>2</sub>**, serão exibidos com o negativo da imagem na região correspondente. Para esse estudo iremos utilizar a imagem <a href="https://raw.githubusercontent.com/lucasamds/lucasamds.github.io/main/public/images/cat.jpg">*cat.jpg*</a>.
 
 
 > Curabitur blandit tempus porttitor. Nullam quis risus eget urna mollis ornare vel eu leo. Nullam id dolor id nibh ultricies vehicula ut id elit.

@@ -8,12 +8,56 @@ title: Manipulando pixels em uma imagem com Python
   Olá, este é o primeiro post de uma série voltada para o processamento digital de imagens utilizando Python e OpenCV.
 </div>
 
-Neste post vamos realizar algumas manipulações com os pixels de uma dada imagem. Para tal, iremos utilizar a linguagem de programação *Python*, juntamente com as bibliotecas *OpenCV* e *numpy*. 
+Neste post vamos realizar algumas manipulações com os pixels de uma dada imagem. Para tal, iremos utilizar a linguagem de programação *Python*, juntamente com as bibliotecas *OpenCV* e *Numpy*. 
 
 ## Encontrando o negativo
 
-Nosso primeiro objetivo é solicitar dois pontos **P<sub>1</sub>** e **P<sub>2</sub>** que estejam localizados dentro dos limites, em seguida devemos exibir a imagem de tal forma que os pixels contidos na região formada pelo retângulo de vértices opostos, definidos pelos pontos **P<sub>1</sub>** e **P<sub>2</sub>**, serão exibidos com o negativo da imagem na região correspondente. Para esse estudo iremos utilizar a imagem <a href="https://raw.githubusercontent.com/lucasamds/lucasamds.github.io/main/public/images/cat.jpg">*cat.jpg*</a>.
+Nosso primeiro objetivo é solicitar dois pontos **P<sub>1</sub>** e **P<sub>2</sub>** que estejam localizados dentro dos limites da imagem passada, em seguida devemos exibir a imagem de tal forma que os pixels contidos na região formada pelo retângulo de vértices opostos, definidos pelos pontos **P<sub>1</sub>** e **P<sub>2</sub>**, serão exibidos com o negativo da imagem na região correspondente. Para esse estudo iremos utilizar a imagem <a href="https://raw.githubusercontent.com/lucasamds/lucasamds.github.io/main/public/images/cat.jpg">*cat.jpg*</a>. A **Listagem 1** mostra o código do programa *negativo.py*.
 
+{% highlight python %}
+import cv2 as cv
+import sys
+import numpy as np
+#Leitura da imagem
+img = cv.imread("imagens/cat.jpg", cv.IMREAD_GRAYSCALE)
+
+#Caso a imagem não seja encontrada
+if img is None:
+    sys.exit("O arquivo não foi encontrado.")
+
+width = len(img[0])
+height = len(img)
+
+#Recebe os dois pontos do usuário
+x1,y1,x2,y2 = input(f"Diga as coordenadas x e y de dois pontos na imagem ({width}x{height}): ").split()
+
+x1 = int(x1)
+x2 = int(x2)
+y1 = int(y1)
+y2 = int(y2)
+
+#Cria uma janela que se ajusta ao tamanho da imagem
+cv.namedWindow("Imagem", cv.WINDOW_AUTOSIZE)
+
+if x1 > x2:
+    aux = x1
+    x1 = x2
+    x2 = aux
+if y1 > y2:
+    aux = y1
+    y1 = y2
+    y2 = aux
+
+#Modificando pixels da imagem
+for i in range(x1,x2):
+    for j in range(y1,y2):
+        img[i,j] = 255 - img[i,j]
+
+#Aprensentando a imagem
+cv.imshow("Imagem", img)
+k = cv.waitKey(0)
+{% endhighlight %}
+####Listagem 1. negativo.py
 
 > Curabitur blandit tempus porttitor. Nullam quis risus eget urna mollis ornare vel eu leo. Nullam id dolor id nibh ultricies vehicula ut id elit.
 

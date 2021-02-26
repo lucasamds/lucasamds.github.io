@@ -235,6 +235,11 @@ img {
   border-radius: 5px;
 }
 
+em {
+    margin-left: auto;
+    margin-right: auto;
+    display: table;
+}
 /* Tables */
 table {
   margin-bottom: 1rem;

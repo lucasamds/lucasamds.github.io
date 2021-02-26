@@ -132,7 +132,7 @@ k = cv.waitKey(0)
 Agora que as operações na imagem já foram realizadas, nos resta apresentar os resultados obtidos. Primeiramente chamamos a função `namedWindow()`, passando um nome para a janela que será criada e a flag `WINDOW_AUTOSIZE`, esta flag indica que a janela irá se adequar ao tamanho da imagem. Em seguida a função `imshow()` irá apresentar o conteúdo armazenado em `img` na janela criada. A função `waitKey(delay)` espera indefinidamente pela ativação de uma tecla quando **delay &le; 0**, ou espera **delay** segundos caso contrário, neste caso a imagem fica aguardando que alguma tecla seja pressionada. 
 
 Ao rodar o código a seguinte mensagem é apresentada:
-{% highlight %}
+{% highlight python %}
 Diga as coordenadas x e y de dois pontos na imagem (640x427):
 {% endhighlight %}
 

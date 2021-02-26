@@ -97,7 +97,7 @@ O próximo passo é obter as coordenadas dos pontos que iremos utilizar para ide
 
 Antes de escolher as coordenadas dos pontos, é importante ter em mente em como o OpenCV acessa os elementos da imagem, veja a figura abaixo.
 
-|![eixos.png](../public/images/eixos.png)|
+|![eixos.png](https://raw.githubusercontent.com/lucasamds/lucasamds.github.io/main/public/images/eixos.png)|
 |:--:|
 | *Figura 1, Sistema referencial adotado pelo OpenCV* |
 

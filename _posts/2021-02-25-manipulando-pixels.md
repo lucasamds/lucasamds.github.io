@@ -12,9 +12,9 @@ Neste post vamos realizar algumas manipulações com os pixels de uma dada image
 
 ## Encontrando o negativo
 
-Nosso primeiro objetivo é solicitar dois pontos **P<sub>1</sub>** e **P<sub>2</sub>** que estejam localizados dentro dos limites da imagem passada, em seguida devemos exibir a imagem de tal forma que os pixels contidos na região formada pelo retângulo de vértices opostos, definidos pelos pontos **P<sub>1</sub>** e **P<sub>2</sub>**, serão exibidos com o negativo da imagem na região correspondente. Para esse estudo iremos utilizar a imagem <a href="https://raw.githubusercontent.com/lucasamds/lucasamds.github.io/main/public/images/cat.jpg">*cat.jpg*</a>.
+Nosso primeiro objetivo é solicitar dois pontos **P<sub>1</sub>** e **P<sub>2</sub>** que estejam localizados dentro dos limites da imagem passada, em seguida devemos exibir a imagem de tal forma que os pixels contidos na região formada pelo retângulo de vértices opostos, definidos pelos pontos **P<sub>1</sub>** e **P<sub>2</sub>**, serão exibidos com o negativo da imagem na região correspondente. Para esse estudo iremos utilizar a imagem <a href="https://raw.githubusercontent.com/lucasamds/lucasamds.github.io/main/public/images/cat.jpg" target="_blank">*cat.jpg*</a>.
 
-#### Listagem 1. negativo.py
+##### Listagem 1. negativo.py
 {% highlight python %}
 import cv2 as cv
 import sys
@@ -60,7 +60,30 @@ k = cv.waitKey(0)
 
 {% endhighlight %}
 
+## Descrição do programa negativo.py
 
+{% highlight python %}
+import cv2 as cv
+import sys
+import numpy as np
+
+{% endhighlight %}
+
+Como já foi dito anteriormente, para resolver este problema iremos utilizar as bibliotecas OpenCV e Numpy. Devido a alta otimização da biblioteca Numpy para operações numéricas, torna-se quase que indispensável o seu uso para as operações que iremos realizar com o OpenCV, devido a isso as novas versões da biblioteca possibilitam que qualquer estrutura array do OpenCV possa ser convertido em um array do Numpy, o contrário também é verdadeiro. 
+
+{% highlight python %}
+#Leitura da imagem
+img = cv.imread("imagens/cat.jpg", cv.IMREAD_GRAYSCALE)
+
+#Caso a imagem não seja encontrada
+if img is None:
+    sys.exit("O arquivo não foi encontrado.")
+
+width = len(img[0])
+height = len(img)
+{% endhighlight %}
+
+Em seguida iremos fazer a leitura da imagem, a função `imread()` é chamada recebendo dois parâmetros: o primeiro indica o caminho da imagem que será aberta; o segundo informa como a imagem deve ser interpretada, neste caso iremos trabalhar com a imagem em tons de cinza, logo a flag `cv.IMREAD_GRAYSCALE` é fornecida.
 > Curabitur blandit tempus porttitor. Nullam quis risus eget urna mollis ornare vel eu leo. Nullam id dolor id nibh ultricies vehicula ut id elit.
 
 

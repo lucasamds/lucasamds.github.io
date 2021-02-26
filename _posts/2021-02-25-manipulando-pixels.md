@@ -83,7 +83,7 @@ width = len(img[0])
 height = len(img)
 {% endhighlight %}
 
-Em seguida iremos fazer a leitura da imagem, a função `imread()` é chamada recebendo dois parâmetros: o primeiro indica o caminho da imagem que será aberta; o segundo informa como a imagem deve ser interpretada, neste caso iremos trabalhar com a imagem em tons de cinza, logo a flag `cv.IMREAD_GRAYSCALE` é fornecida.
+Em seguida iremos fazer a leitura da imagem, a função `imread()` é chamada recebendo dois parâmetros: o primeiro indica o caminho da imagem que será aberta; o segundo informa como a imagem deve ser interpretada, neste caso iremos trabalhar com a imagem em tons de cinza, logo a flag `cv.IMREAD_GRAYSCALE` é fornecida. Após a leitura fazemos uma verificação, caso tenha ocorrido algum problema durante a leitura da imagem, o programa mostra uma mensagem de erro e é encerrado; caso tudo tenha dado certo, vamos consultar o tamanho da imagem para uso futuro, aqui usamos a função `len()`.
 > Curabitur blandit tempus porttitor. Nullam quis risus eget urna mollis ornare vel eu leo. Nullam id dolor id nibh ultricies vehicula ut id elit.
 
 

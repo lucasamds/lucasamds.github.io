@@ -102,7 +102,6 @@ Antes de escolher as coordenadas dos pontos, é importante ter em mente em como 
 | *Figura 1, Sistema referencial adotado pelo OpenCV* |
 
 
-{% highlight python %}
 
 > Curabitur blandit tempus porttitor. Nullam quis risus eget urna mollis ornare vel eu leo. Nullam id dolor id nibh ultricies vehicula ut id elit.
 

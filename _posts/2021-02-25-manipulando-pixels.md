@@ -97,12 +97,35 @@ O próximo passo é obter as coordenadas dos pontos que iremos utilizar para ide
 
 Antes de escolher as coordenadas dos pontos, é importante ter em mente em como o OpenCV acessa os elementos da imagem, veja a figura abaixo.
 
-|![eixos.png](https://raw.githubusercontent.com/lucasamds/lucasamds.github.io/main/public/images/eixos.png)|
-|:--:|
-| *Figura 1, Sistema referencial adotado pelo OpenCV* |
+![](https://raw.githubusercontent.com/lucasamds/lucasamds.github.io/main/public/images/eixos.png)
+*Figura 1, Sistema referencial adotado pelo OpenCV*
 
+{% highlight python %}
+if x1 > x2:
+    aux = x1
+    x1 = x2
+    x2 = aux
+if y1 > y2:
+    aux = y1
+    y1 = y2
+    y2 = aux
 
+#Modificando pixels da imagem
+for i in range(x1,x2):
+    for j in range(y1,y2):
+        img[i,j] = 255 - img[i,j]
 
+{% endhighlight %}
+
+O próximo trecho de código prepara os pontos em que iremos operar, os dois testes de seleção realizam trocas de valores entre as coordenadas que foram lidas, garantindo assim que partiremos do canto superior esquerdo da nossa região de interesse, indo até o canto inferior direito. Já o conjunto de laços de repetição realiza a troca de valores dos pixels da imagem, como estamos interessados em gerar o negativo da imagem, temos que o novo valor do pixel de interesse será a diferença entre o maior tom de cinza suportado (255) e o seu valor original.
+
+{% highlight python %}
+#Cria uma janela que se ajusta ao tamanho da imagem
+cv.namedWindow("Imagem", cv.WINDOW_AUTOSIZE)
+#Aprensentando a imagem
+cv.imshow("Imagem", img)
+k = cv.waitKey(0)
+{% endhighlight %}
 > Curabitur blandit tempus porttitor. Nullam quis risus eget urna mollis ornare vel eu leo. Nullam id dolor id nibh ultricies vehicula ut id elit.
 
 

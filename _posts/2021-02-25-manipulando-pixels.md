@@ -165,7 +165,7 @@ if img is None:
 cv.namedWindow("Imagem", cv.WINDOW_AUTOSIZE)
 
 #Cria cópia da imagem
-img2 = np.zeros((len(img),len(img[0])),127,dtype=np.uint8)
+img2 = np.zeros((len(img),len(img[0])),dtype=np.uint8)
 
 #Econtrando o meio da imagem
 meioh = int(len(img[0])/2)
@@ -201,7 +201,7 @@ A parte inicial do código segue a mesma ideia do caso anterior, continuamos tra
 {% highlight python %}
 
 #Cria cópia da imagem
-img2 = np.zeros((len(img),len(img[0])),127,dtype=np.uint8)
+img2 = np.zeros((len(img),len(img[0])),dtype=np.uint8)
 
 #Econtrando o meio da imagem
 meioh = int(len(img[0])/2)

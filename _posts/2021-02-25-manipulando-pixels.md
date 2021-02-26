@@ -148,6 +148,7 @@ Como discutimos anteriormente, o programa nos diz as dimensões da imagem lida, 
 
 Agora vamos tentar realizar um segundo procedimento, nosso objetivo é trocar os pixels de região, de modo que os valores que estavam armazenados no quadrante superior esquerdo troquem de posição com os pixels do quadrante inferior direito, de forma semelhante, faremos a troca de valores entre os quadrantes superior direito e inferior esquerdo. Neste segundo experimento não será necessário fazer a leitura de valores de entrada adicionais, apenas da própria imagem que desejamos realizar o processamento.
 
+<a id="listagem2"></a>
 ##### Listagem 2. trocaregioes.py
 {% highlight python %}
 import cv2 as cv
@@ -209,7 +210,7 @@ meiov = int(len(img)/2)
 
 {% endhighlight %}
 
-Aqui criamos um array utilizando a função `zeros()` da biblioteca Numpy, a ideia aqui é criar uma nova imagem que possua as regiôes trocadas, levando em conta a figura de entrada como base, tendo isso em mente passamos as dimensões da imagem lida como parâmetros de criação do array, também indicamos que o tipo de dado que desejamos armazenar no array é do tipo `numpy.uint8`, já que estamos interessados apenas nos valores entre 0 e 255. O próximo passo após criar o array é localizar o centro da imagem, tornando possível criar um intervalo que divide a imagem em partes iguais.
+Aqui criamos um array utilizando a função `zeros()` da biblioteca Numpy, a ideia é criar uma nova imagem que possua as regiões trocadas, levando em conta a figura de entrada como base, tendo isso em mente passamos as dimensões da imagem lida como parâmetros de criação do array, também indicamos que o tipo de dado que desejamos armazenar no array é o `numpy.uint8`, já que estamos interessados apenas nos valores entre 0 e 255. O próximo passo após criar o array é localizar o centro da imagem, tornando possível criar intervalos que dividem a imagem em partes iguais.
 {% highlight python %}
 
 for i in range(0,meiov):
@@ -218,7 +219,7 @@ for i in range(0,meiov):
 
 {% endhighlight %}
 
-Por fim mapeamos os valores da imagem original em seus quadrantes inversos, este primeiro conjunto de laços de repetição faz a captura dos valores que ficarão no primeiro quadrante da imagem (canto superior direito), os demais laços operam de forma semelhante, mudando apenas as regiões de interesse. Com isso conseguimos o seguinte resultado:
+Por fim, mapeamos os valores da imagem original em seus quadrantes inversos, este primeiro conjunto de laços de repetição faz a captura dos valores que ficarão no primeiro quadrante da imagem (canto superior direito), os demais laços da <a href="#listagem2">Listagem 2</a> operam de forma semelhante, mudando apenas as regiões de interesse. Com isso conseguimos o seguinte resultado:
 
 ![](https://raw.githubusercontent.com/lucasamds/lucasamds.github.io/main/public/images/regioes.png)
 *Figura 3. Exemplo de saída do programa trocaregioes.py*

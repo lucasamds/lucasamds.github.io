@@ -129,7 +129,17 @@ k = cv.waitKey(0)
 
 {% endhighlight %}
 
-Agora que as operações na imagem já foram realizadas, nos resta apresentar os resultados obtidos. Primeiramente chamamos a função `namedWindow()`, passando um nome para a janela que será criada e a flag `WINDOW_AUTOSIZE`, esta flag indica que a janela irá se adequar ao tamanho da imagem. Em seguida a função `imshow()` irá apresentar o conteúdo armazenado em `img` na janela criada. A função `waitKey(delay)` espera indefinidamente pela ativação de uma tecla quando **delay &ge; 0**, ou espera **delay** segundos caso contrário, neste caso a imagem fica aguardando que alguma tecla seja pressionada. 
+Agora que as operações na imagem já foram realizadas, nos resta apresentar os resultados obtidos. Primeiramente chamamos a função `namedWindow()`, passando um nome para a janela que será criada e a flag `WINDOW_AUTOSIZE`, esta flag indica que a janela irá se adequar ao tamanho da imagem. Em seguida a função `imshow()` irá apresentar o conteúdo armazenado em `img` na janela criada. A função `waitKey(delay)` espera indefinidamente pela ativação de uma tecla quando **delay &le; 0**, ou espera **delay** segundos caso contrário, neste caso a imagem fica aguardando que alguma tecla seja pressionada. 
+
+Ao rodar o código a seguinte mensagem é apresentada:
+{% highlight %}
+Diga as coordenadas x e y de dois pontos na imagem (640x427):
+{% endhighlight %}
+
+Como discutimos anteriormente, o programa nos diz as dimensões da imagem lida, caso os valores de entrada sejam `0 0 427 320`, por exemplo, temos o seguinte resultado:
+
+![](https://raw.githubusercontent.com/lucasamds/lucasamds.github.io/main/public/images/negativo.png)
+*Figura 2, Imagem cat.jpg em tons de cinza antes e depois de aplicar o negativo*
 
 > Curabitur blandit tempus porttitor. Nullam quis risus eget urna mollis ornare vel eu leo. Nullam id dolor id nibh ultricies vehicula ut id elit.
 

@@ -117,15 +117,19 @@ for i in range(x1,x2):
 
 {% endhighlight %}
 
-O próximo trecho de código prepara os pontos em que iremos operar, os dois testes de seleção realizam trocas de valores entre as coordenadas que foram lidas, garantindo assim que partiremos do canto superior esquerdo da nossa região de interesse, indo até o canto inferior direito. Já o conjunto de laços de repetição realiza a troca de valores dos pixels da imagem, como estamos interessados em gerar o negativo da imagem, temos que o novo valor do pixel de interesse será a diferença entre o maior tom de cinza suportado (255) e o seu valor original.
+O trecho de código acima prepara os pontos em que iremos operar, os dois testes de seleção realizam trocas de valores entre as coordenadas que foram lidas, garantindo assim que partiremos do canto superior esquerdo da nossa região de interesse, indo até o canto inferior direito. Já o conjunto de laços de repetição realiza a troca de valores dos pixels da imagem, como estamos interessados em gerar o negativo da imagem, temos que o novo valor do pixel de interesse será a diferença entre o maior tom de cinza suportado (255) e o seu valor original.
 
 {% highlight python %}
+
 #Cria uma janela que se ajusta ao tamanho da imagem
 cv.namedWindow("Imagem", cv.WINDOW_AUTOSIZE)
 #Aprensentando a imagem
 cv.imshow("Imagem", img)
 k = cv.waitKey(0)
+
 {% endhighlight %}
+
+Agora que as operações na imagem já foram realizadas, nos resta apresentar os resultados obtidos. Primeiramente chamamos a função `namedWindow()`
 > Curabitur blandit tempus porttitor. Nullam quis risus eget urna mollis ornare vel eu leo. Nullam id dolor id nibh ultricies vehicula ut id elit.
 
 

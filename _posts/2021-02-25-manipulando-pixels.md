@@ -98,7 +98,7 @@ O próximo passo é obter as coordenadas dos pontos que iremos utilizar para ide
 Antes de escolher as coordenadas dos pontos, é importante ter em mente em como o OpenCV acessa os elementos da imagem, veja a figura abaixo.
 
 ![](https://raw.githubusercontent.com/lucasamds/lucasamds.github.io/main/public/images/eixos.png)
-*Figura 1, Sistema referencial adotado pelo OpenCV*
+*Figura 1. Sistema referencial adotado pelo OpenCV*
 
 {% highlight python %}
 if x1 > x2:
@@ -136,119 +136,91 @@ Ao rodar o código a seguinte mensagem é apresentada:
 ```Diga as coordenadas x e y de dois pontos na imagem (640x427):```
 
 
+
+
 Como discutimos anteriormente, o programa nos diz as dimensões da imagem lida, caso os valores de entrada sejam `0 0 427 320`, por exemplo, temos o seguinte resultado:
 
 ![](https://raw.githubusercontent.com/lucasamds/lucasamds.github.io/main/public/images/negativo.png)
-*Figura 2, Imagem cat.jpg em tons de cinza antes e depois de aplicar o negativo*
-
-> Curabitur blandit tempus porttitor. Nullam quis risus eget urna mollis ornare vel eu leo. Nullam id dolor id nibh ultricies vehicula ut id elit.
+*Figura 2. Imagem cat.jpg em tons de cinza antes e depois de aplicar o negativo*
 
 
-Etiam porta **sem malesuada magna** mollis euismod. Cras mattis consectetur purus sit amet fermentum. Aenean lacinia bibendum nulla sed consectetur.
+## Trocando regiões
 
-## Inline HTML elements
+Agora vamos tentar realizar um segundo procedimento, nosso objetivo é trocar os pixels de região, de modo que os valores que estavam armazenados no quadrante superior esquerdo troquem de posição com os pixels do quadrante intefior direito, de forma semelhante, faremos a troca de valores entre os quadrantes superior direito e inferior esquerdo. Neste segundo experimento não será necessário fazer a leitura de valores de entrada adicionais, apenas da própria imagem que desejamos realizar o processamento.
 
-HTML defines a long list of available inline tags, a complete list of which can be found on the [Mozilla Developer Network](https://developer.mozilla.org/en-US/docs/Web/HTML/Element).
+##### Listagem 2. trocaregioes.py
+{% highlight python %}
+import cv2 as cv
+import sys
+import numpy as np
 
-- **To bold text**, use `<strong>`.
-- *To italicize text*, use `<em>`.
-- Abbreviations, like <abbr title="HyperText Markup Langage">HTML</abbr> should use `<abbr>`, with an optional `title` attribute for the full phrase.
-- Citations, like <cite>&mdash; Mark otto</cite>, should use `<cite>`.
-- <del>Deleted</del> text should use `<del>` and <ins>inserted</ins> text should use `<ins>`.
-- Superscript <sup>text</sup> uses `<sup>` and subscript <sub>text</sub> uses `<sub>`.
+#Leitura da imagem
+img = cv.imread("imagens/cat.jpg", cv.IMREAD_GRAYSCALE)
 
-Most of these elements are styled by browsers with few modifications on our part.
+#Caso a imagem não seja encontrada
+if img is None:
+    sys.exit("O arquivo não foi encontrado.")
 
-## Heading
+#Cria uma janela que se ajusta ao tamanho da imagem
+cv.namedWindow("Imagem", cv.WINDOW_AUTOSIZE)
 
-Vivamus sagittis lacus vel augue rutrum faucibus dolor auctor. Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.
+#Cria cópia da imagem
+img2 = np.zeros((len(img),len(img[0])),127,dtype=np.uint8)
 
-### Code
+#Econtrando o meio da imagem
+meioh = int(len(img[0])/2)
+meiov = int(len(img)/2)
 
-Cum sociis natoque penatibus et magnis dis `code element` montes, nascetur ridiculus mus.
 
-{% highlight js %}
-// Example can be run directly in your JavaScript console
+#Modificando quadrantes
+for i in range(0,meiov):
+    for j in range(meioh,len(img[0])):
+        img2[i,j] = img[meiov + i,j - meioh]
 
-// Create a function that takes two arguments and returns the sum of those arguments
-var adder = new Function("a", "b", "return a + b");
+for i in range(meiov,len(img)):
+    for j in range(meioh,len(img[0])):
+        img2[i,j] = img[i - meiov,j - meioh]
 
-// Call the function
-adder(2, 6);
-// > 8
+for i in range(0,meiov):
+    for j in range(0,meioh):
+        img2[i,j] = img[meiov + i,meioh + j]
+
+for i in range(meiov,len(img)):
+    for j in range(0,meioh):
+        img2[i,j] = img[i-meiov,meioh + j]
+
+#Aprensentando a imagem
+cv.imshow("Imagem", img2)
+cv.waitKey(0)
 {% endhighlight %}
 
-Aenean lacinia bibendum nulla sed consectetur. Etiam porta sem malesuada magna mollis euismod. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa.
+## Descrição do programa trocaregioes.py
 
-### Lists
+A parte inicial do código segue a mesma ideia do caso anterior, continuamos trabalhando com a imagem em tons de cinza, a primeira diferença que encontramos entre os dois programas aparece logo após a verificação de leitura da imagem.
 
-Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Aenean lacinia bibendum nulla sed consectetur. Etiam porta sem malesuada magna mollis euismod. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.
+{% highlight python %}
 
-* Praesent commodo cursus magna, vel scelerisque nisl consectetur et.
-* Donec id elit non mi porta gravida at eget metus.
-* Nulla vitae elit libero, a pharetra augue.
+#Cria cópia da imagem
+img2 = np.zeros((len(img),len(img[0])),127,dtype=np.uint8)
 
-Donec ullamcorper nulla non metus auctor fringilla. Nulla vitae elit libero, a pharetra augue.
+#Econtrando o meio da imagem
+meioh = int(len(img[0])/2)
+meiov = int(len(img)/2)
 
-1. Vestibulum id ligula porta felis euismod semper.
-2. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.
-3. Maecenas sed diam eget risus varius blandit sit amet non magna.
+{% endhighlight %}
 
-Cras mattis consectetur purus sit amet fermentum. Sed posuere consectetur est at lobortis.
+Aqui criamos um array utilizando a função `zeros()` da biblioteca Numpy, a ideia aqui é criar uma nova imagem que possua as regiôes trocadas, levando em conta a figura de entrada como base, tendo isso em mente passamos as dimensões da imagem lida como parâmetros de criação do array, também indicamos que o tipo de dado que desejamos armazenar no array é do tipo `numpy.uint8`, já que estamos interessados apenas nos valores entre 0 e 255. O próximo passo após criar o array é localizar o centro da imagem, tornando possível criar um intervalo que divide a imagem em partes iguais.
+{% highlight python %}
 
-<dl>
-  <dt>HyperText Markup Language (HTML)</dt>
-  <dd>The language used to describe and define the content of a Web page</dd>
+for i in range(0,meiov):
+    for j in range(meioh,len(img[0])):
+        img2[i,j] = img[meiov + i,j - meioh]
 
-  <dt>Cascading Style Sheets (CSS)</dt>
-  <dd>Used to describe the appearance of Web content</dd>
+{% endhighlight %}
 
-  <dt>JavaScript (JS)</dt>
-  <dd>The programming language used to build advanced Web sites and applications</dd>
-</dl>
+Por fim mapeamos os valores da imagem original em seus quadrantes inversos, este primeiro conjunto de laços de repetição faz a captura dos valores que ficarão no primeiro quadrante da imagem (canto superior direito), os demais laços operam de forma semelhante, mudando apenas as regiões de interesse. Com isso conseguimos o seguinte resultado:
 
-Integer posuere erat a ante venenatis dapibus posuere velit aliquet. Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Nullam quis risus eget urna mollis ornare vel eu leo.
+![](https://raw.githubusercontent.com/lucasamds/lucasamds.github.io/main/public/images/regioes.png)
+*Figura 3. Exemplo de saída do programa trocaregioes.py*
 
-### Tables
-
-Aenean lacinia bibendum nulla sed consectetur. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Upvotes</th>
-      <th>Downvotes</th>
-    </tr>
-  </thead>
-  <tfoot>
-    <tr>
-      <td>Totals</td>
-      <td>21</td>
-      <td>23</td>
-    </tr>
-  </tfoot>
-  <tbody>
-    <tr>
-      <td>Alice</td>
-      <td>10</td>
-      <td>11</td>
-    </tr>
-    <tr>
-      <td>Bob</td>
-      <td>4</td>
-      <td>3</td>
-    </tr>
-    <tr>
-      <td>Charlie</td>
-      <td>7</td>
-      <td>9</td>
-    </tr>
-  </tbody>
-</table>
-
-Nullam id dolor id nibh ultricies vehicula ut id elit. Sed posuere consectetur est at lobortis. Nullam quis risus eget urna mollis ornare vel eu leo.
-
------
-
-Want to see something else added? <a href="https://github.com/poole/poole/issues/new">Open an issue.</a>
+Neste segundo exemplo vimos o quão simples é utilizar a biblioteca Numpy juntamente com o OpenCV para manipulação de imagens. Com isso encerro esse primeiro post da série de processamento digital de imagens, bons estudos e até uma próxima!

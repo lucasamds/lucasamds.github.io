@@ -37,9 +37,6 @@ x2 = int(x2)
 y1 = int(y1)
 y2 = int(y2)
 
-#Cria uma janela que se ajusta ao tamanho da imagem
-cv.namedWindow("Imagem", cv.WINDOW_AUTOSIZE)
-
 if x1 > x2:
     aux = x1
     x1 = x2
@@ -54,6 +51,8 @@ for i in range(x1,x2):
     for j in range(y1,y2):
         img[i,j] = 255 - img[i,j]
 
+#Cria uma janela que se ajusta ao tamanho da imagem
+cv.namedWindow("Imagem", cv.WINDOW_AUTOSIZE)
 #Aprensentando a imagem
 cv.imshow("Imagem", img)
 k = cv.waitKey(0)
@@ -84,6 +83,27 @@ height = len(img)
 {% endhighlight %}
 
 Em seguida iremos fazer a leitura da imagem, a função `imread()` é chamada recebendo dois parâmetros: o primeiro indica o caminho da imagem que será aberta; o segundo informa como a imagem deve ser interpretada, neste caso iremos trabalhar com a imagem em tons de cinza, logo a flag `cv.IMREAD_GRAYSCALE` é fornecida. Após a leitura fazemos uma verificação, caso tenha ocorrido algum problema durante a leitura da imagem, o programa mostra uma mensagem de erro e é encerrado; caso tudo tenha dado certo, vamos consultar o tamanho da imagem para uso futuro, aqui usamos a função `len()`.
+
+{% highlight python %}
+x1,y1,x2,y2 = input(f"Diga as coordenadas x e y de dois pontos na imagem ({width}x{height}): ").split()
+
+x1 = int(x1)
+x2 = int(x2)
+y1 = int(y1)
+y2 = int(y2)
+{% endhighlight %}
+
+O próximo passo é obter as coordenadas dos pontos que iremos utilizar para identificar os pixels que serão modificados, note que mostramos na tela as dimensões da imagem lida, assim fica mais fácil de escolher os valores válidos para as coordenadas. O comando `input()` vai nos retornar uma string que possui os dados que foram digitados, como queremos armazenar os valores de forma segmentada, utilizamos a função `split()` para realizar "quebras" na string, como nenhum parâmetro foi passado, a função por padrão irá realizar a quebra da string sempre que encontrar um espaço. Em seguida, realizamos a conversão das entradas para o tipo inteiro através de *Cast*.
+
+Antes de escolher as coordenadas dos pontos, é importante ter em mente em como o OpenCV acessa os elementos da imagem, veja a figura abaixo.
+
+|![eixos.png](../public/images/eixos.png)|
+|:--:|
+| *Figura 1, Sistema referencial adotado pelo OpenCV* |
+
+
+{% highlight python %}
+
 > Curabitur blandit tempus porttitor. Nullam quis risus eget urna mollis ornare vel eu leo. Nullam id dolor id nibh ultricies vehicula ut id elit.
 
 

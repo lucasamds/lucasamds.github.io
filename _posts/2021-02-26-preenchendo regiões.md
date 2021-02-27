@@ -21,7 +21,7 @@ import sys
 import numpy as np
 
 img = cv.imread("imagens/bolhas.png", cv.IMREAD_GRAYSCALE)
-img2 = np.full((len(img), len(img[0])), 127, dtype=np.uint8)
+img2 = np.zeros((len(img), len(img[0])), dtype=np.uint8)
 
 if img is None:
     sys.exit("A imagem não foi encontrada")

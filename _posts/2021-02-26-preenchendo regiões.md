@@ -89,22 +89,25 @@ for i in range(0, height):
 print('A figura tem {} bolhas'.format(nobjects))
 {% endhighlight %}
 
-A segunda parte do programa faz a varredura na imagem, partindo do ponto (0, 0). Sempre que um pixel com valor `255` é encontrado significa que chegamos em um novo objeto, devemos agora localizar todos os vizinhos do pixel que possuem a mesma tonalidade que ele, trocando seu valor pelo rótulo correspondente do objeto, quem dita o valor a ser salvo é a variável `nobjects`, sempre que encontramos um novo objeto ela tem seu valor incrementeado, fazendo com que cada objeto tenha uma tonalidade de cinza diferente, sendo `1` a primeira tonalidade aplicada. O processo de preenchimento é feito pela função `opencv.floodFill()`
-{% highlight python %}
-x1,y1,x2,y2 = input(f"Diga as coordenadas x e y de dois pontos na imagem ({width}x{height}): ").split()
+A segunda parte do programa faz a varredura na imagem, partindo do ponto (0, 0). Sempre que um pixel com valor `255` é encontrado significa que chegamos em um novo objeto, devemos agora localizar todos os vizinhos do pixel que possuem a mesma tonalidade que ele, trocando seu valor pelo rótulo correspondente do objeto, quem dita o valor a ser salvo é a variável `nobjects`, sempre que encontramos um novo objeto ela tem seu valor incrementeado, fazendo com que cada objeto tenha uma tonalidade de cinza diferente, sendo `1` a primeira tonalidade aplicada. O processo de preenchimento é feito pela função `opencv.floodFill()`, esta função  recebe como parâmetros: a imagem que iremos modificar; uma máscara de operação, neste caso não iremos utilizar uma máscara em específico; o ponto de início do procedimento; o valor que será armazenado nos pixels do objeto. Após localizar e preencher todas as regiões o programa imprime no console a quantidade de objetos encontrados.
 
-x1 = int(x1)
-x2 = int(x2)
-y1 = int(y1)
-y2 = int(y2)
+{% highlight python %}
+
+cv.namedWindow("Resultado", cv.WINDOW_AUTOSIZE)
+img2 = np.zeros((height, width), dtype=np.uint8)
+cv.equalizeHist(img, img2)
+res = np.concatenate((img,img2), axis= 1)
+cv.imshow("Resultado", res)
+
 {% endhighlight %}
 
-O próximo passo é obter as coordenadas dos pontos que iremos utilizar para identificar os pixels que serão modificados, note que mostramos na tela as dimensões da imagem lida, assim fica mais fácil de escolher os valores válidos para as coordenadas. O comando `input()` vai nos retornar uma string que possui os dados que foram digitados, como queremos armazenar os valores de forma segmentada, utilizamos a função `split()` para realizar "quebras" na string, como nenhum parâmetro foi passado, a função por padrão irá realizar a quebra da string sempre que encontrar um espaço. Em seguida, realizamos a conversão das entradas para o tipo inteiro através de *Cast*.
+Após calcular a quantidade de objetos presentes na cena, queremos apresentar os resultados. A função `equalizeHist()` tem o papel de melhorar a visualização do resultado, esta função realiza operações matemáticas para normalizar o brilho e aumentar o contraste de uma imagem passada como parâmetro, iremos salvar o resultado da função em `img2`. Por fim utilizamos a função `concatenate()` da biblioteca *Numpy* para unir as cenas em uma só figura antes de serem apresentadas, o parâmetro `axis` informa se a concatenação será feita no sentido vertical ("0") ou horizontal ("1"). Ao executar o programa temos os seguintes resultados:
 
-Antes de escolher as coordenadas dos pontos, é importante ter em mente em como o OpenCV acessa os elementos da imagem, veja a figura abaixo.
+`256x256
+A figura tem 32 bolhas `
 
-![](https://raw.githubusercontent.com/lucasamds/lucasamds.github.io/main/public/images/eixos.png)
-*Figura 1. Sistema referencial adotado pelo OpenCV*
+![](https://raw.githubusercontent.com/lucasamds/lucasamds.github.io/main/public/images/objetos.png)
+*Figura 1. Exemplo de saída do programa rotulando.py
 
 {% highlight python %}
 if x1 > x2:

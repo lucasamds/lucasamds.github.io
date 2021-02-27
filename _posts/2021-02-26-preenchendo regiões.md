@@ -21,19 +21,19 @@ import sys
 import numpy as np
 
 img = cv.imread("imagens/bolhas.png", cv.IMREAD_GRAYSCALE)
-img2 = np.zeros((len(img), len(img[0])), dtype=np.uint8)
+
 
 if img is None:
     sys.exit("A imagem não foi encontrada")
 
 width = len(img[0])
 height = len(img)
-
 print('{}x{}'.format(width, height))
 
 px = 0
 py = 0
 nobjects = 0
+
 # Busca objetos presentes
 for i in range(0, height):
     for j in range(0, width):
@@ -44,11 +44,13 @@ for i in range(0, height):
             cv.floodFill(img,None,(px,py),nobjects)
 
 print('A figura tem {} bolhas'.format(nobjects))
+
 cv.namedWindow("Resultado", cv.WINDOW_AUTOSIZE)
+img2 = np.zeros((height, width), dtype=np.uint8)
 cv.equalizeHist(img, img2)
 res = np.concatenate((img,img2), axis= 1)
 cv.imshow("Resultado", res)
-cv.waitKey()
+
 
 {% endhighlight %}
 
@@ -59,24 +61,35 @@ import cv2 as cv
 import sys
 import numpy as np
 
-{% endhighlight %}
+img = cv.imread("imagens/bolhas.png", cv.IMREAD_GRAYSCALE)
 
-Como já foi dito anteriormente, para resolver este problema iremos utilizar as bibliotecas OpenCV e Numpy. Devido a alta otimização da biblioteca Numpy para operações numéricas, torna-se quase que indispensável o seu uso para as operações que iremos realizar com o OpenCV, devido a isso as novas versões da biblioteca possibilitam que qualquer estrutura array do OpenCV possa ser convertido em um array do Numpy, o contrário também é verdadeiro. 
 
-{% highlight python %}
-#Leitura da imagem
-img = cv.imread("imagens/cat.jpg", cv.IMREAD_GRAYSCALE)
-
-#Caso a imagem não seja encontrada
 if img is None:
-    sys.exit("O arquivo não foi encontrado.")
+    sys.exit("A imagem não foi encontrada")
 
 width = len(img[0])
 height = len(img)
+print('{}x{}'.format(width, height))
+
 {% endhighlight %}
 
-Em seguida iremos fazer a leitura da imagem, a função `imread()` é chamada recebendo dois parâmetros: o primeiro indica o caminho da imagem que será aberta; o segundo informa como a imagem deve ser interpretada, neste caso iremos trabalhar com a imagem em tons de cinza, logo a flag `cv.IMREAD_GRAYSCALE` é fornecida. Após a leitura fazemos uma verificação, caso tenha ocorrido algum problema durante a leitura da imagem, o programa mostra uma mensagem de erro e é encerrado; caso tudo tenha dado certo, vamos consultar o tamanho da imagem para uso futuro, aqui usamos a função `len()`.
+Após importar as bibliotecas que iremos utilizar, é feita a leitura da imagem em tons de cinza,  caso a leitura tenha ocorrido corretamente nós iremos imprimir no console as dimensões da cena.
 
+{% highlight python %}
+
+# Busca objetos presentes
+for i in range(0, height):
+    for j in range(0, width):
+        if img[i][j] == 255:
+            nobjects += 1
+            px = j
+            py = i
+            cv.floodFill(img,None,(px,py),nobjects)
+
+print('A figura tem {} bolhas'.format(nobjects))
+{% endhighlight %}
+
+A segunda parte do programa faz a varredura na imagem, partindo do ponto (0, 0). Sempre que um pixel com valor `255` é encontrado significa que chegamos em um novo objeto, devemos agora localizar todos os vizinhos do pixel que possuem a mesma tonalidade que ele, trocando seu valor pelo rótulo correspondente do objeto, quem dita o valor a ser salvo é a variável `nobjects`, sempre que encontramos um novo objeto ela tem seu valor incrementeado, fazendo com que cada objeto tenha uma tonalidade de cinza diferente, sendo `1` a primeira tonalidade aplicada. O processo de preenchimento é feito pela função `opencv.floodFill()`
 {% highlight python %}
 x1,y1,x2,y2 = input(f"Diga as coordenadas x e y de dois pontos na imagem ({width}x{height}): ").split()
 

@@ -74,7 +74,7 @@ print('{}x{}'.format(width, height))
 {% endhighlight %}
 
 Após importar as bibliotecas que iremos utilizar, é feita a leitura da imagem em tons de cinza,  caso a leitura tenha ocorrido corretamente nós iremos imprimir no console as dimensões da cena.
-
+<a id="trecho"></a>
 {% highlight python %}
 
 # Busca objetos presentes
@@ -110,7 +110,7 @@ A figura tem 32 bolhas ``
 ![](https://raw.githubusercontent.com/lucasamds/lucasamds.github.io/main/public/images/objetos.png)
 *Figura 1. Exemplo de saída do programa rotulando.py*
 
-O leitor atento pode observar que o trecho de código que realiza o preenchimento das regiões poderá apresentar um mal comportamento nos casos que existem mais de 255 objetos na cena, isto ocorre pois a variável que conta a quantidade de elementos na cena também é responsável por dizer o nível de cinza a ser aplicado, como nosso intervalo de valores é **[0,255]**, valores superiores não seriam representados. Uma possível solução para o problema seria limitar a contagem até o valor máximo de 255, imprimindo uma mensagem de erro e encerrando o programa nos casos que a quantidade limite é superado:
+O leitor atento pode observar que o <a href="#trecho">trecho</a> de código que realiza o preenchimento das regiões poderá apresentar um mal comportamento nos casos que existem mais de 255 objetos na cena, isto ocorre pois a variável que conta a quantidade de elementos na cena também é responsável por dizer o nível de cinza a ser aplicado, como nosso intervalo de valores é **[0,255]**, valores superiores não seriam representados. Uma possível solução para o problema seria limitar a contagem até o valor máximo de 255, imprimindo uma mensagem de erro e encerrando o programa nos casos que a quantidade limite é superado:
 {% highlight python %}
 
 for i in range(0, height):
@@ -128,84 +128,159 @@ for i in range(0, height):
 Caso se deseje elaborar uma versão que possibilite a contagem de mais de 255 objetos, uma opção é aumentar a quantidade de canais da cena, ampliando assim o número de valores possíveis para tonalidades.
 
 
-## Trocando regiões
+## Diferenciando objetos
 
-Agora vamos tentar realizar um segundo procedimento, nosso objetivo é trocar os pixels de região, de modo que os valores que estavam armazenados no quadrante superior esquerdo troquem de posição com os pixels do quadrante inferior direito, de forma semelhante, faremos a troca de valores entre os quadrantes superior direito e inferior esquerdo. Neste segundo experimento não será necessário fazer a leitura de valores de entrada adicionais, apenas da própria imagem que desejamos realizar o processamento.
+Neste segundo experimento, vamos um pouco mais além da contagem de objetos da cena, queremos agora diferenciar as regiões de <a href="https://raw.githubusercontent.com/lucasamds/lucasamds.github.io/main/public/images/bolhas.png" target="_blank">*bolhas*</a> que possuem ou não buracos internos. Para este estudo vamos desconsiderar os objetos que se encontram nas bordas da cena, pois não temos como saber se eles possuem ou não furos internos.
 
 <a id="listagem2"></a>
-##### Listagem 2. trocaregioes.py
+##### Listagem 2. furos.py
 {% highlight python %}
 import cv2 as cv
 import sys
 import numpy as np
 
-#Leitura da imagem
-img = cv.imread("imagens/cat.jpg", cv.IMREAD_GRAYSCALE)
 
-#Caso a imagem não seja encontrada
+
+img = cv.imread("imagens/bolhas.png", cv.IMREAD_GRAYSCALE)
+
 if img is None:
-    sys.exit("O arquivo não foi encontrado.")
+    sys.exit("A imagem não foi encontrada")
 
-#Cria uma janela que se ajusta ao tamanho da imagem
+width = len(img[0])
+height = len(img)
+print('{}x{}'.format(width, height))
+
+nobjects = 0
+
+# Mudando o valor das bordas para 0
+for i in range(0, width):
+    if img[0][i] == 255:
+        cv.floodFill(img, None, (i, 0), 0)
+    if img[height - 1][i] == 255:
+        cv.floodFill(img, None, (i, height-1), 0)
+
+for i in range(0, height):
+    if img[i][0] == 255:
+        cv.floodFill(img, None, (0, i), 0)
+    if img[i][width - 1] == 255:
+        cv.floodFill(img, None, (width-1, i), 0)
+
+img2 = img.copy()
+
+# Busca objetos presentes
+for i in range(0, height):
+    for j in range(0, width):
+        if img[i][j] == 255:
+            nobjects += 1
+            cv.floodFill(img, None, (j, i), nobjects)
+
+print('A figura tem {} formas que não tocam nas bordas'.format(nobjects))
+
+img2 = np.concatenate((img2, img), axis=1)
+
+cv.floodFill(img, None, (0, 0), 255)
+
+img3 = img.copy()
+
+comFuro = 0
+semFuro = 0
+
+# Contar objetos com e sem furos
+for i in range(0, height):
+    for j in range(0, width):
+        if img[i][j] == 0:
+            comFuro += 1
+            cv.floodFill(img, None, (j, i), 255)
+            cv.floodFill(img, None, (j-1, i), 255)
+
+semFuro = nobjects - comFuro
+
+print('A imagem possui {} objetos com furos e {} sem furos.'.format(comFuro, semFuro))
+
+img3 = np.concatenate((img3,img), axis=1)
+img2 = np.concatenate((img2, img3), axis=0)
+cv.putText(img2,'1', (15, 15), cv.FONT_HERSHEY_COMPLEX, 0.5, (255, 255, 255))
+cv.putText(img2,'2', (271, 15), cv.FONT_HERSHEY_COMPLEX, 0.5, (255, 255, 255))
+cv.putText(img2,'3', (15, 271), cv.FONT_HERSHEY_COMPLEX, 0.5, (0, 0, 0))
+cv.putText(img2,'4', (271, 271), cv.FONT_HERSHEY_COMPLEX, 0.5, (0, 0, 0))
+
 cv.namedWindow("Imagem", cv.WINDOW_AUTOSIZE)
-
-#Cria cópia da imagem
-img2 = np.zeros((len(img),len(img[0])),dtype=np.uint8)
-
-#Econtrando o meio da imagem
-meioh = int(len(img[0])/2)
-meiov = int(len(img)/2)
-
-
-#Modificando quadrantes
-for i in range(0,meiov):
-    for j in range(meioh,len(img[0])):
-        img2[i,j] = img[meiov + i,j - meioh]
-
-for i in range(meiov,len(img)):
-    for j in range(meioh,len(img[0])):
-        img2[i,j] = img[i - meiov,j - meioh]
-
-for i in range(0,meiov):
-    for j in range(0,meioh):
-        img2[i,j] = img[meiov + i,meioh + j]
-
-for i in range(meiov,len(img)):
-    for j in range(0,meioh):
-        img2[i,j] = img[i-meiov,meioh + j]
-
-#Aprensentando a imagem
 cv.imshow("Imagem", img2)
-cv.waitKey(0)
+cv.waitKey()
+cv.destroyAllWindows()
+
 {% endhighlight %}
 
-## Descrição do programa trocaregioes.py
+## Descrição do programa furos.py
 
-A parte inicial do código segue a mesma ideia do caso anterior, continuamos trabalhando com a imagem em tons de cinza, a primeira diferença que encontramos entre os dois programas aparece logo após a verificação de leitura da imagem.
+A lógica utilizada para resolver o problema é a seguinte: primeiro vamos remover os objetos que tocam na borda da cena; o segundo passo é realizar a contagem das regiões restantes; o terceiro passo é tonar o fundo da imagem branco; por fim identificar as que possuem furos internos.
 
 {% highlight python %}
 
-#Cria cópia da imagem
-img2 = np.zeros((len(img),len(img[0])),dtype=np.uint8)
+# Mudando o valor das bordas para 0
+for i in range(0, width):
+    if img[0][i] == 255:
+        cv.floodFill(img, None, (i, 0), 0)
+    if img[height - 1][i] == 255:
+        cv.floodFill(img, None, (i, height-1), 0)
 
-#Econtrando o meio da imagem
-meioh = int(len(img[0])/2)
-meiov = int(len(img)/2)
-
+for i in range(0, height):
+    if img[i][0] == 255:
+        cv.floodFill(img, None, (0, i), 0)
+    if img[i][width - 1] == 255:
+        cv.floodFill(img, None, (width-1, i), 0)
 {% endhighlight %}
 
-Aqui criamos um array utilizando a função `zeros()` da biblioteca Numpy, a ideia é criar uma nova imagem que possua as regiões trocadas, levando em conta a figura de entrada como base, tendo isso em mente passamos as dimensões da imagem lida como parâmetros de criação do array, também indicamos que o tipo de dado que desejamos armazenar no array é o `numpy.uint8`, já que estamos interessados apenas nos valores entre 0 e 255. O próximo passo após criar o array é localizar o centro da imagem, tornando possível criar intervalos que dividem a imagem em partes iguais.
+Aqui, ao encontrar um pixel com valor `255` em alguma das bordas da cena, preenchemos a região a qual ele pertence com `0` utilizando a função `floodFill()`, "removendo-os" da imagem.
+
 {% highlight python %}
 
-for i in range(0,meiov):
-    for j in range(meioh,len(img[0])):
-        img2[i,j] = img[meiov + i,j - meioh]
+# Busca objetos presentes
+for i in range(0, height):
+    for j in range(0, width):
+        if img[i][j] == 255:
+            nobjects += 1
+            cv.floodFill(img, None, (j, i), nobjects)
+
+print('A figura tem {} formas que não tocam nas bordas'.format(nobjects))
 
 {% endhighlight %}
 
-Por fim, mapeamos os valores da imagem original em seus quadrantes inversos, este primeiro conjunto de laços de repetição faz a captura dos valores que ficarão no primeiro quadrante da imagem (canto superior direito), os demais laços da <a href="#listagem2">Listagem 2</a> operam de forma semelhante, mudando apenas as regiões de interesse. Com isso conseguimos o seguinte resultado:
+Neste segundo segmento temos a contagem das regiões restantes, é neles que iremos buscar por objetos com furos, o resultado é apresentado no console.
 
-![](https://raw.githubusercontent.com/lucasamds/lucasamds.github.io/main/public/images/regioes.png)
-*Figura 3. Exemplo de saída do programa trocaregioes.py*
+{% highlight python %}
+
+cv.floodFill(img, None, (0, 0), 255)
+
+{% endhighlight %}
+
+Nesta linha nós fazemos com que o fundo da cena se torne branco ("255"), é importante notar que essa mudança ocorre apenas nas regiões ao redor dos objetos da cena. Com essa troca garantimos que os únicos pontos da cena que ainda possuem cor preta são as regiões internas dos objetos, é com base nessa afirmação que iremos identificar figuras com furo.
+
+{% highlight python %}
+
+# Contar objetos com e sem furos
+for i in range(0, height):
+    for j in range(0, width):
+        if img[i][j] == 0:
+            comFuro += 1
+            cv.floodFill(img, None, (j, i), 255)
+            cv.floodFill(img, None, (j-1, i), 255)
+
+semFuro = nobjects - comFuro
+
+{% endhighlight %}
+
+Nesta terceira etapa, ao encontrar um pixel preto, significa que mais uma região com furo foi encontrada, sendo assim incrementamos nosso contador de objetos com furos, preenchemos tanto a região preta como a região que continha o furo com a cor branca, "removendo-os" da cena para evitar que interfiram no resto da contagem. Ao final do processo teremos a quantidade total de objetos com furos, consequentemente, a quantidade de figuras sem furos será a diferença entre o total de objetos que não tocam nas bordas e os objetos com furo.
+
+Ao decorrer da <a href="#listagem2">Listagem 2</a> irão ocorrer algumas cópias e concatenações de imagens para gerar o resultado final, dentre as funções utilizadas está a `putText()`, ela serve para escrever sobre uma imagem, os parâmetros passados em ordem são: imagem que será feita a escrita; texto que deve ser escrito; coordenadas do canto inferior esquerdo do texto; fonte que deve ser utilizada; escala da fonte; cor da fonte.
+
+Ao executar o programa temos os seguintes resultados:
+
+``256x256
+A figura tem 21 formas que não tocam nas bordas
+A imagem possui 7 objetos com furos e 14 sem furos.``
+
+![](https://raw.githubusercontent.com/lucasamds/lucasamds.github.io/main/public/images/furos.png)
+*Figura 2. Exemplo de saída do programa furos.py*
 
 Neste segundo exemplo vimos o quão simples é utilizar a biblioteca Numpy juntamente com o OpenCV para manipulação de imagens. Com isso encerro esse primeiro post da série de processamento digital de imagens, bons estudos e até uma próxima!

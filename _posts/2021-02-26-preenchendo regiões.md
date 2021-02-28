@@ -107,50 +107,24 @@ Após calcular a quantidade de objetos presentes na cena, queremos apresentar os
 A figura tem 32 bolhas `
 
 ![](https://raw.githubusercontent.com/lucasamds/lucasamds.github.io/main/public/images/objetos.png)
-*Figura 1. Exemplo de saída do programa rotulando.py
+*Figura 1. Exemplo de saída do programa rotulando.py*
 
+O leitor atento pode observar que o trecho de código que realiza o preenchimento das regiões poderá apresentar um mal comportamento nos casos que existem mais de 255 objetos na cena, isto ocorre pois a variável que conta a quantidade de elementos na cena também é responsável por dizer o nível de cinza a ser aplicado, como nosso intervalo de valores é **[0,255]**, valores superiores não seriam representados. Uma possível solução para o problema seria limitar a contagem até o valor máximo de 255, imprimindo uma mensagem de erro e encerrando o programa nos casos que o valor limite é superado:
 {% highlight python %}
-if x1 > x2:
-    aux = x1
-    x1 = x2
-    x2 = aux
-if y1 > y2:
-    aux = y1
-    y1 = y2
-    y2 = aux
 
-#Modificando pixels da imagem
-for i in range(x1,x2):
-    for j in range(y1,y2):
-        img[i,j] = 255 - img[i,j]
+for i in range(0, height):
+    for j in range(0, width):
+        if img[i][j] == 255:
+            nobjects += 1
+            if(nobjects > 255):
+                sys.exit("A cena possui mais de 255 objetos")
+            px = j
+            py = i
+            cv.floodFill(img,None,(px,py),nobjects)
 
 {% endhighlight %}
 
-O trecho de código acima prepara os pontos em que iremos operar, os dois testes de seleção realizam trocas de valores entre as coordenadas que foram lidas, garantindo assim que partiremos do canto superior esquerdo da nossa região de interesse, indo até o canto inferior direito. Já o conjunto de laços de repetição realiza a troca de valores dos pixels da imagem, como estamos interessados em gerar o negativo da imagem, temos que o novo valor do pixel de interesse será a diferença entre o maior tom de cinza suportado (255) e o seu valor original.
-
-{% highlight python %}
-
-#Cria uma janela que se ajusta ao tamanho da imagem
-cv.namedWindow("Imagem", cv.WINDOW_AUTOSIZE)
-#Aprensentando a imagem
-cv.imshow("Imagem", img)
-k = cv.waitKey(0)
-
-{% endhighlight %}
-
-Agora que as operações na imagem já foram realizadas, nos resta apresentar os resultados obtidos. Primeiramente chamamos a função `namedWindow()`, passando um nome para a janela que será criada e a flag `WINDOW_AUTOSIZE`, esta flag indica que a janela irá se adequar ao tamanho da imagem. Em seguida a função `imshow()` irá apresentar o conteúdo armazenado em `img` na janela criada. A função `waitKey(delay)` espera indefinidamente pela ativação de uma tecla quando **delay &le; 0**, ou espera **delay** segundos caso contrário, neste caso a imagem fica aguardando que alguma tecla seja pressionada. 
-
-Ao rodar o código a seguinte mensagem é apresentada:
-
-```Diga as coordenadas x e y de dois pontos na imagem (640x427):```
-
-
-
-
-Como discutimos anteriormente, o programa nos diz as dimensões da imagem lida, caso os valores de entrada sejam `0 0 427 320`, por exemplo, temos o seguinte resultado:
-
-![](https://raw.githubusercontent.com/lucasamds/lucasamds.github.io/main/public/images/negativo.png)
-*Figura 2. Imagem cat.jpg em tons de cinza antes e depois de aplicar o negativo*
+Caso se deseje elaborar uma versão que possibilite a contagem de mais de 255 objetos, uma opção é aumentar a quantidade de canais da cena, ampliando assim a quantidade de valores possívels para tonalidades.
 
 
 ## Trocando regiões

@@ -103,8 +103,9 @@ cv.imshow("Resultado", res)
 
 Depois calcular a quantidade de objetos presentes na cena, queremos apresentar os resultados. A função `equalizeHist()` tem o papel de melhorar a visualização do resultado, esta função realiza operações matemáticas para normalizar o brilho e aumentar o contraste de uma imagem passada como parâmetro, iremos salvar o resultado da função em `img2`. Por fim utilizamos a função `concatenate()` da biblioteca *Numpy* para unir as cenas em uma só figura antes de serem apresentadas, o parâmetro `axis` informa se a concatenação será feita no sentido vertical ("0") ou horizontal ("1"). Ao executar o programa temos os seguintes resultados:
 
-`256x256
-A figura tem 32 bolhas`
+``
+256x256
+A figura tem 32 bolhas `` 
 
 ![](https://raw.githubusercontent.com/lucasamds/lucasamds.github.io/main/public/images/objetos.png)
 *Figura 1. Exemplo de saída do programa rotulando.py*

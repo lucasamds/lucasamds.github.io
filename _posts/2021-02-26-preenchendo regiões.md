@@ -109,7 +109,7 @@ A figura tem 32 bolhas`
 ![](https://raw.githubusercontent.com/lucasamds/lucasamds.github.io/main/public/images/objetos.png)
 *Figura 1. Exemplo de saída do programa rotulando.py*
 
-O leitor atento pode observar que o trecho de código que realiza o preenchimento das regiões poderá apresentar um mal comportamento nos casos que existem mais de 255 objetos na cena, isto ocorre pois a variável que conta a quantidade de elementos na cena também é responsável por dizer o nível de cinza a ser aplicado, como nosso intervalo de valores é **[0,255]**, valores superiores não seriam representados. Uma possível solução para o problema seria limitar a contagem até o valor máximo de 255, imprimindo uma mensagem de erro e encerrando o programa nos casos que o valor limite é superado:
+O leitor atento pode observar que o trecho de código que realiza o preenchimento das regiões poderá apresentar um mal comportamento nos casos que existem mais de 255 objetos na cena, isto ocorre pois a variável que conta a quantidade de elementos na cena também é responsável por dizer o nível de cinza a ser aplicado, como nosso intervalo de valores é **[0,255]**, valores superiores não seriam representados. Uma possível solução para o problema seria limitar a contagem até o valor máximo de 255, imprimindo uma mensagem de erro e encerrando o programa nos casos que a quantidade limite é superado:
 {% highlight python %}
 
 for i in range(0, height):
@@ -124,7 +124,7 @@ for i in range(0, height):
 
 {% endhighlight %}
 
-Caso se deseje elaborar uma versão que possibilite a contagem de mais de 255 objetos, uma opção é aumentar a quantidade de canais da cena, ampliando assim a quantidade de valores possívels para tonalidades.
+Caso se deseje elaborar uma versão que possibilite a contagem de mais de 255 objetos, uma opção é aumentar a quantidade de canais da cena, ampliando assim o número de valores possíveis para tonalidades.
 
 
 ## Trocando regiões

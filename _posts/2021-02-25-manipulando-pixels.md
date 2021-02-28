@@ -133,7 +133,9 @@ Agora que as operações na imagem já foram realizadas, nos resta apresentar os
 
 Ao rodar o código a seguinte mensagem é apresentada:
 
-```Diga as coordenadas x e y de dois pontos na imagem (640x427):```
+```
+Diga as coordenadas x e y de dois pontos na imagem (640x427):
+```
 
 
 

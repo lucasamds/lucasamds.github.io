@@ -103,9 +103,10 @@ cv.imshow("Resultado", res)
 
 Depois calcular a quantidade de objetos presentes na cena, queremos apresentar os resultados. A função `equalizeHist()` tem o papel de melhorar a visualização do resultado, esta função realiza operações matemáticas para normalizar o brilho e aumentar o contraste de uma imagem passada como parâmetro, iremos salvar o resultado da função em `img2`. Por fim utilizamos a função `concatenate()` da biblioteca *Numpy* para unir as cenas em uma só figura antes de serem apresentadas, o parâmetro `axis` informa se a concatenação será feita no sentido vertical ("0") ou horizontal ("1"). Ao executar o programa temos os seguintes resultados:
 
-``
+```
 256x256
-A figura tem 32 bolhas `` 
+A figura tem 32 bolhas 
+``` 
 
 ![](https://raw.githubusercontent.com/lucasamds/lucasamds.github.io/main/public/images/objetos.png)
 *Figura 1. Exemplo de saída do programa rotulando.py*
@@ -213,7 +214,7 @@ cv.destroyAllWindows()
 
 ## Descrição do programa furos.py
 
-A lógica utilizada para resolver o problema é a seguinte: primeiro vamos remover os objetos que tocam na borda da cena; o segundo passo é realizar a contagem das regiões restantes; o terceiro passo é tonar o fundo da imagem branco; por fim identificar as que possuem furos internos.
+A lógica utilizada para resolver o problema é a seguinte: primeiro vamos remover os objetos que tocam na borda da cena; o segundo passo é realizar a contagem das regiões restantes; o terceiro passo é tornar o fundo da imagem branco; por fim identificar as que possuem furos internos.
 
 {% highlight python %}
 
@@ -276,9 +277,11 @@ Ao decorrer da <a href="#listagem2">Listagem 2</a> irão ocorrer algumas cópias
 
 Ao executar o programa temos os seguintes resultados:
 
-``256x256
+```
+256x256
 A figura tem 21 formas que não tocam nas bordas
-A imagem possui 7 objetos com furos e 14 sem furos.``
+A imagem possui 7 objetos com furos e 14 sem furos.
+```
 
 ![](https://raw.githubusercontent.com/lucasamds/lucasamds.github.io/main/public/images/furos.png)
 *Figura 2. Exemplo de saída do programa furos.py*

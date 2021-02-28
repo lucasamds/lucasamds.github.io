@@ -89,7 +89,7 @@ for i in range(0, height):
 print('A figura tem {} bolhas'.format(nobjects))
 {% endhighlight %}
 
-A segunda parte do programa faz a varredura na imagem, partindo do ponto (0, 0). Sempre que um pixel com valor `255` é encontrado significa que chegamos em um novo objeto, devemos agora localizar todos os vizinhos do pixel que possuem a mesma tonalidade que ele, trocando seu valor pelo rótulo correspondente do objeto, quem dita o valor a ser salvo é a variável `nobjects`, sempre que encontramos um novo objeto ela tem seu valor incrementeado, fazendo com que cada objeto tenha uma tonalidade de cinza diferente, sendo `1` a primeira tonalidade aplicada. O processo de preenchimento é feito pela função `opencv.floodFill()`, esta função  recebe como parâmetros: a imagem que iremos modificar; uma máscara de operação, neste caso não iremos utilizar uma máscara em específico; o ponto de início do procedimento; o valor que será armazenado nos pixels do objeto. Após localizar e preencher todas as regiões o programa imprime no console a quantidade de objetos encontrados.
+A segunda parte do programa faz a varredura na imagem, partindo do ponto **(0, 0)**. Sempre que um pixel com valor `255` é encontrado significa que chegamos em um novo objeto, devemos agora localizar todos os vizinhos do pixel que possuem a mesma tonalidade que ele, trocando seu valor pelo rótulo correspondente do objeto, quem dita o valor a ser salvo é a variável `nobjects`, sempre que encontramos um novo objeto ela tem seu valor incrementeado, fazendo com que cada objeto tenha uma tonalidade de cinza diferente, sendo `1` a primeira tonalidade aplicada. O processo de preenchimento é feito pela função `floodFill()`, esta função do *OpenCV* recebe como parâmetros: a imagem que iremos modificar; uma máscara de operação, neste caso não iremos utilizar uma máscara em específico; o ponto de início do procedimento; o valor que será armazenado nos pixels do objeto. Após localizar e preencher todas as regiões o programa imprime no console a quantidade de objetos encontrados.
 
 {% highlight python %}
 
@@ -101,10 +101,10 @@ cv.imshow("Resultado", res)
 
 {% endhighlight %}
 
-Após calcular a quantidade de objetos presentes na cena, queremos apresentar os resultados. A função `equalizeHist()` tem o papel de melhorar a visualização do resultado, esta função realiza operações matemáticas para normalizar o brilho e aumentar o contraste de uma imagem passada como parâmetro, iremos salvar o resultado da função em `img2`. Por fim utilizamos a função `concatenate()` da biblioteca *Numpy* para unir as cenas em uma só figura antes de serem apresentadas, o parâmetro `axis` informa se a concatenação será feita no sentido vertical ("0") ou horizontal ("1"). Ao executar o programa temos os seguintes resultados:
+Depois calcular a quantidade de objetos presentes na cena, queremos apresentar os resultados. A função `equalizeHist()` tem o papel de melhorar a visualização do resultado, esta função realiza operações matemáticas para normalizar o brilho e aumentar o contraste de uma imagem passada como parâmetro, iremos salvar o resultado da função em `img2`. Por fim utilizamos a função `concatenate()` da biblioteca *Numpy* para unir as cenas em uma só figura antes de serem apresentadas, o parâmetro `axis` informa se a concatenação será feita no sentido vertical ("0") ou horizontal ("1"). Ao executar o programa temos os seguintes resultados:
 
 `256x256
-A figura tem 32 bolhas `
+A figura tem 32 bolhas`
 
 ![](https://raw.githubusercontent.com/lucasamds/lucasamds.github.io/main/public/images/objetos.png)
 *Figura 1. Exemplo de saída do programa rotulando.py*

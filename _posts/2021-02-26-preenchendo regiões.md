@@ -283,4 +283,4 @@ A imagem possui 7 objetos com furos e 14 sem furos.``
 ![](https://raw.githubusercontent.com/lucasamds/lucasamds.github.io/main/public/images/furos.png)
 *Figura 2. Exemplo de saída do programa furos.py*
 
-Neste segundo exemplo vimos o quão simples é utilizar a biblioteca Numpy juntamente com o OpenCV para manipulação de imagens. Com isso encerro esse primeiro post da série de processamento digital de imagens, bons estudos e até uma próxima!
+Os experimentos acima mostram um pouco do poder da função `floodFill()` e de como podemos utilizá-la para realizar contagens de objetos presentes em uma imagem. Com isso concluímos este segundo post da série de processamento digital de imagens, até a próxima!

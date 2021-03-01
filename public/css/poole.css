@@ -200,9 +200,6 @@ pre code {
   display: table;
 }
 
-.pkvideo{
-  background-color: #fff;
-}
 /* Pygments via Jekyll */
 .highlight {
   margin-bottom: 1rem;

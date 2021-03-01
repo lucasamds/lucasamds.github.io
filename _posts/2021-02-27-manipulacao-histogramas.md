@@ -132,156 +132,102 @@ A parte final da <a href="#listagem1">Listagem 1</a> prepara o conteúdo que ser
 Algo interessante que podemos fazer com o uso de histogramas é a detecção de movimentos de uma cena para outra, esta análise é feita com base na comparação entre os dois histogramas, dependendo da diferença entre eles, podemos dizer se houve ou não uma mudança de cena.
 
 <a id="listagem2"></a>
-##### Listagem 2. furos.py
-{% highlight python %}
+##### Listagem 2. movimento.py
 import cv2 as cv
-import sys
 import numpy as np
 
+histtam = 256
+hrange = np.array([0,256])
+
+accummulate = False
+
+#Leitura do vídeo
+cap = cv.VideoCapture('videos/movimento.mp4')
+
+width = int(cap.get(3))
+height = int(cap.get(4))
+
+histw = 184
+histh = 92
+binw = int(round(histw/histtam))
+primeiro = True
+
+while cap.isOpened():
+    ret, frame = cap.read()
+    if ret:
+        #Transformando a imagem para tons de cinza
+        frame = cv.cvtColor(frame, cv.COLOR_BGR2GRAY)
+        #Redimensionamento do vídeo
+        frame = cv.resize(frame, (int(width/5), int(height/5)), interpolation=cv.INTER_AREA)
 
 
-img = cv.imread("imagens/bolhas.png", cv.IMREAD_GRAYSCALE)
+        #Caso seja o primeiro frame o programa apenas gera o primeiro histograma
+        if primeiro:
+            histograma1 = cv.calcHist([frame], [0], None, [histtam], hrange, accumulate=accummulate)
+            primeiro = False
+        # Do segundo frame em diante devemos comparar os dois últimos histogramas, para isso vamos utilizar o método
+        # cv.compareHist(), onde iremos escolher a comparação de correlação, logo quanto mais próximo de 1, mais semelhante
+        # Vamos adotar que uma comparação que retorne um valor abaixo de 0.9, representa uma mudança na cena
+        else:
+            histograma2 = cv.calcHist([frame], [0], None, [histtam], hrange, accumulate=accummulate)
+            comp = cv.compareHist(histograma1,histograma2, 0)
+            #print(comp)
 
-if img is None:
-    sys.exit("A imagem não foi encontrada")
+            if comp < 0.999:
+                # Escrevendo a mensagem na imagem
+                cv.putText(frame,'MOVEMENT DETECTED', (10, int(height/5)-10), cv.FONT_HERSHEY_COMPLEX, 0.7, (255, 255, 255))
 
-width = len(img[0])
-height = len(img)
-print('{}x{}'.format(width, height))
+            cv.imshow('Frame', frame)
+            histograma1 = histograma2
+            if cv.waitKey(30) & 0xFF == ord('q'):
+                break
+    else:
+        break
 
-nobjects = 0
-
-# Mudando o valor das bordas para 0
-for i in range(0, width):
-    if img[0][i] == 255:
-        cv.floodFill(img, None, (i, 0), 0)
-    if img[height - 1][i] == 255:
-        cv.floodFill(img, None, (i, height-1), 0)
-
-for i in range(0, height):
-    if img[i][0] == 255:
-        cv.floodFill(img, None, (0, i), 0)
-    if img[i][width - 1] == 255:
-        cv.floodFill(img, None, (width-1, i), 0)
-
-img2 = img.copy()
-
-# Busca objetos presentes
-for i in range(0, height):
-    for j in range(0, width):
-        if img[i][j] == 255:
-            nobjects += 1
-            cv.floodFill(img, None, (j, i), nobjects)
-
-print('A figura tem {} formas que não tocam nas bordas'.format(nobjects))
-
-img2 = np.concatenate((img2, img), axis=1)
-
-cv.floodFill(img, None, (0, 0), 255)
-
-img3 = img.copy()
-
-comFuro = 0
-semFuro = 0
-
-# Contar objetos com e sem furos
-for i in range(0, height):
-    for j in range(0, width):
-        if img[i][j] == 0:
-            comFuro += 1
-            cv.floodFill(img, None, (j, i), 255)
-            cv.floodFill(img, None, (j-1, i), 255)
-
-semFuro = nobjects - comFuro
-
-print('A imagem possui {} objetos com furos e {} sem furos.'.format(comFuro, semFuro))
-
-img3 = np.concatenate((img3,img), axis=1)
-img2 = np.concatenate((img2, img3), axis=0)
-cv.putText(img2,'1', (15, 15), cv.FONT_HERSHEY_COMPLEX, 0.5, (255, 255, 255))
-cv.putText(img2,'2', (271, 15), cv.FONT_HERSHEY_COMPLEX, 0.5, (255, 255, 255))
-cv.putText(img2,'3', (15, 271), cv.FONT_HERSHEY_COMPLEX, 0.5, (0, 0, 0))
-cv.putText(img2,'4', (271, 271), cv.FONT_HERSHEY_COMPLEX, 0.5, (0, 0, 0))
-
-cv.namedWindow("Imagem", cv.WINDOW_AUTOSIZE)
-cv.imshow("Imagem", img2)
-cv.waitKey()
+cap.release()
 cv.destroyAllWindows()
 
+
 {% endhighlight %}
 
-## Descrição do programa furos.py
+## Descrição do programa movimento.py
 
-A lógica utilizada para resolver o problema é a seguinte: primeiro vamos remover os objetos que tocam na borda da cena; o segundo passo é realizar a contagem das regiões restantes; o terceiro passo é tornar o fundo da imagem branco; por fim identificar as que possuem furos internos.
+O código do segundo experimento segue os mesmos passos iniciais do anterior, onde abrimos um arquivo de vídeo e em seguida seguimos uma série de passos em cada *frame* do arquivo.
+{% highlight python %}
+
+if primeiro:
+    histograma1 = cv.calcHist([frame], [0], None, [histtam], hrange, accumulate=accummulate)
+    primeiro = False
+
+{% endhighlight %}
+
+Neste trecho do código nós verificamos se o *frame* que nos encontramos é o primeiro, neste caso ainda não teremos um segundo histograma para realizar comparação, sendo assim armazenamos o histograma da primeira cena e indicamos que o primeiro quadro já foi lido.
+
+{% highlight python %}
+else:
+    histograma2 = cv.calcHist([frame], [0], None, [histtam], hrange, accumulate=accummulate)
+    comp = cv.compareHist(histograma1,histograma2, 0)
+    print(comp)
+
+    if comp < 0.9994:
+        # Escrevendo a mensagem na imagem
+        cv.putText(frame,'MOVEMENT DETECTED', (10, int(height/5)-10), cv.FONT_HERSHEY_COMPLEX, 0.7, (255, 255, 255))
+
+{% endhighlight %}
+
+Para os demais quadros do vídeo, após o calculo do histograma, é feita a comparação do histograma atual com o anterior, esta comeparação é feita pela função `compareHist()` que recebe como parâmetros: primeiro histograma; segundo histograma, precisa ter o mesmo tamanho que o primeiro;<a href="http://man.hubwiz.com/docset/OpenCV.docset/Contents/Resources/Documents/d6/dc7/group__imgproc__hist.html#ga994f53817d621e2e4228fc646342d386">método de comparação de histogramas</a>, aqui estamos utilizando o método de correlação. Na comparação por correlação quanto maior for a semelhança entre os quadros, mais próximo de 1 a resposta será, esta reposta possui até 16 casas de precisão, neste experimento vamos utilizar o valor `0.9994`como limiar, onde valores abaixo disso irão representar uma detecção de movimento na cena. Caso haja movimento, escrevemos a mensagem `MOVEMENT DETECTED` na imagem.
 
 {% highlight python %}
 
-# Mudando o valor das bordas para 0
-for i in range(0, width):
-    if img[0][i] == 255:
-        cv.floodFill(img, None, (i, 0), 0)
-    if img[height - 1][i] == 255:
-        cv.floodFill(img, None, (i, height-1), 0)
-
-for i in range(0, height):
-    if img[i][0] == 255:
-        cv.floodFill(img, None, (0, i), 0)
-    if img[i][width - 1] == 255:
-        cv.floodFill(img, None, (width-1, i), 0)
+cv.imshow('Frame', frame)
+histograma1 = histograma2
+if cv.waitKey(30) & 0xFF == ord('q'):
+    break
 {% endhighlight %}
 
-Aqui, ao encontrar um pixel com valor `255` em alguma das bordas da cena, preenchemos a região a qual ele pertence com `0` utilizando a função `floodFill()`, "removendo-os" da imagem.
-
+Por fim, apresentamos o resultado em tela, encerrando o processo caso a tecla "q" seja pressionada, note que ao fim do processo atualizamos o valor de `histograma1`. Executando o programa temos o seguinte resultado:
 {% highlight python %}
 
-# Busca objetos presentes
-for i in range(0, height):
-    for j in range(0, width):
-        if img[i][j] == 255:
-            nobjects += 1
-            cv.floodFill(img, None, (j, i), nobjects)
+<iframe width="560" height="315" src="https://www.youtube.com/embed/IcyYyT7gWrM" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
-print('A figura tem {} formas que não tocam nas bordas'.format(nobjects))
-
-{% endhighlight %}
-
-Neste segundo segmento temos a contagem das regiões restantes, é neles que iremos buscar por objetos com furos, o resultado é apresentado no console.
-
-{% highlight python %}
-
-cv.floodFill(img, None, (0, 0), 255)
-
-{% endhighlight %}
-
-Nesta linha nós fazemos com que o fundo da cena se torne branco ("255"), é importante notar que essa mudança ocorre apenas nas regiões ao redor dos objetos da cena. Com essa troca garantimos que os únicos pontos da cena que ainda possuem cor preta são as regiões internas dos objetos, é com base nessa afirmação que iremos identificar figuras com furo.
-
-{% highlight python %}
-
-# Contar objetos com e sem furos
-for i in range(0, height):
-    for j in range(0, width):
-        if img[i][j] == 0:
-            comFuro += 1
-            cv.floodFill(img, None, (j, i), 255)
-            cv.floodFill(img, None, (j-1, i), 255)
-
-semFuro = nobjects - comFuro
-
-{% endhighlight %}
-
-Nesta terceira etapa, ao encontrar um pixel preto, significa que mais uma região com furo foi encontrada, sendo assim incrementamos nosso contador de objetos com furos, preenchemos tanto a região preta como a região que continha o furo com a cor branca, "removendo-os" da cena para evitar que interfiram no resto da contagem. Ao final do processo teremos a quantidade total de objetos com furos, consequentemente, a quantidade de figuras sem furos será a diferença entre o total de objetos que não tocam nas bordas e os objetos com furo.
-
-Ao decorrer da <a href="#listagem2">Listagem 2</a> irão ocorrer algumas cópias e concatenações de imagens para gerar o resultado final, dentre as funções utilizadas está a `putText()`, ela serve para escrever sobre uma imagem, os parâmetros passados em ordem são: imagem que será feita a escrita; texto que deve ser escrito; coordenadas do canto inferior esquerdo do texto; fonte que deve ser utilizada; escala da fonte; cor da fonte.
-
-Ao executar o programa temos os seguintes resultados:
-
-```
-256x256
-A figura tem 21 formas que não tocam nas bordas
-A imagem possui 7 objetos com furos e 14 sem furos.
-```
-
-![](https://raw.githubusercontent.com/lucasamds/lucasamds.github.io/main/public/images/furos.png)
-*Figura 2. Exemplo de saída do programa furos.py*
-
-Os experimentos acima mostram um pouco do poder da função `floodFill()` e de como podemos utilizá-la para realizar contagens de objetos presentes em uma imagem. Com isso concluímos este segundo post da série de processamento digital de imagens, até a próxima!
+No vídeo é possível perceber que em determinados momentos, apesar de haver movimento, o programa não detecta, isso nos diz que a diferença entre as tonalidades de um quadro para o outro não é significativa, caso nosso objetivo fosse diminuir ou aumentar a precisão de detecção, basta regular o valor de limiar. Com isso vimos uma forma relativamente fácil de encontrar movimento em um vídeo com o uso de histogramas. Vou ficando por aqui, bons estudos e até a próxima!

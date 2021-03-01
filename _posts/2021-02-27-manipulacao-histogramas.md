@@ -8,88 +8,97 @@ title: Manipulação de histogramas com Python
   Terceiro post da série de processamento digital de imagens com Python e OpenCV, desta vez vamos trabalhar com histogramas de imagens.
 </div>
 
-De forma resumida, o histograma é uma representração gráfica de uma determinada distribuição numérica, ele tem como objetivo mostrar a frequência que uma determinada amostra aparece na cena. Nestes experimentos vamos trabalhar com um <a href="https://github.com/lucasamds/lucasamds.github.io/blob/main/public/videos/histograma.mp4">*vídeo*</a>, pois temos interesse em estudar a varição de histogramas entre uma cena e outra. Para tornar as coisas um pouco mais simples, faremos a leitura do vídeo considerando apenas seus tons de cinza.
+De forma resumida, o histograma é uma representração gráfica de uma determinada distribuição numérica, ele tem como objetivo mostrar a frequência que uma determinada amostra aparece na cena. Nestes experimentos vamos trabalhar com um vídeo, pois temos interesse em estudar a varição de histogramas entre uma cena e outra. Para tornar as coisas um pouco mais simples, faremos a leitura do vídeo considerando apenas seus tons de cinza.
 
-## Rotulando as regiões
+## Equalizando um histograma
 
-É possível realizar a contagem de objetos através da identificação de regiões, vamos usar o processo de rotulação, onde as regiões da imagem com características comuns irão receber um identificador comum. Neste exeperimento a imagem de entrada será <a href="https://raw.githubusercontent.com/lucasamds/lucasamds.github.io/main/public/images/bolhas.png" target="_blank">*bolhas.png*</a>, sendo ela do tipo binária, de forma que cada pixel só possa assumir dois valores - 0 ou 255 - nos dizendo assim que, caso o pixel faça parte do fundo da cena, ele possui valor `0`, quando o pixel for de algum objeto da cena, ele tem valor `255`.
+Neste primeiro experimento nós queremos realizar a equalização de um histograma e analisar o efeito que este processo causa no vídeo. Equalizar significa que iremos mudar a distribuição dos valores de ocorrência de um dado histograma, diminuindo assim as diferenças acentuadas da cena. Quando este efeito é aplicado no processamento de imagens, geralmente conseguimos acentuar detalhes que eram imperceptíveis na figura, já que temos uma normalização do brilho e aumento do contraste.
 
-##### Listagem 1. rotulando.py
+##### Listagem 1. equalizando.py
 {% highlight python %}
 import cv2 as cv
-import sys
 import numpy as np
 
-img = cv.imread("imagens/bolhas.png", cv.IMREAD_GRAYSCALE)
+histtam = 256
+hrange = np.array([0,256])
+
+#Leitura do vídeo
+cap = cv.VideoCapture('videos/histograma.mp4')
+
+width = int(cap.get(3))
+height = int(cap.get(4))
+
+histw = 184
+histh = 92
+binw = int(round(histw/histtam))
+accummulate = False
+
+while cap.isOpened():
+    ret, frame = cap.read()
+    if ret:
+        #Transformando a imagem para tons de cinza
+        frame = cv.cvtColor(frame, cv.COLOR_BGR2GRAY)
+        #Redimensionamento do vídeo
+        frame = cv.resize(frame, (int(width/3), int(height/3)), interpolation=cv.INTER_AREA)
+
+        equalizado = cv.equalizeHist(frame)
+        #Processo de cálculo do histograma
+        histograma = cv.calcHist([frame], [0], None, [histtam], hrange, accumulate=accummulate)
+        histogramaeq = cv.calcHist([equalizado],[0], None, [histtam], hrange, accumulate=accummulate)
 
 
-if img is None:
-    sys.exit("A imagem não foi encontrada")
+        cv.normalize(histograma, histograma, alpha=0, beta=histh, norm_type=cv.NORM_MINMAX)
+        cv.normalize(histogramaeq, histogramaeq, alpha=0, beta=histh, norm_type=cv.NORM_MINMAX)
 
-width = len(img[0])
-height = len(img)
-print('{}x{}'.format(width, height))
+        #Desenhando o histograma
+        for i in range(1,histtam):
+            cv.line(frame, (binw*(i-1), histh - int(np.round(histograma[i-1]))), (binw*(i), histh - int(np.round(histograma[i]))), (0, 0, 0), thickness=2)
+            cv.line(equalizado, (binw * (i - 1), histh - int(np.round(histogramaeq[i - 1]))),(binw * (i), histh - int(np.round(histogramaeq[i]))), (0, 0, 0), thickness=2)
 
-px = 0
-py = 0
-nobjects = 0
+        # Unindo as imagems
+        res = np.vstack((frame, equalizado))
 
-# Busca objetos presentes
-for i in range(0, height):
-    for j in range(0, width):
-        if img[i][j] == 255:
-            nobjects += 1
-            px = j
-            py = i
-            cv.floodFill(img,None,(px,py),nobjects)
+        cv.imshow('Frame', res)
+        if cv.waitKey(5) & 0xFF == ord('q'):
+            break
+    else:
+        break
 
-print('A figura tem {} bolhas'.format(nobjects))
-
-cv.namedWindow("Resultado", cv.WINDOW_AUTOSIZE)
-img2 = np.zeros((height, width), dtype=np.uint8)
-cv.equalizeHist(img, img2)
-res = np.concatenate((img,img2), axis= 1)
-cv.imshow("Resultado", res)
-
+cap.release()
+cv.destroyAllWindows()
 
 {% endhighlight %}
 
-## Descrição do programa rotulando.py
+## Descrição do programa equalizando.py
 
 {% highlight python %}
-import cv2 as cv
-import sys
-import numpy as np
+histtam = 256
+hrange = np.array([0,256])
 
-img = cv.imread("imagens/bolhas.png", cv.IMREAD_GRAYSCALE)
+#Leitura do vídeo
+cap = cv.VideoCapture('videos/histograma.mp4')
 
-
-if img is None:
-    sys.exit("A imagem não foi encontrada")
-
-width = len(img[0])
-height = len(img)
-print('{}x{}'.format(width, height))
+width = int(cap.get(3))
+height = int(cap.get(4))
 
 {% endhighlight %}
 
-Após importar as bibliotecas que iremos utilizar, é feita a leitura da imagem em tons de cinza,  caso a leitura tenha ocorrido corretamente nós iremos imprimir no console as dimensões da cena.
-<a id="trecho"></a>
+Inicialmente determinamos o intervalo de valores que nosso histograma irá possuir, como estamos trabalhando apenas com tons de cinza, temos que as amostras estão no intervalo **[0, 255]**. O comando `VideoCapture()` faz a abertura do arquivo de vídeo que iremos utilzar, caso queira realizar a captura através de uma câmera, basta fazer `cap = cv.VideoCapture(0)`. Após abrir o arquivo consultamos as dimensões do arquivo através método `get()`, ela vai retornar o valor de alguma propriedade do arquivo, a escolha é feita através do parâmetro passado, a largura e altura possuem os índices 3 e 4, respectivamente.
+
 {% highlight python %}
 
-# Busca objetos presentes
-for i in range(0, height):
-    for j in range(0, width):
-        if img[i][j] == 255:
-            nobjects += 1
-            px = j
-            py = i
-            cv.floodFill(img,None,(px,py),nobjects)
-
-print('A figura tem {} bolhas'.format(nobjects))
+while cap.isOpened():
+    ret, frame = cap.read()
+    if ret:
+        #Transformando a imagem para tons de cinza
+        frame = cv.cvtColor(frame, cv.COLOR_BGR2GRAY)
+        #Redimensionamento do vídeo
+        frame = cv.resize(frame, (int(width/3), int(height/3)), interpolation=cv.INTER_AREA)
 {% endhighlight %}
 
-A segunda parte do programa faz a varredura na imagem, partindo do ponto **(0, 0)**. Sempre que um pixel com valor `255` é encontrado significa que chegamos em um novo objeto, devemos agora localizar todos os vizinhos do pixel que possuem a mesma tonalidade que ele, trocando seu valor pelo rótulo correspondente do objeto, quem dita o valor a ser salvo é a variável `nobjects`, sempre que encontramos um novo objeto ela tem seu valor incrementeado, fazendo com que cada objeto tenha uma tonalidade de cinza diferente, sendo `1` a primeira tonalidade aplicada. O processo de preenchimento é feito pela função `floodFill()`, esta função do *OpenCV* recebe como parâmetros: a imagem que iremos modificar; uma máscara de operação, neste caso não iremos utilizar uma máscara em específico; o ponto de início do procedimento; o valor que será armazenado nos pixels do objeto. Após localizar e preencher todas as regiões o programa imprime no console a quantidade de objetos encontrados.
+Caso o arquivo de vídeo tenha sido aberto corretamente, damos início ao processamento. o método `read()` coleta, decodifica e nos retorna o próximo *frame* do vídeo, ele também retorna um valor booleano que diz se foi ou não encontrado um novo *frame*, esta saída quem irá nos dizer a hora de parar o processo, ao receber `false` saberemos que chegamos ao fim do arquivo. Daqui em diante as operações serão repetidas para cada novo *frame* lido
+
+Originalmente o vídeo possui cores, porém como já foi dito, iremos utilizar apenas tons de cinza neste estudo, para isso utilizamos a função `cvtColor()`, ela recebe o *frame* que queremos modificar e realiza uma trabsformação baseada na *flag* passada, `cv.COLOR_BGR2GRAY` indica que queremos passar de um sistema RGB para um em tons de cinza. Uma última transformação que
 
 {% highlight python %}
 

@@ -8,7 +8,7 @@ title: Manipulação de histogramas com Python
   Terceiro post da série de processamento digital de imagens com Python e OpenCV, desta vez vamos trabalhar com histogramas de imagens.
 </div>
 
-Neste post vamos realizar um breve estudo de uma tarefa bastante comum no processamento de imagens, bem como na visão artificial, iremos realizar a contagem de objetos presentes de uma determinada cena.
+De forma resumida, o histograma é uma representração gráfica de uma determinada distribuição numérica, ele tem como objetivo mostrar a frequência que uma determinada amostra aparece na cena. Nestes experimentos vamos trabalhar com um <a href="https://github.com/lucasamds/lucasamds.github.io/blob/main/public/videos/histograma.mp4">*vídeo*</a>, pois temos interesse em estudar a varição de histogramas entre uma cena e outra. Para tornar as coisas um pouco mais simples, faremos a leitura do vídeo considerando apenas seus tons de cinza.
 
 ## Rotulando as regiões
 

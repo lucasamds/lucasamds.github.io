@@ -193,7 +193,7 @@ pre code {
   height: 100%;
 }
 
-.iframe-container + em{
+.iframe-container + p{
   margin-left: auto;
   margin-right: auto;
   display: table;

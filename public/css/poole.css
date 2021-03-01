@@ -179,13 +179,20 @@ pre code {
   color: inherit;
   background-color: transparent;
 }
-.iframe-container{
+
+iframe {
+  margin-left: auto;
+  margin-right: auto;
+  display: table;
+}
+/*.iframe-container{
   position: relative;
     width: 100%;
     padding-left: 5%;
     padding-bottom: 100%;
     height: 0;
 }
+
 .iframe-container iframe{
   position: absolute;
   top:0;
@@ -199,7 +206,7 @@ pre code {
   margin-right: auto;
   display: table;
 }
-
+*/
 /* Pygments via Jekyll */
 .highlight {
   margin-bottom: 1rem;

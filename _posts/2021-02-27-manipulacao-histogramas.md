@@ -230,5 +230,5 @@ if cv.waitKey(30) & 0xFF == ord('q'):
 Por fim, apresentamos o resultado em tela, encerrando o processo caso a tecla "q" seja pressionada, note que ao fim do processo atualizamos o valor de `histograma1`. Executando o programa temos o seguinte resultado:
 
 <iframe src="https://www.youtube.com/embed/IcyYyT7gWrM?vq=hd1080&modestbranding=1&rel=0&iv_load_policy=3" width="380" height="720" frameborder="0"></iframe>
-
+<em>Vídeo 2. Exemplo de saída do programa movimento.py</em>
 No vídeo é possível perceber que em determinados momentos, apesar de haver movimento, o programa não detecta, isso nos diz que a diferença entre as tonalidades de um quadro para o outro não é significativa, caso nosso objetivo fosse diminuir ou aumentar a precisão de detecção, basta regular o valor de limiar. Com isso vimos uma forma relativamente fácil de encontrar movimento em um vídeo com o uso de histogramas. Vou ficando por aqui, bons estudos e até a próxima!

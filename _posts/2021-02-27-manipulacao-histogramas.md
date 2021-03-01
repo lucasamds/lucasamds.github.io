@@ -8,11 +8,11 @@ title: Manipulação de histogramas com Python
   Terceiro post da série de processamento digital de imagens com Python e OpenCV, desta vez vamos trabalhar com histogramas de imagens.
 </div>
 
-De forma resumida, o histograma é uma representração gráfica de uma determinada distribuição numérica, ele tem como objetivo mostrar a frequência que uma determinada amostra aparece na cena. Nestes experimentos vamos trabalhar com um vídeo, pois temos interesse em estudar a varição de histogramas entre uma cena e outra. Para tornar as coisas um pouco mais simples, faremos a leitura do vídeo considerando apenas seus tons de cinza.
+De forma resumida, o histograma é a representração gráfica de uma determinada distribuição numérica, ele tem como objetivo mostrar a frequência que uma determinada amostra aparece na cena. Nestes experimentos vamos trabalhar com um vídeo, pois temos interesse em estudar a varição de histogramas entre uma cena e outra. Para tornar as coisas um pouco mais simples, faremos a leitura do vídeo considerando apenas seus tons de cinza.
 
 ## Equalizando um histograma
 
-Neste primeiro experimento nós queremos realizar a equalização de um histograma e analisar o efeito que este processo causa no vídeo. Equalizar significa que iremos mudar a distribuição dos valores de ocorrência de um dado histograma, diminuindo assim as diferenças acentuadas da cena. Quando este efeito é aplicado no processamento de imagens, geralmente conseguimos acentuar detalhes que eram imperceptíveis na figura, já que temos uma normalização do brilho e aumento do contraste.
+Neste primeiro experimento nós queremos realizar a equalização de um histograma e analisar o efeito que este processo causa no vídeo. Equalizar significa que iremos mudar a distribuição dos valores de ocorrência de um dado histograma, diminuindo assim as diferenças acentuadas da cena. Quando este efeito é aplicado no processamento de imagens, geralmente conseguimos visualizar detalhes que eram imperceptíveis na figura, já que temos uma normalização do brilho e aumento do contraste.
 
 <a id="listagem1"></a>
 ##### Listagem 1. equalizando.py
@@ -123,7 +123,7 @@ A parte final da <a href="#listagem1">Listagem 1</a> prepara o conteúdo que ser
 ![](https://media.giphy.com/media/bEYNSjj1mvEAJU1QLC/giphy.gif)
 *Vídeo 1. Exemplo de saída do programa equalizando.py*
 
-É possível perceber no vídeo que com a equalização do histograma, alguns detalhes do vídeos que passavam despercebidos se tornaram bem visíveis. A medida que a cena vai aumentando a iluminação é possível ver que o histograma não equalizado passa a se concentrar no canto direito, indicado que as tonalidades de cinza de maior valor estão em maioria; nota-se também em como a equalização do histograma espalha as amostras no gráfico, reduzindo assim as diferenças que eram acentuadas na cena original.
+É possível perceber no vídeo que com a equalização do histograma, alguns detalhes da cena que passavam despercebidos se tornaram bem visíveis. A medida que a cena vai aumentando a iluminação é possível ver que o histograma não equalizado passa a se concentrar no canto direito, indicado que as tonalidades de cinza de maior valor estão em maioria; nota-se também em como a equalização do histograma espalha as amostras no gráfico, reduzindo assim as diferenças que eram acentuadas na cena original.
 
 
 ## Diferenciando objetos

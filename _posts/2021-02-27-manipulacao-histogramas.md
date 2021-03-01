@@ -118,9 +118,9 @@ Originalmente o vídeo possui cores, porém como já foi dito, iremos utilizar a
 
 Em seguida realizamos a equalização do histograma do *frame* atual com a função `equalizeHist()`, salvando o resultado em outra variável. Agora que temos a imagem antes e depois de equalizada, vamos calcular o histograma de cada uma delas para analisar os resultados. Para este cálculo vamos usar a função `calcHist()` passando os seguintes parâmetros: imagem que vamos operar; lista de dimensões dos canais utilizados para computar o histograma; uma máscara de operação, neste caso não estamos utilizando uma em específico; array com o tamanho do histograma em cada dimensão; intervalo de valores possíveis no histograma; booleano que indica se o histograma deve ser acumulado ou não. Por fim é feita a normalização dos valores dos histogramas, para que possamos comparar os resultados.
 
-A parte final da <a href="#listagem1">Listagem 1</a> prepara o conteúdo que será exibido na tela, onde desenhamos as linhas dos histrogramas e unimos os vídeos em uma única saída. Ao executar o programa tem o seguinte resultado:
+A parte final da <a href="#listagem1">Listagem 1</a> prepara o conteúdo que será exibido na tela, onde desenhamos as linhas dos histrogramas e unimos os vídeos em uma única saída. Ao executar, o programa tem o seguinte resultado:
 
-<iframe src="https://giphy.com/embed/bEYNSjj1mvEAJU1QLC" width="427" height="480" frameBorder="0" class="giphy-embed" allowFullScreen></iframe>
+![](https://media.giphy.com/media/bEYNSjj1mvEAJU1QLC/giphy.gif)
 *Vídeo 1. Exemplo de saída do programa equalizando.py*
 
 É possível perceber no vídeo que com a equalização do histograma, alguns detalhes do vídeos que passavam despercebidos se tornaram bem visíveis. A medida que a cena vai aumentando a iluminação é possível ver que o histograma não equalizado passa a se concentrar no canto direito, indicado que as tonalidades de cinza de maior valor estão em maioria; nota-se também em como a equalização do histograma espalha as amostras no gráfico, reduzindo assim as diferenças que eram acentuadas na cena original.

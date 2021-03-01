@@ -228,7 +228,6 @@ if cv.waitKey(30) & 0xFF == ord('q'):
 {% endhighlight %}
 
 Por fim, apresentamos o resultado em tela, encerrando o processo caso a tecla "q" seja pressionada, note que ao fim do processo atualizamos o valor de `histograma1`. Executando o programa temos o seguinte resultado:
-{% highlight python %}
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/IcyYyT7gWrM" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 

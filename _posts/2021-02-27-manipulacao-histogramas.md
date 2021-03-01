@@ -119,9 +119,8 @@ Originalmente o vídeo possui cores, porém como já foi dito, iremos utilizar a
 Em seguida realizamos a equalização do histograma do *frame* atual com a função `equalizeHist()`, salvando o resultado em outra variável. Agora que temos a imagem antes e depois de equalizada, vamos calcular o histograma de cada uma delas para analisar os resultados. Para este cálculo vamos usar a função `calcHist()` passando os seguintes parâmetros: imagem que vamos operar; lista de dimensões dos canais utilizados para computar o histograma; uma máscara de operação, neste caso não estamos utilizando uma em específico; array com o tamanho do histograma em cada dimensão; intervalo de valores possíveis no histograma; booleano que indica se o histograma deve ser acumulado ou não. Por fim é feita a normalização dos valores dos histogramas, para que possamos comparar os resultados.
 
 A parte final da <a href="#listagem1">Listagem 1</a> prepara o conteúdo que será exibido na tela, onde desenhamos as linhas dos histrogramas e unimos os vídeos em uma única saída. Ao executar, o programa tem o seguinte resultado:
-<div class="iframe-container">
-    <iframe src="https://www.youtube.com/embed/KtwqHBMgcro" width="640" height="720" frameborder="0"></iframe>
-</div>
+
+<iframe src="https://www.youtube.com/embed/KtwqHBMgcro?vq=hd1080&modestbranding=1&rel=0&iv_load_policy=3" width="640" height="720" frameborder="0"></iframe>
 <em>Vídeo 1. Exemplo de saída do programa equalizando.py</em>
 
 É possível perceber no vídeo que com a equalização do histograma, alguns detalhes da cena que passavam despercebidos se tornaram bem visíveis. A medida que a cena vai aumentando a iluminação vemos que o histograma não equalizado passa a se concentrar no canto direito, indicado que as tonalidades de cinza de maior valor estão em maioria; notamos também como a equalização do histograma espalha as amostras no gráfico, reduzindo assim as diferenças que eram acentuadas na cena original.
@@ -231,4 +230,5 @@ Por fim, apresentamos o resultado em tela, encerrando o processo caso a tecla "q
 
 <iframe src="https://www.youtube.com/embed/IcyYyT7gWrM?vq=hd1080&modestbranding=1&rel=0&iv_load_policy=3" width="380" height="720" frameborder="0"></iframe>
 <em>Vídeo 2. Exemplo de saída do programa movimento.py</em>
+
 No vídeo é possível perceber que em determinados momentos, apesar de haver movimento, o programa não os detecta, isso nos diz que a diferença entre as tonalidades de um quadro para o outro não é significativa, caso nosso objetivo fosse diminuir ou aumentar a precisão de detecção, basta regular o valor de limiar. Com isso vimos uma forma relativamente fácil de encontrar movimento em um vídeo com o uso de histogramas. Vou ficando por aqui, bons estudos e até a próxima!

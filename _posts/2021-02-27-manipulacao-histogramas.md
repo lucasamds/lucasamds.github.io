@@ -131,8 +131,10 @@ A parte final da <a href="#listagem1">Listagem 1</a> prepara o conteúdo que ser
 
 Algo interessante que podemos fazer com o uso de histogramas é a detecção de movimentos de uma cena para outra, esta análise é feita com base na comparação entre os dois histogramas, dependendo da diferença entre eles, podemos dizer se houve ou não uma mudança de cena.
 
-<a id="listagem2"></a>
+
+{% highlight python %}
 ##### Listagem 2. movimento.py
+
 import cv2 as cv
 import numpy as np
 

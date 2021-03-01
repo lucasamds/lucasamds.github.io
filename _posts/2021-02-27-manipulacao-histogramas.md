@@ -121,7 +121,7 @@ Em seguida realizamos a equalização do histograma do *frame* atual com a funç
 A parte final da <a href="#listagem1">Listagem 1</a> prepara o conteúdo que será exibido na tela, onde desenhamos as linhas dos histrogramas e unimos os vídeos em uma única saída. Ao executar, o programa tem o seguinte resultado:
 
 <iframe src="https://www.youtube.com/embed/KtwqHBMgcro?vq=hd1080&modestbranding=1&rel=0&iv_load_policy=3" width="640" height="720" frameborder="0"></iframe>
-<em>Vídeo 1. Exemplo de saída do programa equalizando.py</em>
+<em class="descricao">Vídeo 1. Exemplo de saída do programa equalizando.py</em>
 
 É possível perceber no vídeo que com a equalização do histograma, alguns detalhes da cena que passavam despercebidos se tornaram bem visíveis. A medida que a cena vai aumentando a iluminação vemos que o histograma não equalizado passa a se concentrar no canto direito, indicado que as tonalidades de cinza de maior valor estão em maioria; notamos também como a equalização do histograma espalha as amostras no gráfico, reduzindo assim as diferenças que eram acentuadas na cena original.
 
@@ -130,9 +130,8 @@ A parte final da <a href="#listagem1">Listagem 1</a> prepara o conteúdo que ser
 
 Algo interessante que podemos fazer com o uso de histogramas é a detecção de movimentos de uma cena para outra, esta análise é feita com base na comparação entre os dois histogramas, dependendo da diferença entre eles, podemos dizer se houve ou não uma mudança de cena.
 
-
-{% highlight python %}
 ##### Listagem 2. movimento.py
+{% highlight python %}
 
 import cv2 as cv
 import numpy as np
@@ -229,6 +228,6 @@ if cv.waitKey(30) & 0xFF == ord('q'):
 Por fim, apresentamos o resultado em tela, encerrando o processo caso a tecla "q" seja pressionada, note que ao fim do processo atualizamos o valor de `histograma1`. Executando o programa temos o seguinte resultado:
 
 <iframe src="https://www.youtube.com/embed/IcyYyT7gWrM?vq=hd1080&modestbranding=1&rel=0&iv_load_policy=3" width="380" height="720" frameborder="0"></iframe>
-<em>Vídeo 2. Exemplo de saída do programa movimento.py</em>
+<em class="descricao">Vídeo 2. Exemplo de saída do programa movimento.py</em>
 
 No vídeo é possível perceber que em determinados momentos, apesar de haver movimento, o programa não os detecta, isso nos diz que a diferença entre as tonalidades de um quadro para o outro não é significativa, caso nosso objetivo fosse diminuir ou aumentar a precisão de detecção, basta regular o valor de limiar. Com isso vimos uma forma relativamente fácil de encontrar movimento em um vídeo com o uso de histogramas. Vou ficando por aqui, bons estudos e até a próxima!

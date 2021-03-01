@@ -201,7 +201,7 @@ iframe {
   height: 100%;
 }
 */
-iframe + p{
+.descricao{
   margin-left: auto;
   margin-right: auto;
   display: table;

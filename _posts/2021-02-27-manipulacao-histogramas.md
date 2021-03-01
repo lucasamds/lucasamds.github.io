@@ -120,10 +120,7 @@ Em seguida realizamos a equalização do histograma do *frame* atual com a funç
 
 A parte final da <a href="#listagem1">Listagem 1</a> prepara o conteúdo que será exibido na tela, onde desenhamos as linhas dos histrogramas e unimos os vídeos em uma única saída. Ao executar o programa tem o seguinte resultado:
 
-<video width="640" height="720" controls>
-    <source src="https://github.com/lucasamds/lucasamds.github.io/blob/main/public/videos/histogramasaida.mp4" type="video/mp4">
-</video>
-
+![](https://github.com/lucasamds/lucasamds.github.io/blob/main/public/videos/saidahist.gif)
 *Vídeo 1. Exemplo de saída do programa equalizando.py*
 
 É possível perceber no vídeo que com a equalização do histograma, alguns detalhes do vídeos que passavam despercebidos se tornaram bem visíveis. A medida que a cena vai aumentando a iluminação é possível ver que o histograma não equalizado passa a se concentrar no canto direito, indicado que as tonalidades de cinza de maior valor estão em maioria; nota-se também em como a equalização do histograma espalha as amostras no gráfico, reduzindo assim as diferenças que eram acentuadas na cena original.

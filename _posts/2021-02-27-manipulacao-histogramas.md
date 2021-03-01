@@ -42,6 +42,7 @@ while cap.isOpened():
         frame = cv.resize(frame, (int(width/3), int(height/3)), interpolation=cv.INTER_AREA)
 
         equalizado = cv.equalizeHist(frame)
+
         #Processo de cálculo do histograma
         histograma = cv.calcHist([frame], [0], None, [histtam], hrange, accumulate=accummulate)
         histogramaeq = cv.calcHist([equalizado],[0], None, [histtam], hrange, accumulate=accummulate)
@@ -96,46 +97,32 @@ while cap.isOpened():
         frame = cv.resize(frame, (int(width/3), int(height/3)), interpolation=cv.INTER_AREA)
 {% endhighlight %}
 
-Caso o arquivo de vídeo tenha sido aberto corretamente, damos início ao processamento. o método `read()` coleta, decodifica e nos retorna o próximo *frame* do vídeo, ele também retorna um valor booleano que diz se foi ou não encontrado um novo *frame*, esta saída quem irá nos dizer a hora de parar o processo, ao receber `false` saberemos que chegamos ao fim do arquivo. Daqui em diante as operações serão repetidas para cada novo *frame* lido
+Caso o arquivo de vídeo tenha sido aberto corretamente, damos início ao processamento. o método `read()` coleta, decodifica e nos retorna o próximo *frame* do vídeo, ele também retorna um valor booleano que diz se foi ou não encontrado um novo *frame*, esta saída quem irá nos dizer a hora de parar o processo, ao receber `false` saberemos que chegamos ao fim do arquivo. Daqui em diante as operações serão repetidas para cada novo *frame* lido.
 
-Originalmente o vídeo possui cores, porém como já foi dito, iremos utilizar apenas tons de cinza neste estudo, para isso utilizamos a função `cvtColor()`, ela recebe o *frame* que queremos modificar e realiza uma trabsformação baseada na *flag* passada, `cv.COLOR_BGR2GRAY` indica que queremos passar de um sistema RGB para um em tons de cinza. Uma última transformação que
+Originalmente o vídeo possui cores, porém como já foi dito, iremos utilizar apenas tons de cinza neste estudo, para isso utilizamos a função `cvtColor()`, ela recebe o *frame* que queremos modificar e realiza uma trabsformação baseada na *flag* passada, `cv.COLOR_BGR2GRAY` indica que queremos passar de um sistema RGB para um em tons de cinza. Uma última transformação que vamos realizar é o redimensionamento da imagem, este passo é apenas para facilitar a visualição dos resultados, visto que o vídeo escolhido possui um tamanho grande. A função `resize()` vai receber: imagem que deve redimensionar; tamanho desejado de saída;  método de interpolação, sendo este opicional.
 
 {% highlight python %}
 
-cv.namedWindow("Resultado", cv.WINDOW_AUTOSIZE)
-img2 = np.zeros((height, width), dtype=np.uint8)
-cv.equalizeHist(img, img2)
-res = np.concatenate((img,img2), axis= 1)
-cv.imshow("Resultado", res)
+    equalizado = cv.equalizeHist(frame)
+
+    #Processo de cálculo do histograma
+    histograma = cv.calcHist([frame], [0], None, [histtam], hrange, accumulate=accummulate)
+    histogramaeq = cv.calcHist([equalizado],[0], None, [histtam], hrange, accumulate=accummulate)
+
+
+    cv.normalize(histograma, histograma, alpha=0, beta=histh, norm_type=cv.NORM_MINMAX)
+    cv.normalize(histogramaeq, histogramaeq, alpha=0, beta=histh, norm_type=cv.NORM_MINMAX)
 
 {% endhighlight %}
 
-Depois calcular a quantidade de objetos presentes na cena, queremos apresentar os resultados. A função `equalizeHist()` tem o papel de melhorar a visualização do resultado, esta função realiza operações matemáticas para normalizar o brilho e aumentar o contraste de uma imagem passada como parâmetro, iremos salvar o resultado da função em `img2`. Por fim utilizamos a função `concatenate()` da biblioteca *Numpy* para unir as cenas em uma só figura antes de serem apresentadas, o parâmetro `axis` informa se a concatenação será feita no sentido vertical ("0") ou horizontal ("1"). Ao executar o programa temos os seguintes resultados:
+Em seguida realizamos a equalização do histograma do *frame* atual com a função `equalizeHist()`, salvando o resultado em outra variável. Agora que temos a imagem antes e depois de equalizada, vamos calcular o histograma de cada uma delas para analisar os resultados. Para este cálculo vamos usar a função `calcHist()` passando os seguintes parâmetros: imagem que vamos operar; lista de dimensões dos canais utilizados para computar o histograma; uma máscara de operação, neste caso não estamos utilizando uma em específico; array com o tamanho do histograma em cada dimensão; intervalo de valores possíveis no histograma; booleano que indica se o histograma deve ser acumulado ou não. Por fim é feita a normalização dos valores dos histogramas, para que possamos comparar os resultados.
 
-```
-256x256
-A figura tem 32 bolhas 
-``` 
+A parte final da <a href="#listagem1">Listagem 1</a> prepara o conteúdo que será exibido na tela, onde desenhamos as linhas dos histrogramas e unimos os vídeos em uma única saída. Ao executar o programa tem o seguinte resultado:
 
-![](https://raw.githubusercontent.com/lucasamds/lucasamds.github.io/main/public/images/objetos.png)
-*Figura 1. Exemplo de saída do programa rotulando.py*
+![](https://github.com/lucasamds/lucasamds.github.io/blob/main/public/videos/histogramasaida.mp4)
+*Vídeo 1. Exemplo de saída do programa equalizando.py*
 
-O leitor atento pode observar que o <a href="#trecho">trecho</a> de código que realiza o preenchimento das regiões poderá apresentar um mal comportamento nos casos que existem mais de 255 objetos na cena, isto ocorre pois a variável que conta a quantidade de elementos na cena também é responsável por dizer o nível de cinza a ser aplicado, como nosso intervalo de valores é **[0,255]**, valores superiores não seriam representados. Uma possível solução para o problema seria limitar a contagem até o valor máximo de 255, imprimindo uma mensagem de erro e encerrando o programa nos casos que a quantidade limite é superado:
-{% highlight python %}
-
-for i in range(0, height):
-    for j in range(0, width):
-        if img[i][j] == 255:
-            nobjects += 1
-            if(nobjects > 255):
-                sys.exit("A cena possui mais de 255 objetos")
-            px = j
-            py = i
-            cv.floodFill(img,None,(px,py),nobjects)
-
-{% endhighlight %}
-
-Caso se deseje elaborar uma versão que possibilite a contagem de mais de 255 objetos, uma opção é aumentar a quantidade de canais da cena, ampliando assim o número de valores possíveis para tonalidades.
+É possível perceber no vídeo que com a equalização do histograma, alguns detalhes do vídeos que passavam despercebidos se tornaram bem visíveis. A medida que a cena vai aumentando a iluminação é possível ver que o histograma não equalizado passa a se concentrar no canto direito, indicado que as tonalidades de cinza de maior valor estão em maioria; nota-se também em como a equalização do histograma espalha as amostras no gráfico, reduzindo assim as diferenças que eram acentuadas na cena original.
 
 
 ## Diferenciando objetos

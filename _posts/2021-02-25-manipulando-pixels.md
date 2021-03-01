@@ -49,7 +49,7 @@ if y1 > y2:
 #Modificando pixels da imagem
 for i in range(x1,x2):
     for j in range(y1,y2):
-        img[i,j] = 255 - img[i,j]
+        img[i][j] = 255 - img[i][j]
 
 #Cria uma janela que se ajusta ao tamanho da imagem
 cv.namedWindow("Imagem", cv.WINDOW_AUTOSIZE)
@@ -113,7 +113,7 @@ if y1 > y2:
 #Modificando pixels da imagem
 for i in range(x1,x2):
     for j in range(y1,y2):
-        img[i,j] = 255 - img[i,j]
+        img[i][j] = 255 - img[i][j]
 
 {% endhighlight %}
 
@@ -178,19 +178,19 @@ meiov = int(len(img)/2)
 #Modificando quadrantes
 for i in range(0,meiov):
     for j in range(meioh,len(img[0])):
-        img2[i,j] = img[meiov + i,j - meioh]
+        img2[i][j] = img[meiov + i][j - meioh]
 
 for i in range(meiov,len(img)):
     for j in range(meioh,len(img[0])):
-        img2[i,j] = img[i - meiov,j - meioh]
+        img2[i][j] = img[i - meiov][j - meioh]
 
 for i in range(0,meiov):
     for j in range(0,meioh):
-        img2[i,j] = img[meiov + i,meioh + j]
+        img2[i][j] = img[meiov + i][meioh + j]
 
 for i in range(meiov,len(img)):
     for j in range(0,meioh):
-        img2[i,j] = img[i-meiov,meioh + j]
+        img2[i][j] = img[i-meiov][meioh + j]
 
 #Aprensentando a imagem
 cv.imshow("Imagem", img2)
@@ -217,7 +217,7 @@ Aqui criamos um array utilizando a função `zeros()` da biblioteca Numpy, a ide
 
 for i in range(0,meiov):
     for j in range(meioh,len(img[0])):
-        img2[i,j] = img[meiov + i,j - meioh]
+        img2[i][j] = img[meiov + i][j - meioh]
 
 {% endhighlight %}
 

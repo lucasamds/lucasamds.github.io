@@ -171,8 +171,8 @@ cv.namedWindow("Imagem", cv.WINDOW_AUTOSIZE)
 img2 = np.zeros((len(img),len(img[0])),dtype=np.uint8)
 
 #Econtrando o meio da imagem
-meioh = int(len(img[0])/2)
-meiov = int(len(img)/2)
+meioh = len(img[0])//2
+meiov = len(img)//2
 
 
 #Modificando quadrantes
@@ -207,8 +207,8 @@ A parte inicial do código segue a mesma ideia do caso anterior, continuamos tra
 img2 = np.zeros((len(img),len(img[0])),dtype=np.uint8)
 
 #Econtrando o meio da imagem
-meioh = int(len(img[0])/2)
-meiov = int(len(img)/2)
+meioh = len(img[0])//2
+meiov = len(img)//2
 
 {% endhighlight %}
 

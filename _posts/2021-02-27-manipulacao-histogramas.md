@@ -40,7 +40,7 @@ while cap.isOpened():
         #Transformando a imagem para tons de cinza
         frame = cv.cvtColor(frame, cv.COLOR_BGR2GRAY)
         #Redimensionamento do vídeo
-        frame = cv.resize(frame, (int(width/3), int(height/3)), interpolation=cv.INTER_AREA)
+        frame = cv.resize(frame, (width//3, height//3), interpolation=cv.INTER_AREA)
 
         equalizado = cv.equalizeHist(frame)
 
@@ -95,7 +95,7 @@ while cap.isOpened():
         #Transformando a imagem para tons de cinza
         frame = cv.cvtColor(frame, cv.COLOR_BGR2GRAY)
         #Redimensionamento do vídeo
-        frame = cv.resize(frame, (int(width/3), int(height/3)), interpolation=cv.INTER_AREA)
+        frame = cv.resize(frame, (width//3, height//3), interpolation=cv.INTER_AREA)
 {% endhighlight %}
 
 Caso o arquivo de vídeo tenha sido aberto corretamente, damos início ao processamento. o método `read()` coleta, decodifica e nos retorna o próximo *frame* do vídeo, ele também retorna um valor booleano que diz se foi ou não encontrado um novo *frame*, esta saída quem irá nos dizer a hora de parar o processo, ao receber `false` saberemos que chegamos ao fim do arquivo. Daqui em diante as operações serão repetidas para cada novo *frame* lido.
@@ -158,7 +158,7 @@ while cap.isOpened():
         #Transformando a imagem para tons de cinza
         frame = cv.cvtColor(frame, cv.COLOR_BGR2GRAY)
         #Redimensionamento do vídeo
-        frame = cv.resize(frame, (int(width/5), int(height/5)), interpolation=cv.INTER_AREA)
+        frame = cv.resize(frame, (width//5, height//5), interpolation=cv.INTER_AREA)
 
 
         #Caso seja o primeiro frame o programa apenas gera o primeiro histograma
@@ -175,7 +175,7 @@ while cap.isOpened():
 
             if comp < 0.999:
                 # Escrevendo a mensagem na imagem
-                cv.putText(frame,'MOVEMENT DETECTED', (10, int(height/5)-10), cv.FONT_HERSHEY_COMPLEX, 0.7, (255, 255, 255))
+                cv.putText(frame,'MOVEMENT DETECTED', (10, height//5-10), cv.FONT_HERSHEY_COMPLEX, 0.7, (255, 255, 255))
 
             cv.imshow('Frame', frame)
             histograma1 = histograma2
@@ -211,7 +211,7 @@ else:
 
     if comp < 0.9994:
         # Escrevendo a mensagem na imagem
-        cv.putText(frame,'MOVEMENT DETECTED', (10, int(height/5)-10), cv.FONT_HERSHEY_COMPLEX, 0.7, (255, 255, 255))
+        cv.putText(frame,'MOVEMENT DETECTED', (10, height//5-10), cv.FONT_HERSHEY_COMPLEX, 0.7, (255, 255, 255))
 
 {% endhighlight %}
 

@@ -8,7 +8,9 @@ title: Filtragem no domínio espacial I
   Quarto post da série de processamento digital de imagens com Python e OpenCV, hoje vamos experimentar algumas filtragens com convolução.
 </div>
 
-De forma resumida, o histograma é a representração gráfica de uma determinada distribuição numérica, ele tem como objetivo mostrar a frequência que uma determinada amostra aparece na cena. Nestes experimentos vamos trabalhar com um vídeo, pois temos interesse em estudar a varição de histogramas entre uma cena e outra. Para tornar as coisas um pouco mais simples, faremos a leitura do vídeo considerando apenas seus tons de cinza.
+Neste experimento vamos realizar filtragens baseadas na convolução discreta, essa aplicação permite modificar certas características de uma dada imagem, dependendo dos valores utilizados na *máscara* que será aplicada. A convolução digital pode ser definida como:
+
+![](https://latex.codecogs.com/svg.latex?%5Cmathit%7Bg%28x%2C%20y%29%20%3D%20%5Csum_%7Bs%3D-a%7D%5E%7Ba%7D%5Csum_%7Bt%3D-b%7D%5E%7Bb%7Dw%28s%2C%20t%29f%28x&plus;s%2C%20y&plus;t%29%7D)
 
 ## Equalizando um histograma
 

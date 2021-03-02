@@ -10,7 +10,8 @@ title: Filtragem no domínio espacial I
 
 Neste experimento vamos realizar filtragens baseadas na convolução discreta, essa aplicação permite modificar certas características de uma dada imagem, dependendo dos valores utilizados na *máscara* que será aplicada. A convolução digital pode ser definida como:
 
-![](https://latex.codecogs.com/svg.latex?%5Cmathit%7Bg%28x%2C%20y%29%20%3D%20%5Csum_%7Bs%3D-a%7D%5E%7Ba%7D%5Csum_%7Bt%3D-b%7D%5E%7Bb%7Dw%28s%2C%20t%29f%28x&plus;s%2C%20y&plus;t%29%7D)
+![\mathit{g(x, y) = \sum_{s=-a}^{a}\sum_{t=-b}^{b}w(s, t)f(x+s, y+t)}](https://latex.codecogs.com/svg.latex?%5Cmathit%7Bg%28x%2C%20y%29%20%3D%20%5Csum_%7Bs%3D-a%7D%5E%7Ba%7D%5Csum_%7Bt%3D-b%7D%5E%7Bb%7Dw%28s%2C%20t%29f%28x&plus;s%2C%20y&plus;t%29%7D)
+
 
 ## Equalizando um histograma
 

@@ -22,7 +22,10 @@ Onde *f* representa a imagem a ser filtrada e *w* a máscara aplicada. A máscar
 
 A aplicação de um filtro suavizante, em uma imagem, faz com que haja um borramento na cena, também podem ser utilizados com o objetivo de reduzir ruídos. A resposta dos filtros suavizantes lineares nada mais são do que a média dos pixels que compõem a *vizinhança*, os modelos que iremos usar são os filtros da **média** e **gaussiano**.
 
-$$\frac{1}{9} X $$ 
+$$\frac{1}{9} X $$ | 1 | 1 | 1 |
+|:-:|:-:|:-:|
+| 1 | 1 | 1 |
+| 1 | 1 | 1 |
 
 <a id="listagem1"></a>
 ##### Listagem 1. equalizando.py
@@ -31,10 +34,7 @@ import cv2 as cv
 import numpy as np
 
 histtam = 256
-hrange = np.array([0,256])| 1 | 1 | 1 |
-|:-:|:-:|:-:|
-| 1 | 1 | 1 |
-| 1 | 1 | 1 |
+hrange = np.array([0,256])
 
 #Leitura do vídeo
 cap = cv.VideoCapture('videos/histograma.mp4')

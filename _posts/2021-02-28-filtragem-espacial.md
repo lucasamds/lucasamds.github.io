@@ -15,14 +15,14 @@ $$
     g(x,y) = \sum_{s=-a}^{a}\sum_{t=-b}^{b}w(s, t)f(x+s, y+t)
 $$
 
-Onde *f* representa a imagem a ser filtrada e *w* a máscara aplicada. A máscara, também conhecida como núcleo da convolução ou *kernel*, representa uma *vizinhança* e uma operação predefinida que opera sobre os pixels que estão sobrepostos pela vizinhança, o resultado gera um novo pixel com as mesmas coordenadas que o centro da máscara, a filtragem se completa a medida que o centro da máscara se desloca pelos pixels da imagem de entrada. Aqui neste experimento vamos utilizar máscaras de tamanho **3 x 3**. Como já foi dito, vamos conseguir resultados diferentes dependendo dos valores da máscara.
+Onde *f* representa a imagem a ser filtrada e *w* a máscara aplicada. A máscara, também conhecida como núcleo da convolução ou *kernel*, representa uma *vizinhança* e uma operação predefinida que é aplicada sobre os pixels que estão sobrepostos pela vizinhança, o resultado gera um novo pixel com as mesmas coordenadas que o centro da máscara, a filtragem se completa a medida que o centro da máscara se desloca pelos pixels da imagem de entrada. Aqui neste experimento vamos utilizar máscaras de tamanho **3 x 3**. Como já foi dito, vamos conseguir resultados diferentes dependendo dos valores da máscara.
 
 
 ## Filtros suavizantes lineares
 
-A aplicação de um filtro suavizante, em uma imagem, faz com que haja um borramento na cena, também podem ser utilizados com o objetivo de reduzir ruídos em uma imagem. 
+A aplicação de um filtro suavizante, em uma imagem, faz com que haja um borramento na cena, também podem ser utilizados com o objetivo de reduzir ruídos. A resposta dos filtros suavizantes lineares nada mais são do que a média dos pixels que compõem a *vizinhança*, os modelos que iremos usar são os filtros da **média** e **gaussiano**.
 
-
+$$\frac{1}{9} X $$ 
 
 <a id="listagem1"></a>
 ##### Listagem 1. equalizando.py
@@ -31,7 +31,10 @@ import cv2 as cv
 import numpy as np
 
 histtam = 256
-hrange = np.array([0,256])
+hrange = np.array([0,256])| 1 | 1 | 1 |
+|:-:|:-:|:-:|
+| 1 | 1 | 1 |
+| 1 | 1 | 1 |
 
 #Leitura do vídeo
 cap = cv.VideoCapture('videos/histograma.mp4')

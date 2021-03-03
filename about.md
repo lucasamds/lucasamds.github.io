@@ -3,27 +3,5 @@ layout: page
 title: Sobre
 ---
 
-<p class="message">
-  Hey there! This page is included as an example. Feel free to customize it for your own use upon downloading. Carry on!
-</p>
+Olá, me chamo Lucas, sou aluno de Engenharia Mecatrônica pela UFRN. Decidi criar esse blog pessoal para expor algumas das coisas que ando estudando, acredito que mais importante do que aprender é conseguir passar o conhecimento adiante, foi com esse pensamento em mente que decidi criar este espaço. Estou sempre aberto a sugestões e dicas de como melhorar, caso tenha interesse de entrar em contato comigo aqui meu <a href="mailto:lucsamds@gmail.com">E-mail</a>, caso prefira aqui está o meu <a href="https://twitter.com/lucsams" target="_blank">Twitter</a>. Em resumo é isso, espero que encontre algo de útil para você aqui e bons estudos!
 
-In the novel, *The Strange Case of Dr. Jeykll and Mr. Hyde*, Mr. Poole is Dr. Jekyll's virtuous and loyal butler. Similarly, Poole is an upstanding and effective butler that helps you build Jekyll themes. It's made by [@mdo](https://twitter.com/mdo).
-
-There are currently two themes built on Poole:
-
-* [Hyde](http://hyde.getpoole.com)
-* [Lanyon](http://lanyon.getpoole.com)
-
-Learn more and contribute on [GitHub](https://github.com/poole).
-
-## Setup
-
-Some fun facts about the setup of this project include:
-
-* Built for [Jekyll](https://jekyllrb.com)
-* Developed on GitHub and hosted for free on [GitHub Pages](https://pages.github.com)
-* Coded with [Atom](https://atom.io)
-
-Have questions or suggestions? Feel free to [open an issue on GitHub](https://github.com/poole/issues/new) or [ask me on Twitter](https://twitter.com/mdo).
-
-Thanks for reading!

@@ -1,10 +1,6 @@
 ---
 layout: post
 title: Filtragem no domínio espacial I
-tag:
-    - Filtros
-    - Convolução
-    - PDI
 mathjax: true
 ---
 
@@ -16,7 +12,7 @@ mathjax: true
 Neste experimento vamos realizar filtragens baseadas na convolução discreta, essa aplicação permite modificar certas características de uma dada imagem, dependendo dos valores utilizados na *máscara* que será aplicada. A convolução digital pode ser definida como:
 
 $$
-    g(x,y)=\sum_{s=-a}^{a}\sum_{t=-b}^{b}w(s, t)f(x+s, y+t)
+    g(x,y) = \sum_{s=-a}^{a}\sum_{t=-b}^{b}w(s, t)f(x+s, y+t)
 $$
 
 Onde *f* representa a imagem a ser filtrada e *w* a máscara aplicada. A máscara, também conhecida como núcleo da convolução ou *kernel*, representam uma *vizinhança* e uma operação predefinida que opera sobre os pixels que estão sobrepostos pela vizinhança, o resultado gera um novo pixel com as mesmas coordenadas que o centro da máscara, a filtragem se completa a medida que o centro da máscara se desloca pelos pixels da imagem de entrada. Aqui neste experimento vamos utilizar máscaras de tamanho **3 x 3**. Como já foi dito, vamos conseguir resultados diferentes dependendo dos valores da máscara.

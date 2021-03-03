@@ -124,7 +124,7 @@ Em seguida realizamos a equalização do histograma do *frame* atual com a funç
 
 A parte final da <a href="#listagem1">Listagem 1</a> prepara o conteúdo que será exibido na tela, onde desenhamos as linhas dos histrogramas e unimos os vídeos em uma única saída. Ao executar, o programa tem o seguinte resultado:
 
-<iframe src="https://youtu.be/ioxsFxRCOI8?vq=hd1080&modestbranding=1&rel=0&iv_load_policy=3" width="1090" height="970" frameborder="0"></iframe>
+<iframe src="https://www.youtube.com/embed/ioxsFxRCOI8?vq=hd1080&modestbranding=1&showinfo=0" width="817.5" height="727.5" frameborder="0"></iframe>
 <em class="descricao">Vídeo 1. Exemplo de saída do programa filtros.py</em>
 
 É possível perceber no vídeo que com a equalização do histograma, alguns detalhes da cena que passavam despercebidos se tornaram bem visíveis. A medida que a cena vai aumentando a iluminação vemos que o histograma não equalizado passa a se concentrar no canto direito, indicado que as tonalidades de cinza de maior valor estão em maioria; notamos também como a equalização do histograma espalha as amostras no gráfico, reduzindo assim as diferenças que eram acentuadas na cena original.

@@ -1,6 +1,11 @@
 ---
 layout: post
 title: Filtragem no domínio espacial I
+tag:
+    - Filtros
+    - Convolução
+    - PDI
+mathjax: true
 ---
 
 
@@ -10,13 +15,18 @@ title: Filtragem no domínio espacial I
 
 Neste experimento vamos realizar filtragens baseadas na convolução discreta, essa aplicação permite modificar certas características de uma dada imagem, dependendo dos valores utilizados na *máscara* que será aplicada. A convolução digital pode ser definida como:
 
-![\mathit{g(x, y) = \sum_{s=-a}^{a}\sum_{t=-b}^{b}w(s, t)f(x+s, y+t)}](https://latex.codecogs.com/svg.latex?%5Cmathit%7Bg%28x%2C%20y%29%20%3D%20%5Csum_%7Bs%3D-a%7D%5E%7Ba%7D%5Csum_%7Bt%3D-b%7D%5E%7Bb%7Dw%28s%2C%20t%29f%28x&plus;s%2C%20y&plus;t%29%7D)
+$$
+g(x,y)=\sum_{s=-a}^{a}\sum_{t=-b}^{b}w(s, t)f(x+s, y+t)
+$$
 
-Onde *f* representa a imagem a ser filtrada e *w* a máscara aplicada. A máscara, também conhecida como núcleo da convolução ou *kernel*, geralmente é uma matriz pequena de dimensões ímpares, aqui neste experimento vamos utilizar máscaras de tamanho **3 x 3**. Como já foi dito, vamos conseguir resultados diferentes dependendo dos valores da máscara.
+Onde *f* representa a imagem a ser filtrada e *w* a máscara aplicada. A máscara, também conhecida como núcleo da convolução ou *kernel*, representam uma *vizinhança* e uma operação predefinida que opera sobre os pixels que estão sobrepostos pela vizinhança, o resultado gera um novo pixel com as mesmas coordenadas que o centro da máscara, a filtragem se completa a medida que o centro da máscara se desloca pelos pixels da imagem de entrada. Aqui neste experimento vamos utilizar máscaras de tamanho **3 x 3**. Como já foi dito, vamos conseguir resultados diferentes dependendo dos valores da máscara.
 
-## Equalizando um histograma
 
-Neste primeiro experimento nós queremos realizar a equalização de um histograma e analisar o efeito que este processo causa no vídeo. Equalizar significa que iremos mudar a distribuição dos valores de ocorrência de um dado histograma, diminuindo assim as diferenças acentuadas da cena. Quando este efeito é aplicado no processamento de imagens, geralmente conseguimos visualizar detalhes que eram imperceptíveis na figura, já que temos uma normalização do brilho e aumento do contraste.
+## Filtros suavizantes lineares
+
+A aplicação de um filtro suavizante, em uma imagem, faz com que haja um borramento na cena, também podem ser utilizados com o objetivo de reduzir ruídos em uma imagem. 
+
+
 
 <a id="listagem1"></a>
 ##### Listagem 1. equalizando.py

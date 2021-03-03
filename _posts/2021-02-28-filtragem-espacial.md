@@ -22,7 +22,8 @@ Onde *f* representa a imagem a ser filtrada e *w* a máscara aplicada. A máscar
 
 A aplicação de um filtro suavizante, em uma imagem, faz com que haja um borramento na cena, também podem ser utilizados com o objetivo de reduzir ruídos. A resposta dos filtros suavizantes lineares nada mais são do que a média dos pixels que compõem a *vizinhança*, os modelos que iremos usar são os filtros da **média** e **gaussiano**.
 
-$$\frac{1}{9} X $$ | 1 | 1 | 1 |
+$$\frac{1}{9} x $$ 
+| 1 | 1 | 1 |
 |:-:|:-:|:-:|
 | 1 | 1 | 1 |
 | 1 | 1 | 1 |

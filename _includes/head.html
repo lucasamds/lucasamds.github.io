@@ -23,7 +23,7 @@
 
   <link rel="apple-touch-icon-precomposed" sizes="144x144" href="{{ '/public/apple-touch-icon-precomposed.png' | absolute_url }}">
   <link rel="shortcut icon" href="{{ '/public/favicon.ico' | absolute_url }}">
-
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
   <link rel="alternate" type="application/rss+xml" title="RSS" href="{{ '/atom.xml' | absolute_url }}">
 
   {% if site.google_analytics_id %}
@@ -35,6 +35,5 @@
     ga('create', '{{ site.google_analytics_id }}', 'auto');
     ga('send', 'pageview');
   </script>
-  <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
   {% endif %}
 </head>

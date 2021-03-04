@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Manipulação de histogramas com Python
+title: Manipulação de histogramas
 ---
 
 

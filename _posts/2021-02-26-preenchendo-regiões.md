@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Preenchendo regiões de uma imagem com Python
+title: Preenchendo regiões de uma imagem
 ---
 
 

@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Manipulando pixels em uma imagem com Python
+title: Manipulando pixels em uma imagem
 ---
 
 

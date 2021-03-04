@@ -41,7 +41,7 @@ $$
 Os filtros de 1<sup>a</sup> ordem de uma função $$f(x)$$ unidimensional podem ser definidos como:
 
 $$
-    \frac{\partial^2 f}{\partial x^2} = f(x+1)-f(x)
+    \frac{\partial f}{\partial x} = f(x+1)-f(x)
 
 $$
 <a id="listagem1"></a>

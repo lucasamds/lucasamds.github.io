@@ -6,7 +6,7 @@ mathjax: true
 
 
 <div class="message">
-  Quarto post da série de processamento digital de imagens com Python e OpenCV, hoje vamos experimentar algumas filtragens com convolução.
+  Quarto post da série de processamento digital de imagens com Python e OpenCV, hoje vamos experimentar algumas filtragens simples.
 </div>
 
 Neste experimento vamos realizar filtragens baseadas na convolução discreta, essa aplicação permite modificar certas características de uma dada imagem, dependendo dos valores utilizados na *máscara* que será aplicada. A convolução digital pode ser definida como:
@@ -70,19 +70,19 @@ height = int(cap.get(4))
 
 frameFiltered = np.zeros((height, width, 3), dtype=np.float32)
 absolute = 1
-key = 0
+key = ord('i')
 
 
 print(f'Width = {width}\nHeight = {height}\nFPS = {cap.get(5)}\nFormat = {cap.get(8)}')
 
 # Filtros
 identity = np.array(([0, 0, 0], [0, 1, 0], [0, 0, 0]), dtype=np.float32)
-media = np.array([[0.1111, 0.1111, 0.1111], [0.1111, 0.1111, 0.1111], [0.1111, 0.1111, 0.1111]])
-gauss = np.array([[0.0625, 0.125, 0.0625], [0.125, 0.25, 0.125], [0.0625, 0.125, 0.0625]])
-horizontal = np.array([[-1, 0, 1], [-2, 0, 2], [-1, 0, 1]])
-vertical = np.array([[-1, -2, -1], [0, 0, 0], [1, 2, 1]])
-laplacian = np.array([[0, -1, 0], [-1, 4, -1], [0, -1, 0]])
-boost = np.array([[0, -1, 0], [-1, 5.2, -1], [0, -1, 0]])
+media = np.array([[0.1111, 0.1111, 0.1111], [0.1111, 0.1111, 0.1111], [0.1111, 0.1111, 0.1111]], dtype=np.float32)
+gauss = np.array([[0.0625, 0.125, 0.0625], [0.125, 0.25, 0.125], [0.0625, 0.125, 0.0625]], dtype=np.float32)
+horizontal = np.array([[-1, 0, 1], [-2, 0, 2], [-1, 0, 1]], dtype=np.float32)
+vertical = np.array([[-1, -2, -1], [0, 0, 0], [1, 2, 1]], dtype=np.float32)
+laplacian = np.array([[0, -1, 0], [-1, 4, -1], [0, -1, 0]], dtype=np.float32)
+boost = np.array([[0, -1, 0], [-1, 5.2, -1], [0, -1, 0]], dtype=np.float32)
 
 mask = identity.copy()
 
@@ -122,7 +122,7 @@ while cap.isOpened():
             printmask(mask)
         elif key == ord('z'):
             mask = gauss.copy()
-            frameFiltered = cv.filter2D(frame, -1, mask)
+            frameFiltered = cv.filter2D(frame, -1, mask, anchor=(1,1))
             printmask(mask)
             mask = laplacian.copy()
             printmask(mask)
@@ -146,53 +146,63 @@ cv.destroyAllWindows()
 ## Descrição do programa filtros.py
 
 {% highlight python %}
-histtam = 256
-hrange = np.array([0,256])
+# Filtros
+identity = np.array(([0, 0, 0], [0, 1, 0], [0, 0, 0]), dtype=np.float32)
+media = np.array([[0.1111, 0.1111, 0.1111], [0.1111, 0.1111, 0.1111], [0.1111, 0.1111, 0.1111]], dtype=np.float32)
+gauss = np.array([[0.0625, 0.125, 0.0625], [0.125, 0.25, 0.125], [0.0625, 0.125, 0.0625]], dtype=np.float32)
+horizontal = np.array([[-1, 0, 1], [-2, 0, 2], [-1, 0, 1]], dtype=np.float32)
+vertical = np.array([[-1, -2, -1], [0, 0, 0], [1, 2, 1]], dtype=np.float32)
+laplacian = np.array([[0, -1, 0], [-1, 4, -1], [0, -1, 0]], dtype=np.float32)
+boost = np.array([[0, -1, 0], [-1, 5.2, -1], [0, -1, 0]], dtype=np.float32)
 
-#Leitura do vídeo
-cap = cv.VideoCapture('videos/histograma.mp4')
-
-width = int(cap.get(3))
-height = int(cap.get(4))
+mask = identity.copy()
 
 {% endhighlight %}
 
-Inicialmente determinamos o intervalo de valores que nosso histograma irá possuir, como estamos trabalhando apenas com tons de cinza, temos que as amostras estão no intervalo **[0, 255]**. O comando `VideoCapture()` faz a abertura do arquivo de vídeo que iremos utilzar, caso queira realizar a captura através de uma câmera, basta fazer `cap = cv.VideoCapture(0)`. Após abrir o arquivo consultamos as dimensões do arquivo através método `get()`, ela vai retornar o valor de alguma propriedade do arquivo, a escolha é feita através do parâmetro passado, a largura e altura possuem os índices 3 e 4, respectivamente.
+Neste treco do código nós criamos os filtros que serão utilizadas no programa, em seguida inicializamos a máscara com o filtro identidade, assim nossa imagem filtrada, inicialmente, será igual a imagem de entrada.
+
+Em seguida teremos os processos que vão ocorrer para cada quadro do vídeo.
 
 {% highlight python %}
 
-while cap.isOpened():
-    ret, frame = cap.read()
-    if ret:
-        #Transformando a imagem para tons de cinza
-        frame = cv.cvtColor(frame, cv.COLOR_BGR2GRAY)
-        #Redimensionamento do vídeo
-        frame = cv.resize(frame, (int(width/3), int(height/3)), interpolation=cv.INTER_AREA)
+    if key == 27:
+        break
+    elif key == ord('i'):
+        mask = identity.copy()
+        print(mask)
+    elif key == ord('a'):
+        absolute = not absolute
+    elif key == ord('m'):
+        mask = media.copy()
+         printmask(mask)
 {% endhighlight %}
 
-Caso o arquivo de vídeo tenha sido aberto corretamente, damos início ao processamento. o método `read()` coleta, decodifica e nos retorna o próximo *frame* do vídeo, ele também retorna um valor booleano que diz se foi ou não encontrado um novo *frame*, esta saída quem irá nos dizer a hora de parar o processo, ao receber `false` saberemos que chegamos ao fim do arquivo. Daqui em diante as operações serão repetidas para cada novo *frame* lido.
-
-Originalmente o vídeo possui cores, porém como já foi dito, iremos utilizar apenas tons de cinza neste estudo, para isso utilizamos a função `cvtColor()`, ela recebe o *frame* que queremos modificar e realiza uma transformação baseada na *flag* passada, `cv.COLOR_BGR2GRAY` indica que queremos passar de um sistema RGB para um em tons de cinza. Uma última modificação que vamos realizar é diminuir o tamanho da imagem, este passo é apenas para facilitar a visualição dos resultados, visto que o vídeo escolhido possui um tamanho grande. A função `resize()` vai receber: imagem que deve redimensionar; tamanho desejado de saída;  método de interpolação, sendo este opicional.
+Ao receber um novo *frame* do vídeo, o programa realiza as operações iniciais necessárias, como redimensionar e transformar a tonalidade da imagem. Após isto o programa vai fazer a escolha do filtro que deve ser aplicado com base no valor da variável `key`, esta por sua vez é inicializada como `key = ord('i')` nas primeiras linhas da <a href="#listagem1">Listagem 1</a>, indicando que o programa de fato inicia com a máscara identidade aplicada. Ao detectar que um novo valor foi salvo em `key`, o programa muda o valor da máscara para o filtro correspondente a letra que foi digitada. Este processo continua enquanto houverem frames no vídeo ou enquanto a tecla *Esc* (27) não for pressionada.
 
 {% highlight python %}
 
-    equalizado = cv.equalizeHist(frame)
-
-    #Processo de cálculo do histograma
-    histograma = cv.calcHist([frame], [0], None, [histtam], hrange, accumulate=accummulate)
-    histogramaeq = cv.calcHist([equalizado],[0], None, [histtam], hrange, accumulate=accummulate)
-
-
-    cv.normalize(histograma, histograma, alpha=0, beta=histh, norm_type=cv.NORM_MINMAX)
-    cv.normalize(histogramaeq, histogramaeq, alpha=0, beta=histh, norm_type=cv.NORM_MINMAX)
+elif key == ord('z'):
+    mask = gauss.copy()
+    frameFiltered = cv.filter2D(frame, -1, mask, anchor=(1,1))
+    printmask(mask)
+    mask = laplacian.copy()
+    printmask(mask)
 
 {% endhighlight %}
 
-Em seguida realizamos a equalização do histograma do *frame* atual com a função `equalizeHist()`, salvando o resultado em outra variável. Agora que temos a imagem antes e depois de equalizada, vamos calcular o histograma de cada uma delas para analisar os resultados. Para este cálculo vamos usar a função `calcHist()` passando os seguintes parâmetros: imagem que vamos operar; lista de dimensões dos canais utilizados para computar o histograma; uma máscara de operação, neste caso não estamos utilizando uma em específico; array com o tamanho do histograma em cada dimensão; intervalo de valores possíveis no histograma; booleano que indica se o histograma deve ser acumulado ou não. Por fim é feita a normalização dos valores dos histogramas, para que possamos comparar os resultados.
+Quando a letra *z* for pressionada, o programa opera o filtro *Laplaciano* sobre uma imagem com o filtro *Gaussiano* aplicado. A função `filter2D()` vai realizar a aplicação da máscara desejada e retornar o resultado, seus parâmetros são: imagem de entrada; a "profundidade" desejada na imagem de saída, quando recebe o valor `-1` ela aplica a mesma profundidade da entrada na saída; o *kernel*, que seria nossa máscara; o ponto âncora do *kernel*. 
 
-A parte final da <a href="#listagem1">Listagem 1</a> prepara o conteúdo que será exibido na tela, onde desenhamos as linhas dos histrogramas e unimos os vídeos em uma única saída. Ao executar, o programa tem o seguinte resultado:
+{% highlight python %}
+ if absolute:
+    frameFiltered = cv.convertScaleAbs(frameFiltered)
+
+cv.imshow('Spacial filter', frameFiltered)
+key = cv.waitKey(60)
+{% endhighlight %}
+
+Caso a opção de ativar o valor absoluto tenha sido ativada, realizamos a operação via a função `convertScaleAbs()`, ela nos retorna o valor absoluto do imagem passada como parâmetro. Por fim, imprimimos na tela o frame atual filtrado, em seguida o programa espera por um breve momento a ativação de uma tecla antes de passar para o próximo quadro. O programa também imprime no console qual a máscara está sendo aplicada atualmente, facilitando o acompanhamento durante a execução.
 
 <iframe src="https://www.youtube.com/embed/ioxsFxRCOI8?vq=hd1080&modestbranding=1&showinfo=0" width="545" height="485" frameborder="0"></iframe>
 <em class="descricao">Vídeo 1. Exemplo de saída do programa filtros.py</em>
 
-É possível perceber no vídeo que com a equalização do histograma, alguns detalhes da cena que passavam despercebidos se tornaram bem visíveis. A medida que a cena vai aumentando a iluminação vemos que o histograma não equalizado passa a se concentrar no canto direito, indicado que as tonalidades de cinza de maior valor estão em maioria; notamos também como a equalização do histograma espalha as amostras no gráfico, reduzindo assim as diferenças que eram acentuadas na cena original.
+É possível perceber bem no vídeo a diferença entre os filtros suavizantes e aguçantes. Com isso chegamos ao fim de mais um post, bons estudos e até a próxima!

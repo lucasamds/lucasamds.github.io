@@ -29,11 +29,15 @@ A aplicação de um filtro suavizante, em uma imagem, faz com que haja um borram
 Os filtros aguçantes têm como  objetivo destacar transições de intensidade, já que são derivativos, sendo assim estes tipos de filtros são indicados quando se é desejado enfatizar bordas ou outras descontinuidades da imagam, como ruídos, ou caso queira reduzir o foco de áreas com baixas variações de intensidade. Os filtros aguçantes mais usados são os de 1<sup>a</sup> ou 2<sup>a</sup> ordem.
 ### Filtros de 2<sup>a</sup> ordem
 
-Os filtros de 2<sup>a</sup> ordem de uma função $$f(x)$$ unidimensional podem ser definidos como:
+Os filtros de 2<sup>a</sup> ordem são filtros isotrópicos, ou seja, aplicar o filtro em uma imagem e depois rotacionar esta imagem, irá surtir o mesmo efeito de rotacionar a imagem primeiro e em seguida aplicar o filtro. O filtro de 2<sup>a</sup> ordem de uma função $$f(x)$$ unidimensional pode ser definido como:
 
 $$
     \frac{\partial^2 f}{\partial x^2} = f(x+1)+f(x-1)-2f(x)
 $$
+
+Aqui vamos utilizar os filtros **Laplaciano** e **Highboost**.
+
+![](https://raw.githubusercontent.com/lucasamds/lucasamds.github.io/main/public/images/segundaordem.png)
 
 ### Filtros de 1<sup>a</sup> ordem
 

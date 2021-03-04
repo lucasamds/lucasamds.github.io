@@ -33,7 +33,6 @@ Os filtros de 2<sup>a</sup> ordem de uma função $$f(x)$$ unidimensional podem 
 
 $$
     \frac{\partial^2 f}{\partial x^2} = f(x+1)+f(x-1)-2f(x)
-
 $$
 
 ### Filtros de 1<sup>a</sup> ordem

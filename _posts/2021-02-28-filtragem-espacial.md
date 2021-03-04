@@ -41,61 +41,100 @@ Aqui vamos utilizar os filtros **Laplaciano** e **Highboost**.
 
 ### Filtros de 1<sup>a</sup> ordem
 
-Os filtros de 1<sup>a</sup> ordem de uma função $$f(x)$$ unidimensional podem ser definidos como:
+Ao contrário do caso anterior, os filtros de prmeira ordem não são isotrópicos, aqui estamos interessados na magnitude do gradiente., já que a resposta de um gradiente é dada por um vetor e não um escalar. Os filtros de 1<sup>a</sup> ordem de uma função $$f(x)$$ unidimensional podem ser definidos como:
 
 $$
     \frac{\partial f}{\partial x} = f(x+1)-f(x)
-
 $$
+
+Para as máscaras de 1<sup>a</sup> ordem vamos utilizar os operadores de Sobel, eles representam uma aproximação do vetor gradiente. Temos o *G<sub>vert</sub>* que vai enfatizar bordas no sentido vertical da imagem, já o *G<sub>horiz</sub>* as bordas no sentido horizontal.
+
+![](https://raw.githubusercontent.com/lucasamds/lucasamds.github.io/main/public/images/primeiraordem.png)
+
+Agora que já conhecemos os filtros que serão aplicados, vejamos o código em python abaixo.
+
 <a id="listagem1"></a>
-##### Listagem 1. equalizando.py
+##### Listagem 1. filtros.py
 {% highlight python %}
 import cv2 as cv
 import numpy as np
 
-histtam = 256
-hrange = np.array([0,256])
+def printmask(mask):
+    for i in mask:
+        print(i)
+    print('\n\n')
 
-#Leitura do vídeo
-cap = cv.VideoCapture('videos/histograma.mp4')
-
+cap = cv.VideoCapture('videos/masks.mp4')
 width = int(cap.get(3))
 height = int(cap.get(4))
 
-histw = 184
-histh = 92
-binw = int(round(histw/histtam))
-accummulate = False
+frameFiltered = np.zeros((height, width, 3), dtype=np.float32)
+absolute = 1
+key = 0
+
+
+print(f'Width = {width}\nHeight = {height}\nFPS = {cap.get(5)}\nFormat = {cap.get(8)}')
+
+# Filtros
+identity = np.array(([0, 0, 0], [0, 1, 0], [0, 0, 0]), dtype=np.float32)
+media = np.array([[0.1111, 0.1111, 0.1111], [0.1111, 0.1111, 0.1111], [0.1111, 0.1111, 0.1111]])
+gauss = np.array([[0.0625, 0.125, 0.0625], [0.125, 0.25, 0.125], [0.0625, 0.125, 0.0625]])
+horizontal = np.array([[-1, 0, 1], [-2, 0, 2], [-1, 0, 1]])
+vertical = np.array([[-1, -2, -1], [0, 0, 0], [1, 2, 1]])
+laplacian = np.array([[0, -1, 0], [-1, 4, -1], [0, -1, 0]])
+boost = np.array([[0, -1, 0], [-1, 5.2, -1], [0, -1, 0]])
+
+mask = identity.copy()
 
 while cap.isOpened():
     ret, frame = cap.read()
     if ret:
-        #Transformando a imagem para tons de cinza
+        frame = cv.resize(frame, (int(width/2), int(height/2)), interpolation=cv.INTER_AREA)
         frame = cv.cvtColor(frame, cv.COLOR_BGR2GRAY)
-        #Redimensionamento do vídeo
-        frame = cv.resize(frame, (int(width/3), int(height/3)), interpolation=cv.INTER_AREA)
+        cv.imshow('Original', frame)
 
-        equalizado = cv.equalizeHist(frame)
+        frame = np.float32(frame)
 
-        #Processo de cálculo do histograma
-        histograma = cv.calcHist([frame], [0], None, [histtam], hrange, accumulate=accummulate)
-        histogramaeq = cv.calcHist([equalizado],[0], None, [histtam], hrange, accumulate=accummulate)
-
-
-        cv.normalize(histograma, histograma, alpha=0, beta=histh, norm_type=cv.NORM_MINMAX)
-        cv.normalize(histogramaeq, histogramaeq, alpha=0, beta=histh, norm_type=cv.NORM_MINMAX)
-
-        #Desenhando o histograma
-        for i in range(1,histtam):
-            cv.line(frame, (binw*(i-1), histh - int(np.round(histograma[i-1]))), (binw*(i), histh - int(np.round(histograma[i]))), (0, 0, 0), thickness=2)
-            cv.line(equalizado, (binw * (i - 1), histh - int(np.round(histogramaeq[i - 1]))),(binw * (i), histh - int(np.round(histogramaeq[i]))), (0, 0, 0), thickness=2)
-
-        # Unindo as imagems
-        res = np.vstack((frame, equalizado))
-
-        cv.imshow('Frame', res)
-        if cv.waitKey(5) & 0xFF == ord('q'):
+        if key == 27:
             break
+        elif key == ord('i'):
+            mask = identity.copy()
+            print(mask)
+        elif key == ord('a'):
+            absolute = not absolute
+        elif key == ord('m'):
+            mask = media.copy()
+            printmask(mask)
+        elif key == ord('g'):
+            mask = gauss.copy()
+            printmask(mask)
+        elif key == ord('h'):
+            mask = horizontal.copy()
+            printmask(mask)
+        elif key == ord('v'):
+            mask = vertical.copy()
+            printmask(mask)
+        elif key == ord('l'):
+            mask = laplacian.copy()
+            printmask(mask)
+        elif key == ord('b'):
+            mask = boost.copy()
+            printmask(mask)
+        elif key == ord('z'):
+            mask = gauss.copy()
+            frameFiltered = cv.filter2D(frame, -1, mask)
+            printmask(mask)
+            mask = laplacian.copy()
+            printmask(mask)
+
+        frameFiltered = cv.filter2D(frame, -1, mask, anchor=(1, 1))
+
+        if absolute:
+            frameFiltered = cv.convertScaleAbs(frameFiltered)
+
+        cv.imshow('Spacial filter', frameFiltered)
+        key = cv.waitKey(60)
+
     else:
         break
 
@@ -104,7 +143,7 @@ cv.destroyAllWindows()
 
 {% endhighlight %}
 
-## Descrição do programa equalizando.py
+## Descrição do programa filtros.py
 
 {% highlight python %}
 histtam = 256
@@ -157,110 +196,3 @@ A parte final da <a href="#listagem1">Listagem 1</a> prepara o conteúdo que ser
 <em class="descricao">Vídeo 1. Exemplo de saída do programa filtros.py</em>
 
 É possível perceber no vídeo que com a equalização do histograma, alguns detalhes da cena que passavam despercebidos se tornaram bem visíveis. A medida que a cena vai aumentando a iluminação vemos que o histograma não equalizado passa a se concentrar no canto direito, indicado que as tonalidades de cinza de maior valor estão em maioria; notamos também como a equalização do histograma espalha as amostras no gráfico, reduzindo assim as diferenças que eram acentuadas na cena original.
-
-
-## Detectando movimento
-
-Algo interessante que podemos fazer com o uso de histogramas é a detecção de movimentos de uma cena para outra, esta análise é feita com base na comparação entre os dois histogramas, dependendo da diferença entre eles, podemos dizer se houve ou não uma mudança de cena.
-
-##### Listagem 2. movimento.py
-{% highlight python %}
-
-import cv2 as cv
-import numpy as np
-
-histtam = 256
-hrange = np.array([0,256])
-
-accummulate = False
-
-#Leitura do vídeo
-cap = cv.VideoCapture('videos/movimento.mp4')
-
-width = int(cap.get(3))
-height = int(cap.get(4))
-
-histw = 184
-histh = 92
-binw = int(round(histw/histtam))
-primeiro = True
-
-while cap.isOpened():
-    ret, frame = cap.read()
-    if ret:
-        #Transformando a imagem para tons de cinza
-        frame = cv.cvtColor(frame, cv.COLOR_BGR2GRAY)
-        #Redimensionamento do vídeo
-        frame = cv.resize(frame, (int(width/5), int(height/5)), interpolation=cv.INTER_AREA)
-
-
-        #Caso seja o primeiro frame o programa apenas gera o primeiro histograma
-        if primeiro:
-            histograma1 = cv.calcHist([frame], [0], None, [histtam], hrange, accumulate=accummulate)
-            primeiro = False
-        # Do segundo frame em diante devemos comparar os dois últimos histogramas, para isso vamos utilizar o método
-        # cv.compareHist(), onde iremos escolher a comparação de correlação, logo quanto mais próximo de 1, mais semelhante
-        # Vamos adotar que uma comparação que retorne um valor abaixo de 0.9, representa uma mudança na cena
-        else:
-            histograma2 = cv.calcHist([frame], [0], None, [histtam], hrange, accumulate=accummulate)
-            comp = cv.compareHist(histograma1,histograma2, 0)
-            #print(comp)
-
-            if comp < 0.999:
-                # Escrevendo a mensagem na imagem
-                cv.putText(frame,'MOVEMENT DETECTED', (10, int(height/5)-10), cv.FONT_HERSHEY_COMPLEX, 0.7, (255, 255, 255))
-
-            cv.imshow('Frame', frame)
-            histograma1 = histograma2
-            if cv.waitKey(30) & 0xFF == ord('q'):
-                break
-    else:
-        break
-
-cap.release()
-cv.destroyAllWindows()
-
-
-{% endhighlight %}
-
-## Descrição do programa movimento.py
-
-O código do segundo experimento segue os mesmos passos iniciais do anterior, onde abrimos um arquivo de vídeo e em seguida seguimos uma série de passos em cada *frame* do arquivo.
-{% highlight python %}
-
-if primeiro:
-    histograma1 = cv.calcHist([frame], [0], None, [histtam], hrange, accumulate=accummulate)
-    primeiro = False
-
-{% endhighlight %}
-
-Neste trecho do código nós verificamos se o *frame* que nos encontramos é o primeiro, neste caso ainda não teremos um segundo histograma para realizar comparação, sendo assim armazenamos o histograma da primeira cena e indicamos que o primeiro quadro já foi lido.
-
-{% highlight python %}
-else:
-    histograma2 = cv.calcHist([frame], [0], None, [histtam], hrange, accumulate=accummulate)
-    comp = cv.compareHist(histograma1,histograma2, 0)
-    print(comp)
-
-    if comp < 0.9994:
-        # Escrevendo a mensagem na imagem
-        cv.putText(frame,'MOVEMENT DETECTED', (10, int(height/5)-10), cv.FONT_HERSHEY_COMPLEX, 0.7, (255, 255, 255))
-
-{% endhighlight %}
-
-Para os demais quadros do vídeo, após o calculo do histograma, é feita a comparação do histograma atual com o anterior, esta comeparação é feita pela função `compareHist()` que recebe como parâmetros: o primeiro histograma; o segundo histograma, precisa ter o mesmo tamanho que o primeiro; <a href="http://man.hubwiz.com/docset/OpenCV.docset/Contents/Resources/Documents/d6/dc7/group__imgproc__hist.html#ga994f53817d621e2e4228fc646342d386" target="_blank">método de comparação de histogramas</a>, aqui estamos utilizando o método de correlação. Na comparação por correlação quanto maior for a semelhança entre os quadros, mais próximo de 1 a resposta será, esta reposta possui até 16 casas de precisão, neste experimento vamos utilizar o valor `0.9994`como limiar, onde valores abaixo disso irão representar uma detecção de movimento na cena. Caso haja movimento, escrevemos a mensagem `MOVEMENT DETECTED` na imagem.
-
-{% highlight python %}
-
-cv.imshow('Frame', frame)
-histograma1 = histograma2
-if cv.waitKey(30) & 0xFF == ord('q'):
-    break
-{% endhighlight %}
-
-Por fim, apresentamos o resultado em tela, encerrando o processo caso a tecla "q" seja pressionada, note que ao fim do processo atualizamos o valor de `histograma1`. Executando o programa temos o seguinte resultado:
-
-<iframe src="https://youtu.be/ioxsFxRCOI8?vq=hd1080&modestbranding=1&rel=0&iv_load_policy=3" width="1090" height="970" frameborder="0"></iframe>
-<em class="descricao">Vídeo 2. Exemplo de saída do programa movimento.py</em>
-
-No vídeo é possível perceber que em determinados momentos, apesar de haver movimento, o programa não os detecta, isso nos diz que a diferença entre as tonalidades de um quadro para o outro não é significativa, caso nosso objetivo fosse diminuir ou aumentar a precisão de detecção, basta regular o valor de limiar. Com isso vimos uma forma relativamente fácil de encontrar movimento em um vídeo com o uso de histogramas. Vou ficando por aqui, bons estudos e até a próxima!

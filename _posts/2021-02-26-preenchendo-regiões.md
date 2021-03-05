@@ -126,7 +126,7 @@ for i in range(0, height):
 
 {% endhighlight %}
 
-Caso se deseje elaborar uma versão que possibilite a contagem de mais de 255 objetos, uma opção é aumentar a quantidade de canais da cena, ampliando assim o número de valores possíveis para tonalidades.
+Caso se deseje elaborar uma versão que possibilite a contagem de mais de 255 objetos, duas opções seriam aumentar a quantidade de canais da cena ou simplesmente mudar a *"profundidade"* da imagem, aqui estamos trabalhando com o tipo `np.uint8`, mas caso fosse alterado para o tipo `np.uint16`, por exemplo, já seria possível armazenar valores entre **0** e **65535**.
 
 
 ## Diferenciando objetos

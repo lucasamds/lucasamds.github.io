@@ -11,7 +11,7 @@ mathjax: true
 
 Na fotografia, o efeito *tilt-shift* é causado pela mudança da orientação e posição da lente em relação ao plano de projeção, o resultado deste efeito é o desfoque seletivo de regiões da cena, *"aumentando"* a profundidade da imagem. Imagens geradas por este efeito se assemelham com uma versão em miniatura da realidade.
 
-Para tentar simular o efeito do *tilt-shift* vamos fazer combinações entre a imagem original e uma versão borrada sua. Para o borramento da imagem original será utilizado o filtro da média, onde teremos uma máscara de tamanho $9 \times 9$. 
+Para tentar simular o efeito do *tilt-shift* vamos fazer combinações entre a imagem original e uma versão borrada sua. Para o borramento da imagem original será utilizado o filtro da média, onde teremos uma máscara de tamanho $$ 9 \times 9 $$. 
 
 Neste primeiro experimento queremos aplicar o efeito em imagens estáticas, no segundo experimento deste post vamos trabalhar com vídeos.
 

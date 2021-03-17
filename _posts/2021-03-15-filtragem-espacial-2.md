@@ -116,7 +116,52 @@ img2 = cv.filter2D(img, -1, media)
 
 Após realizar a leitura e o redimensionamento da imagem, iniciamos por criar as variáveis que serão utilzadas nos cálculos, o filtro da média e as matrizes que vão receber as imagens auxiliares durante o programa. Os valores iniciais de `d`, `l1` e `l2`, foram escolhidos de forma que em primeira instância o foco da imagem se encontra em seu centro. 
 
-![](https://raw.githubusercontent.com/lucasamds/lucasamds.github.io/main/public/images/segundaordem.png)
+{% highlight python %}
+d_slider_max = 100
+alt_slider_max = height
+meio_slider_max = height
+tbd = 'd'
+tbalt = 'altura'
+tbm = 'meio'
+title_window = 'tilt-shift'
+cv.namedWindow(title_window)
+{% endhighlight %}
+
+Em seguida criamos algumas variáveis que serão utilizadas na criação do *Trackbar*, neste programa teremos três barras de calibração, a primeira irá controlar o valor da variável `d`, esta variável é responsável pela *força* de transição entre a imagem original e a imagem borrada, quanto maior for o valor de `d` mais suave é a transição entre as imagens; a segunda barra controla a *altura* da região de foco, quanto maior a altura maior será a área em destaque; a terceira e última barra controla a posição do centro da região de foco, no sentido do eixo vertical, quando maior seu valor mais para baixo o centro será deslocado. Em seguida teremos algumas funções que vão ser responsáveis por implementar o efeito na imagem.
+
+{% highlight python %}
+def pondera(x, l1, l2, d):
+    if d == 0:
+        d = 1
+    return (np.tanh((x+l1)/d) - np.tanh((x-l2)/d))/2
+{% endhighlight %}
+
+A função `pondera()` vai calcular o valor que deve multiplicar cada elemento de uma determinada linha `x` da imagem original, o cálculo é dado pela seguinte função:
+
+$$
+    \alpha (x)=\frac{1}{2}(\tanh \frac{x-l1}{d} - \tanh \frac{x-l2}{d})
+$$
+
+Como já foi dito, **d** indica a força com que a ponderação aumenta, **l1** vai representar a posição de corte superior da zona de foco e **l2** a posição de corte inferior.
+
+{% highlight python %}
+def criaPond(l1, l2, d):
+    global img1
+    for i in range(height):
+        alpha = pondera(i, l1, l2, d)
+        img1[i] = cv.addWeighted(img[i], alpha, img2[i], 1-alpha, 0)
+    img1 = np.uint8(img1)
+    cv.imshow(title_window, img1)
+{% endhighlight %}
+
+A função principal do nosso programa será a `criaPond()`, aqui iremos calcular um valor de `alpha` par cada linha da imagem, utilizando a função anterior, já que para cada linha teremos um resultado diferente; calculando o alpha, temos agora que criar a imagem que será nosso resultado final, esta imagem será uma soma ponderada entre a original e sua versão borrada. A função `addWeighted()` recebe as duas imagens que serão adicionadas e seus respectivos pesos, ela faz o cálculo da nossa imagem resultante da seguinte maneira:
+
+$$
+    res = img_{orig}\times \alpha + img_{blur}\times (1-\alpha)+\gamma
+$$
+
+Note que neste exemplo estamos utilizando o valor de *gamma* igual a 0. Antes de apresentar o resultado é necessário converter a imagem para o formato `np.uint8`, limitando assim os valores de cada canal entre 0 e 255.
+
 
 ### Filtros de 1<sup>a</sup> ordem
 

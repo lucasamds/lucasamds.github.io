@@ -115,6 +115,7 @@ img2 = cv.filter2D(img, -1, media)
 {% endhighlight %}
 
 Após realizar a leitura e o redimensionamento da imagem, iniciamos por criar as variáveis que serão utilzadas nos cálculos, o filtro da média e as matrizes que vão receber as imagens auxiliares durante o programa. Os valores iniciais de `d`, `l1` e `l2`, foram escolhidos de forma que em primeira instância o foco da imagem se encontra em seu centro. 
+
 ![](https://raw.githubusercontent.com/lucasamds/lucasamds.github.io/main/public/images/segundaordem.png)
 
 ### Filtros de 1<sup>a</sup> ordem

@@ -41,7 +41,7 @@ img1 = np.empty((height, width, 3))
 img2 = cv.filter2D(img, -1, media)
 
 d_slider_max = 100
-alt_slider_max = height
+alt_slider_max = height * 2
 meio_slider_max = height
 tbd = 'd'
 tbalt = 'altura'
@@ -118,7 +118,7 @@ Após realizar a leitura e o redimensionamento da imagem, iniciamos por criar as
 
 {% highlight python %}
 d_slider_max = 100
-alt_slider_max = height
+alt_slider_max = height * 2
 meio_slider_max = height
 tbd = 'd'
 tbalt = 'altura'

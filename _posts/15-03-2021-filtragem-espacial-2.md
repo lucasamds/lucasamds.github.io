@@ -25,14 +25,14 @@ import sys
 
 
 img = cv.imread('imagens/tilt3.jpg')
-width = len(img[0])//4
-height = len(img)//4
+width = len(img[0])//2
+height = len(img)//2
 img = cv.resize(img, (width, height), interpolation=cv.INTER_AREA)
+
 d = 20
 l1 = -height//4
 l2 = height//2 - l1
 alt = l2 + l1
-print(alt)
 meio = (l2-l1)//2
 media = np.ones([9, 9], np.float32)/81
 img1 = np.empty((height, width, 3))
@@ -98,33 +98,23 @@ if key == ord('s'):
 else:
     cv.destroyAllWindows()
     sys.exit()
-    
+
 {% endhighlight %}
 
 ## Descrição do programa tiltshift.py
 
-Onde *f* representa a imagem a ser filtrada e *w* a máscara aplicada. A máscara, também conhecida como núcleo da convolução ou *kernel*, representa uma *vizinhança* e uma operação predefinida que é aplicada sobre os pixels que estão sobrepostos pela vizinhança, o resultado gera um novo pixel com as mesmas coordenadas que o centro da máscara, a filtragem se completa a medida que o centro da máscara se desloca pelos pixels da imagem de entrada. Aqui neste experimento vamos utilizar máscaras de tamanho **3 x 3**. Como já foi dito, vamos conseguir resultados diferentes dependendo dos valores da máscara.
+{% highlight python %}
+d = 20
+l1 = -height//4
+l2 = height//2 - l1
+alt = l2 + l1
+meio = (l2-l1)//2
+media = np.ones([9, 9], np.float32)/81
+img1 = np.empty((height, width, 3))
+img2 = cv.filter2D(img, -1, media)
+{% endhighlight %}
 
-
-## Filtros suavizantes lineares
-
-A aplicação de um filtro suavizante, em uma imagem, faz com que haja um borramento na cena, também podem ser utilizados com o objetivo de reduzir ruídos. A resposta dos filtros suavizantes lineares nada mais são do que a média dos pixels que compõem a *vizinhança*, os modelos que iremos usar são os filtros da **média** e **gaussiano**.
-
-![](https://raw.githubusercontent.com/lucasamds/lucasamds.github.io/main/public/images/tabelas.png)
-
-## Filtros aguçantes
-
-Os filtros aguçantes têm como  objetivo destacar transições de intensidade, já que são derivativos, sendo assim estes tipos de filtros são indicados quando se é desejado enfatizar bordas ou outras descontinuidades da imagam, como ruídos, ou caso queira reduzir o foco de áreas com baixas variações de intensidade. Os filtros aguçantes mais usados são os de 1<sup>a</sup> ou 2<sup>a</sup> ordem.
-### Filtros de 2<sup>a</sup> ordem
-
-Os filtros de 2<sup>a</sup> ordem são filtros isotrópicos, ou seja, aplicar o filtro em uma imagem e depois rotacionar esta imagem, irá surtir o mesmo efeito de rotacionar a imagem primeiro e em seguida aplicar o filtro. O filtro de 2<sup>a</sup> ordem de uma função $$f(x)$$ unidimensional pode ser definido como:
-
-$$
-    \frac{\partial^2 f}{\partial x^2} = f(x+1)+f(x-1)-2f(x)
-$$
-
-Aqui vamos utilizar os filtros **Laplaciano** e **Highboost**.
-
+Após realizar a leitura e o redimensionamento da imagem, iniciamos por criar as variáveis que serão utilzadas nos cálculos, o filtro da média e as matrizes que vão receber as imagens auxiliares durante o programa. Os valores iniciais de `d`, `l1` e `l2`, foram escolhidos de forma que em primeira instância o foco da imagem se encontra em seu centro. 
 ![](https://raw.githubusercontent.com/lucasamds/lucasamds.github.io/main/public/images/segundaordem.png)
 
 ### Filtros de 1<sup>a</sup> ordem

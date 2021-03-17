@@ -216,7 +216,7 @@ Abaixo alguns exemplos de saída do programa.
 
 ## Aplicação em vídeo
 
-Agora que já vimos um pouco em como implementar o efeito em figuras, vamos tentar extender um pouco o problema e aplicar o *tilt-shift* em um vídeo, queremos também deixar o vídeo com o aspecto de uma sequência em stop motion.
+Agora que já falamos um pouco em como implementar o efeito em figuras, vamos tentar extender um pouco o problema e aplicar o *tilt-shift* em um vídeo, queremos também deixar o vídeo com o aspecto de uma sequência em stop motion.
 
 ##### Listagem 2. tiltshiftvideo.py
 
@@ -369,7 +369,9 @@ Após apresentar o resultado em tela, o programa chama o método `write()` do ob
 
 <iframe src="https://www.youtube.com/embed/3W_CuVXHHwg?vq=hd1080&showinfo=0&rel=0&iv_load_policy=3" width="560" height="315" frameborder="0"></iframe>
 
+<iframe src="https://www.youtube.com/embed/Ok8ChnE9Dx0?modestbranding=1&showinfo=0&rel=0&iv_load_policy=3" width="560" height="315" frameborder="0"></iframe>
+
 <iframe src="https://www.youtube.com/embed/qmPHJAh_-OE?vq=hd1080&showinfo=0&rel=0&iv_load_policy=3" width="560" height="315" frameborder="0"></iframe>
-<em class="descricao">Vídeos 2 e 3. Exemplos de saída do tiltshiftvideo.py</em>
+<em class="descricao">Vídeos 2, 3 e 4. Exemplos de saída do tiltshiftvideo.py</em>
 
 A combinação dos efeitos de *tilt-shif* e *stop motion* geram um resultado bem interessante. Com isso encerramos mais um post, nos vemos numa próxima e bons estudos!

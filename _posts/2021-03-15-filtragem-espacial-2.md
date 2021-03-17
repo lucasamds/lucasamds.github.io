@@ -211,83 +211,14 @@ Abaixo alguns exemplos de saída do programa.
 
 ![](https://raw.githubusercontent.com/lucasamds/lucasamds.github.io/main/public/images/resultado_tiltshift1.png)
 ![](https://raw.githubusercontent.com/lucasamds/lucasamds.github.io/main/public/images/resultado_tiltshift2.png)
-![](https://raw.githubusercontent.com/lucasamds/lucasamds.github.io/main/public/images/resultado_tiltshift3.png)
 ![](https://raw.githubusercontent.com/lucasamds/lucasamds.github.io/main/public/images/resultado_tiltshift4.png)
+![](https://raw.githubusercontent.com/lucasamds/lucasamds.github.io/main/public/images/resultado_tiltshift3.png)
 
 ## Aplicação em vídeo
 
-Ao contrário do caso anterior, os filtros de prmeira ordem não são isotrópicos, aqui estamos interessados na magnitude do gradiente., já que a resposta de um gradiente é dada por um vetor e não um escalar. Os filtros de 1<sup>a</sup> ordem de uma função $$f(x)$$ unidimensional podem ser definidos como:
 
-$$
-    \frac{\partial f}{\partial x} = f(x+1)-f(x)
-$$
-
-Para as máscaras de 1<sup>a</sup> ordem vamos utilizar os operadores de Sobel, eles representam uma aproximação do vetor gradiente. Temos o *G<sub>vert</sub>* que vai enfatizar bordas no sentido vertical da imagem, já o *G<sub>horiz</sub>* as bordas no sentido horizontal.
-
-![](https://raw.githubusercontent.com/lucasamds/lucasamds.github.io/main/public/images/primeiraordem.png)
-
-Agora que já conhecemos os filtros que serão aplicados, vejamos o código em python abaixo.
-
-
-
-{% highlight python %}
-# Filtros
-identity = np.array(([0, 0, 0], [0, 1, 0], [0, 0, 0]), dtype=np.float32)
-media = np.array([[0.1111, 0.1111, 0.1111], [0.1111, 0.1111, 0.1111], [0.1111, 0.1111, 0.1111]], dtype=np.float32)
-gauss = np.array([[0.0625, 0.125, 0.0625], [0.125, 0.25, 0.125], [0.0625, 0.125, 0.0625]], dtype=np.float32)
-horizontal = np.array([[-1, 0, 1], [-2, 0, 2], [-1, 0, 1]], dtype=np.float32)
-vertical = np.array([[-1, -2, -1], [0, 0, 0], [1, 2, 1]], dtype=np.float32)
-laplacian = np.array([[0, -1, 0], [-1, 4, -1], [0, -1, 0]], dtype=np.float32)
-boost = np.array([[0, -1, 0], [-1, 5.2, -1], [0, -1, 0]], dtype=np.float32)
-
-mask = identity.copy()
-
-{% endhighlight %}
-
-Neste treco do código nós criamos os filtros que serão utilizadas no programa, em seguida inicializamos a máscara com o filtro identidade, assim nossa imagem filtrada, inicialmente, será igual a imagem de entrada.
-
-Em seguida teremos os processos que vão ocorrer para cada quadro do vídeo.
-
-{% highlight python %}
-
-    if key == 27:
-        break
-    elif key == ord('i'):
-        mask = identity.copy()
-        print(mask)
-    elif key == ord('a'):
-        absolute = not absolute
-    elif key == ord('m'):
-        mask = media.copy()
-         printmask(mask)
-{% endhighlight %}
-
-Ao receber um novo *frame* do vídeo, o programa realiza as operações iniciais necessárias, como redimensionar e transformar a tonalidade da imagem. Após isto o programa vai fazer a escolha do filtro que deve ser aplicado com base no valor da variável `key`, esta por sua vez é inicializada como `key = ord('i')` nas primeiras linhas da <a href="#listagem1">Listagem 1</a>, indicando que o programa de fato inicia com a máscara identidade aplicada. Ao detectar que um novo valor foi salvo em `key`, o programa muda o valor da máscara para o filtro correspondente a letra que foi digitada. Este processo continua enquanto houverem frames no vídeo ou enquanto a tecla *Esc* (27) não for pressionada.
-
-{% highlight python %}
-
-elif key == ord('z'):
-    mask = gauss.copy()
-    frameFiltered = cv.filter2D(frame, -1, mask, anchor=(1,1))
-    printmask(mask)
-    mask = laplacian.copy()
-    printmask(mask)
-
-{% endhighlight %}
-
-Quando a letra *z* for pressionada, o programa opera o filtro *Laplaciano* sobre uma imagem com o filtro *Gaussiano* aplicado. A função `filter2D()` vai realizar a aplicação da máscara desejada e retornar o resultado, seus parâmetros são: imagem de entrada; a "profundidade" desejada na imagem de saída, quando recebe o valor `-1` ela aplica a mesma profundidade da entrada na saída; o *kernel*, que seria nossa máscara; o ponto âncora do *kernel*. 
-
-{% highlight python %}
- if absolute:
-    frameFiltered = cv.convertScaleAbs(frameFiltered)
-
-cv.imshow('Spacial filter', frameFiltered)
-key = cv.waitKey(60)
-{% endhighlight %}
-
-Caso a opção de ativar o valor absoluto tenha sido ativada, realizamos a operação via a função `convertScaleAbs()`, ela nos retorna o valor absoluto do imagem passada como parâmetro. Por fim, imprimimos na tela o frame atual filtrado, em seguida o programa espera por um breve momento a ativação de uma tecla antes de passar para o próximo quadro. O programa também imprime no console qual a máscara está sendo aplicada atualmente, facilitando o acompanhamento durante a execução.
 
 <iframe src="https://www.youtube.com/embed/3W_CuVXHHwg?vq=hd1080&showinfo=0&rel=0&iv_load_policy=3" width="560" height="315" frameborder="0"></iframe>
 <em class="descricao">Vídeo 2. Exemplo de saída do programa tiltshiftvideo.py</em>
 
-É possível perceber bem no vídeo a diferença entre os filtros suavizantes e aguçantes. Com isso chegamos ao fim de mais um post, bons estudos e até a próxima!
+É possível perceber bem no vídeo a diferença entre os filtros suavizantes e aguçantes. Com isso chegamos ao fim de mais um post, bons estudos e até a próxima

@@ -9,6 +9,8 @@ mathjax: true
   Quinto post da série de processamento digital de imagens com Python e OpenCV, desta vez vamos nos aventurar com o efeito fotográfico tilt-shift.
 </div>
 
+## Aplicação em imagens
+
 Na fotografia, o efeito *tilt-shift* é causado pela mudança da orientação e posição da lente em relação ao plano de projeção, o resultado deste efeito é o desfoque seletivo de regiões da cena, *"aumentando"* a profundidade da imagem. Imagens geradas por este efeito se assemelham com uma versão em miniatura da realidade.
 
 Para tentar simular o efeito do *tilt-shift* vamos fazer combinações entre a imagem original e uma versão borrada sua. Para o borramento da imagem original será utilizado o filtro da média, onde teremos uma máscara de tamanho $$ 9 \times 9 $$. 
@@ -55,19 +57,17 @@ def mudad(x):
 
 
 def mudaalt(x):
-    global meio, l1, l2, alt
-    novaalt = x
-    l1 += novaalt - meio
-    l2 += novaalt - meio
-    meio = x
+    global l1, l2, alt
+    l1 += (x - alt) // 2
+    l2 += (x - alt) // 2
+    alt = x
     criaPond(l1, l2, d)
 
 
 def mudameio(x):
     global meio, l1, l2
-    novomeio = x
-    l1 -= novomeio-meio
-    l2 += novomeio-meio
+    l1 -= x-meio
+    l2 += x-meio
     meio = x
     criaPond(l1, l2, d)
 
@@ -95,9 +95,9 @@ cv.createTrackbar(tbm, title_window, meio, alt_slider_max, mudameio)
 key = cv.waitKey()
 if key == ord('s'):
     cv.imwrite('imagens/resultado_tiltshift.png', img1)
-else:
-    cv.destroyAllWindows()
-    sys.exit()
+
+cv.destroyAllWindows()
+sys.exit()
 
 {% endhighlight %}
 
@@ -162,6 +162,47 @@ $$
 
 Note que neste exemplo estamos utilizando o valor de *gamma* igual a 0. Antes de apresentar o resultado é necessário converter a imagem para o formato `np.uint8`, limitando assim os valores de cada canal entre 0 e 255.
 
+{% highlight python %}
+def mudad(x):
+    global d
+    d = x
+    criaPond(l1, l2, d)
+
+
+def mudaalt(x):
+    global l1, l2, alt
+    l1 += (x - alt) // 2
+    l2 += (x - alt) // 2
+    alt = x
+    criaPond(l1, l2, d)
+
+
+def mudameio(x):
+    global meio, l1, l2
+    l1 -= x-meio
+    l2 += x-meio
+    meio = x
+    criaPond(l1, l2, d)
+{% endhighlight %}
+
+As funções acima são chamadas apenas quando existe uma mudança no valor das variáveis `d`, `alt` ou `meio`, através de seus respctivos *Trackbars*, nelas são realizadas as atualizações de valores necessárias para o novo cálculo da imagem resultante.
+
+{% highlight python %}
+criaPond(l1, l2, d)
+cv.createTrackbar(tbd, title_window, d, d_slider_max, mudad)
+cv.createTrackbar(tbalt, title_window, alt, alt_slider_max, mudaalt)
+cv.createTrackbar(tbm, title_window, meio, alt_slider_max, mudameio)
+
+key = cv.waitKey()
+if key == ord('s'):
+    cv.imwrite('imagens/resultado_tiltshift.png', img1)
+
+cv.destroyAllWindows()
+sys.exit()
+
+{% endhighlight %}
+
+A parte final do código vai gerar uma imagem inicial e criar as barras de controle do efeito. A função `createTrackbar()` recebe os seguintes parâmetros: uma *flag* que denomina a barra; o nome da janela em que a barra será criada; a variável que servirá como referência para o valor inicial da barra; o valor máximo da barra; a função que deve ser chamada na mudança de valor. Por fim, o programa aguarda indefinidamente por um acionamento do teclado, caso a tecla pressionada seja a letra **s**, o programa salva a imagem resultante antes do encerramento.
 
 ### Filtros de 1<sup>a</sup> ordem
 

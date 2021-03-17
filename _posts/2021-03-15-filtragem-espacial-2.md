@@ -204,7 +204,17 @@ sys.exit()
 
 A parte final do código vai gerar uma imagem inicial e criar as barras de controle do efeito. A função `createTrackbar()` recebe os seguintes parâmetros: uma *flag* que denomina a barra; o nome da janela em que a barra será criada; a variável que servirá como referência para o valor inicial da barra; o valor máximo da barra; a função que deve ser chamada na mudança de valor. Por fim, o programa aguarda indefinidamente por um acionamento do teclado, caso a tecla pressionada seja a letra **s**, o programa salva a imagem resultante antes do encerramento.
 
-### Filtros de 1<sup>a</sup> ordem
+<iframe src="https://www.youtube.com/embed/sQjc0EB8yUo?vq=hd1080&modestbranding=1&showinfo=0&rel=0&iv_load_policy=3" width="560" height="315" frameborder="0"></iframe>
+<em class="descricao">Vídeo 1. Funcionamento do programa tiltshift.py</em>
+
+Abaixo alguns exemplos de saída do programa.
+
+![](https://raw.githubusercontent.com/lucasamds/lucasamds.github.io/main/public/images/resultado_tiltshift1.png)
+![](https://raw.githubusercontent.com/lucasamds/lucasamds.github.io/main/public/images/resultado_tiltshift2.png)
+![](https://raw.githubusercontent.com/lucasamds/lucasamds.github.io/main/public/images/resultado_tiltshift3.png)
+![](https://raw.githubusercontent.com/lucasamds/lucasamds.github.io/main/public/images/resultado_tiltshift4.png)
+
+## Aplicação em vídeo
 
 Ao contrário do caso anterior, os filtros de prmeira ordem não são isotrópicos, aqui estamos interessados na magnitude do gradiente., já que a resposta de um gradiente é dada por um vetor e não um escalar. Os filtros de 1<sup>a</sup> ordem de uma função $$f(x)$$ unidimensional podem ser definidos como:
 

@@ -186,6 +186,11 @@ iframe {
   display: table;
 }
 
+figure {
+  margin-inline-start: 5px;
+  margin-inline-end: 5px;
+}
+
 .descricao{
   margin-left: auto;
   margin-right: auto;

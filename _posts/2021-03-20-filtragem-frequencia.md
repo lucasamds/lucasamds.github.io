@@ -86,7 +86,7 @@ def criafiltro(dft_height, dft_width):
     filter = np.empty((dft_height, dft_width), np.float32)
     for i in range(dft_height):
         for j in range(dft_width):
-            Duv = (i - dft_height/2) ** 2 + (j - dft_width/2) ** 2
+            Duv = ((i - dft_height/2) ** 2 + (j - dft_width/2) ** 2)**0.5
             filter[i, j] = (gammah - gammal)*(1-np.exp(-c*((Duv**2)/(radius**2)))) + gammal
     return filter
 
@@ -114,7 +114,6 @@ def fazfiltragem(imgComplex):
     cv.normalize(filtrada, filtrada, 0, 1, cv.NORM_MINMAX)
     filtrada = filtrada[0:height, 0:width]
     cv.imshow('Original', img)
-    #cv.imshow('Bordas', padded)
     cv.imshow('Filtrada', filtrada)
 
 
@@ -242,27 +241,75 @@ def fazfiltragem(imgComplex):
     cv.normalize(filtrada, filtrada, 0, 1, cv.NORM_MINMAX)
     filtrada = filtrada[0:height, 0:width]
     cv.imshow('Original', img)
-    #cv.imshow('Bordas', padded)
     cv.imshow('Filtrada', filtrada)
 {% endhighlight %}
 
 Antes de fazer a filtragem é necessário criar o filtro, vamos falar sobre a `criafiltro()` mais pra frente, assim como a imagem de entrada, é preciso criar uma versão complexa do filtro, para isso criamos uma lista para guardar a parte real e imaginária do filtro, ambas terão os mesmos valores, com o `merge()` fazemos a união das partes. Para aplicar o filtro vamos utilizar a função `mulSpectrums()`, esta função realiza uma multiplicação ponto a ponto de dois espectros de Fourier, seus parâmetros são: primeira imagem que será utilizada; segunda imagem que será utilizada, precisa ser do mesmo tamanho da primeira, uma flag de operação, como não iremos utilizar nenhuma flag em específico o valor 0 foi passado.
 
-$$
-    \alpha (x)=\frac{1}{2}(\tanh \frac{x-l1}{d} - \tanh \frac{x-l2}{d})
-$$
+Após realizar a filtragem damos início ao processo inverso, primeiramente voltamos os quadrantes da imagem para suas posições originais com mais uma chamada da função `trocaquadrantes()`, com isso já podemos calcular a transformada inversa, o resultado deste processo também será uma variável complexa, devido a isso é necessária fazer a separação dos canais, aqui estamos interessados apenas na parte real. A linha `filtrada = filtrada[0:height, 0:width]` recupera o tamanho original da imagem, lembre que nós calculamos um novo tamanho para a aplicação da DFT e criamos bordas para alcançar esse tamanho, aqui estamos removendo estas bordas.
 
-Como já foi dito, **d** indica a força com que a ponderação aumenta, **l1** vai representar a posição de corte superior da zona de foco e **l2** a posição de corte inferior.
-
-{% highlight python %}
-def criaPond(l1, l2, d):
-    global img1
-    for i in range(height):
-        alpha = pondera(i, l1, l2, d)
-        img1[i] = cv.addWeighted(img[i], alpha, img2[i], 1-alpha, 0)
-    img1 = np.uint8(img1)
-    cv.imshow(title_window, img1)
+{% highlight pyhton %}
+def criafiltro(dft_height, dft_width):
+    filter = np.empty((dft_height, dft_width), np.float32)
+    for i in range(dft_height):
+        for j in range(dft_width):
+            Duv = ((i - dft_height/2) ** 2 + (j - dft_width/2) ** 2)**0.5
+            filter[i, j] = (gammah - gammal)*(1-np.exp(-c*((Duv**2)/(radius**2)))) + gammal
+    return filter
 {% endhighlight %}
 
-A função principal do nosso programa será a `criaPond()`, aqui iremos calcular um valor de `alpha` par cada linha da imagem, utilizando a função anterior, já que para cada linha teremos um resultado diferente; calculando o alpha, temos agora que criar a imagem que será nosso resultado final, esta imagem será uma soma ponderada entre a original e sua versão borrada. A função `addWeighted()` recebe as duas imagens que serão adicionadas e seus respectivos pesos, ela faz o cálculo da nossa imagem resultante da seguinte maneira:
+O filtro homomórfico que vamos utilizar segue a seguinte função:
 
+$$
+    H(u,v)=(\gamma _{H}-\gamma_{L})\left [ 1-e^{-c\left [ D^{2}(u,v)/D^{2}_{0} \right ]}  \right ]+\gamma_{L}
+$$
+
+Onde $$ \gamma_{H} $$ e $$ \gamma_{L} $$ são os parâmetros de limite do filtro e $$ c $$ indica a intensidade de transição entre elas; $$ D_{0} $$ é o raio do filtro utilizado e $$ D(u, v) $$ é um filtro passa-baixa ideal definido pela função abaixo:
+
+$$
+    D(u,v)=\left [ (u-\frac{P}{2})^2 + (v-\frac{Q}{2})^2 \right ]^{\frac{1}{2}}
+$$
+
+A **Figura 3** mostra uma imagem de um filtro gerado pela função `criafiltro()`.
+
+![](https://raw.githubusercontent.com/lucasamds/lucasamds.github.io/main/public/images/filtro_homomorfico.png)
+*Figura 3. Filtro homomórfico.*
+
+{% highlight pyhton %}
+def mudouradius(x):
+    global radius
+    radius = x if x > 0 else 1
+    fazdft(imgComplex)
+
+
+def mudougammal(x):
+    global gammal
+    gammal = 0.2 * x
+    fazdft(imgComplex)
+
+
+def mudougammah(x):
+    global gammah
+    gammah = 0.2 * x
+    fazdft(imgComplex)
+
+
+def mudouc(x):
+    global c
+    c = x
+    fazdft(imgComplex)
+{% endhighlight %}
+
+As demais funções serão chamadas apenas quando houver alguma mudança nas barras de controle do programa, a lógica dela é atualizar o valor da variável que foi modificada e em seguida refazer a aplicação do filtro com os novos dados.
+
+Em seguida um vídeo mostrando o funcionamento do programa *freqfilter.py* e algumas imagens filtradas pelo programa.
+
+<iframe src="https://www.youtube.com/embed/kTWa1j_Gyeg?vq=hd1080&modestbranding=1&showinfo=0&rel=0&iv_load_policy=3" width="560" height="315" frameborder="0"></iframe>
+<em class="descricao">Vídeo 1. Funcionamento do freqfilter.py</em>
+
+![](https://raw.githubusercontent.com/lucasamds/lucasamds.github.io/main/public/images/saidafreq1.png)
+![](https://raw.githubusercontent.com/lucasamds/lucasamds.github.io/main/public/images/saidafreq2.png)
+![](https://raw.githubusercontent.com/lucasamds/lucasamds.github.io/main/public/images/saidafreq3.png)
+*Figuras 4, 5 e 6. Exemplos de saída do programa freqfilter.py.*
+
+Com isso encerramos mais um post desta série, até uma próxima!

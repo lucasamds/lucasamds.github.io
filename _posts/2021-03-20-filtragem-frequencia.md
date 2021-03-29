@@ -248,7 +248,7 @@ Antes de fazer a filtragem é necessário criar o filtro, vamos falar sobre a `c
 
 Após realizar a filtragem damos início ao processo inverso, primeiramente voltamos os quadrantes da imagem para suas posições originais com mais uma chamada da função `trocaquadrantes()`, com isso já podemos calcular a transformada inversa, o resultado deste processo também será uma variável complexa, devido a isso é necessária fazer a separação dos canais, aqui estamos interessados apenas na parte real. A linha `filtrada = filtrada[0:height, 0:width]` recupera o tamanho original da imagem, lembre que nós calculamos um novo tamanho para a aplicação da DFT e criamos bordas para alcançar esse tamanho, aqui estamos removendo estas bordas.
 
-{% highlight pyhton %}
+{% highlight python %}
 def criafiltro(dft_height, dft_width):
     filter = np.empty((dft_height, dft_width), np.float32)
     for i in range(dft_height):
@@ -275,7 +275,7 @@ A **Figura 3** mostra uma imagem de um filtro gerado pela função `criafiltro()
 ![](https://raw.githubusercontent.com/lucasamds/lucasamds.github.io/main/public/images/filtro_homomorfico.png)
 *Figura 3. Filtro homomórfico.*
 
-{% highlight pyhton %}
+{% highlight python %}
 def mudouradius(x):
     global radius
     radius = x if x > 0 else 1

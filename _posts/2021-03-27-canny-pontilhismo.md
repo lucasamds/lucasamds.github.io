@@ -16,17 +16,19 @@ Em posts anteriores discutimos um pouco sobre filtros que possuem aplicabilidade
 1. Suavizar a imagem com um filtro Gaussiano
 2. Computar a magnitude e o ângulo do gradiente
 3. Aplicar uma supressão não máxima na magnitude do gradiente da imagem
-4. Utilizar uma análise de conectividade e limiar duplo, para detectar e estabelecer relações de bordas.
+4. Utilizar uma análise de conectividade e limiarização dupla, para detectar e estabelecer relações de bordas.
 
 Este breve entendimento do funcionamento do algoritmo de Canny é suficiente para a aplicação que vamos desenvolver hoje, caso sinta vontade de se aprofundar na teoria por trás do processo, indico fortemente que realize uma pesquisa sobre o assunto. Abaixo um exemplo de filtragem com o algoritmo de Canny.
 
 ![](https://raw.githubusercontent.com/lucasamds/lucasamds.github.io/main/public/images/saidabordas.png)
 *Figura 1. Detecção de bordas com o algoritmo de Canny*
 
-## Filtro homomórfico
+Na limiarização iremos utilizar dois limiares, $$ T_1 $$ e $$ T_2 $$, onde $$ T_1 \gt T_2 $$, como é de se esperar, a quantidade de bordas detectadas vai depender dos valores de limiar, é aconselhável que $$ T_2 = 3 \times T_1 $$ ou $$ T_2 = 2 \times T_1 $$. Abaixo um comparativo entre esses dois valores.
 
-No experimento de hoje queremos pegar uma imagem que apresente uma má iluminação e em seguida tentar "equilibrar" a cena, para isso iremos utilizar um filtro homomórfico, este por sua vez é utilizado para aprimorar a visualização da imagem com base na iluminância e reflectância da cena. A ideia será, partindo da imagem de entrada, vamos calcular sua **DFT** e em seguida aplicar o filtro no resultado da transformada, por fim devemos realizar a transformada inversa para que seja possível visualizar o efeito da filtragem na imagem.
+![](https://raw.githubusercontent.com/lucasamds/lucasamds.github.io/main/public/images/saidabordas2.png)
+*Figura 2. À esquerda, T<sub>2</sub> = 2 x T<sub>1</sub>. À direita, T<sub>2</sub> = 3 x T<sub>1</sub>.*
 
+## A arte com pontilhismo
 
 <a id="listagem1"></a>
 ##### Listagem 1. freqfilter.py

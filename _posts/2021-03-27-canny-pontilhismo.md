@@ -217,5 +217,4 @@ Com os pontos formados, nos resta agora preencher os espaços que representam bo
 
 Como é possível perceber, a inclusão das bordas faz uma diferença significativa na visualização da imagem. Veja alguns resultados do programa *cannybordas.py*.
 
-![](https://raw.githubusercontent.com/lucasamds/lucasamds.github.io/main/public/images/resultado_pontos1.png)
-![](https://raw.githubusercontent.com/lucasamds/lucasamds.github.io/main/public/images/resultado_pontos1b.png)
+[![](https://raw.githubusercontent.com/lucasamds/lucasamds.github.io/main/public/images/resultado_pontos1.png)](https://raw.githubusercontent.com/lucasamds/lucasamds.github.io/main/public/images/resultado_pontos1.png)

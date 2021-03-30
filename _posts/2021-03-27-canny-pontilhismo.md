@@ -220,6 +220,7 @@ Como é possível perceber, a inclusão das bordas faz uma diferença significat
 [![](https://raw.githubusercontent.com/lucasamds/lucasamds.github.io/main/public/images/resultado_pontos1.png)](https://raw.githubusercontent.com/lucasamds/lucasamds.github.io/main/public/images/resultado_pontos1.png)
 [![](https://raw.githubusercontent.com/lucasamds/lucasamds.github.io/main/public/images/resultado_pontos2.png)](https://raw.githubusercontent.com/lucasamds/lucasamds.github.io/main/public/images/resultado_pontos2.png)
 [![](https://raw.githubusercontent.com/lucasamds/lucasamds.github.io/main/public/images/resultado_pontos3.png)](https://raw.githubusercontent.com/lucasamds/lucasamds.github.io/main/public/images/resultado_pontos3.png)
+
 [![](https://raw.githubusercontent.com/lucasamds/lucasamds.github.io/main/public/images/resultado_pontos4.png)](https://raw.githubusercontent.com/lucasamds/lucasamds.github.io/main/public/images/resultado_pontos4.png)
 *Figuras 4, 5, 6 e 7. Exemplos de saída do programa cannybordas.py*
 

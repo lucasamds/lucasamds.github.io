@@ -215,4 +215,7 @@ Com os pontos formados, nos resta agora preencher os espaços que representam bo
 ![](https://raw.githubusercontent.com/lucasamds/lucasamds.github.io/main/public/images/sborda_cborda.png)
 *Figura 3. Figura pontilhada sem adição de bordas x com adição de bordas*
 
-Como é possível perceber, a inclusão das bordas faz uma diferença significativa na visualização da imagem. Veja alguns outros resultados do programa *cannybordas.py*.
+Como é possível perceber, a inclusão das bordas faz uma diferença significativa na visualização da imagem. Veja alguns resultados do programa *cannybordas.py*.
+
+![](https://raw.githubusercontent.com/lucasamds/lucasamds.github.io/main/public/images/resultado_pontos1.png)
+![](https://raw.githubusercontent.com/lucasamds/lucasamds.github.io/main/public/images/resultado_pontos1b.png)

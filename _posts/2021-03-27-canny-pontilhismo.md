@@ -67,12 +67,12 @@ th2 = 2*th1
 
 def setrange():
     global xrange, yrange
-    xrange = np.array(range(0, height // step))
-    yrange = np.array(range(0, width // step))
-    for i in range(0, len(xrange)):
+    xrange = np.array(range(height // step))
+    yrange = np.array(range(width // step))
+    for i in range(len(xrange)):
         xrange[i] = xrange[i]*step+step//2
 
-    for i in range(0, len(yrange)):
+    for i in range(len(yrange)):
         yrange[i] = yrange[i]*step+step//2
     desenha()
 
@@ -81,9 +81,9 @@ def desenha():
     global pontos
     pontos = np.full((height, width), 255, dtype=np.uint8)
     random.shuffle(xrange)
-    for i in range(0, xrange.shape[0]):
+    for i in range(xrange.shape[0]):
         random.shuffle(yrange)
-        for j in range(0, yrange.shape[0]):
+        for j in range(yrange.shape[0]):
             x = xrange[i] + random.randint(0, (2 * jitter)) - jitter + 1
             if x >= height:
                 x = height-1
@@ -98,8 +98,8 @@ def desenha():
 
 def fazbordas():
     bordas = cv.Canny(img, th1, th2)
-    for i in range(0, height):
-        for j in range(0, width):
+    for i in range(height):
+        for j in range(width):
             if bordas[i, j] == 255:
                 gray = int(img[i, j])
                 color = (gray, gray, gray)
@@ -157,12 +157,12 @@ O programa vai seguir o seguinte fluxo, primeiro configuramos os vetores que ir�
 
 def setrange():
     global xrange, yrange
-    xrange = np.array(range(0, height // step))
-    yrange = np.array(range(0, width // step))
-    for i in range(0, len(xrange)):
+    xrange = np.array(range(height // step))
+    yrange = np.array(range(width // step))
+    for i in range(len(xrange)):
         xrange[i] = xrange[i]*step+step//2
 
-    for i in range(0, len(yrange)):
+    for i in range(len(yrange)):
         yrange[i] = yrange[i]*step+step//2
     desenha()
 
@@ -176,9 +176,9 @@ def desenha():
     global pontos
     pontos = np.full((height, width), 255, dtype=np.uint8)
     random.shuffle(xrange)
-    for i in range(0, xrange.shape[0]):
+    for i in range(xrange.shape[0]):
         random.shuffle(yrange)
-        for j in range(0, yrange.shape[0]):
+        for j in range(yrange.shape[0]):
             x = xrange[i] + random.randint(0, (2 * jitter)) - jitter + 1
             if x >= height:
                 x = height-1
@@ -198,8 +198,8 @@ Para desenhar os pontos estamos utilizando a função `circle()` do OpenCV, seus
 {% highlight python %}
 def fazbordas():
     bordas = cv.Canny(img, th1, th2)
-    for i in range(0, height):
-        for j in range(0, width):
+    for i in range(height):
+        for j in range(width):
             if bordas[i, j] == 255:
                 gray = int(img[i, j])
                 color = (gray, gray, gray)

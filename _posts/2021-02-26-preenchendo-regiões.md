@@ -35,8 +35,8 @@ py = 0
 nobjects = 0
 
 # Busca objetos presentes
-for i in range(0, height):
-    for j in range(0, width):
+for i in range(height):
+    for j in range(width):
         if img[i][j] == 255:
             nobjects += 1
             px = j
@@ -78,8 +78,8 @@ Após importar as bibliotecas que iremos utilizar, é feita a leitura da imagem 
 {% highlight python %}
 
 # Busca objetos presentes
-for i in range(0, height):
-    for j in range(0, width):
+for i in range(height):
+    for j in range(width):
         if img[i][j] == 255:
             nobjects += 1
             px = j
@@ -114,8 +114,8 @@ A figura tem 32 bolhas
 O leitor atento pode observar que o <a href="#trecho">trecho</a> de código que realiza o preenchimento das regiões poderá apresentar um mal comportamento nos casos que existem mais de 255 objetos na cena, isto ocorre pois a variável que conta a quantidade de elementos na cena também é responsável por dizer o nível de cinza a ser aplicado, como nosso intervalo de valores é **[0,255]**, valores superiores não seriam representados. Uma possível solução para o problema seria limitar a contagem até o valor máximo de 255, imprimindo uma mensagem de erro e encerrando o programa nos casos que a quantidade limite é superado:
 {% highlight python %}
 
-for i in range(0, height):
-    for j in range(0, width):
+for i in range(height):
+    for j in range(width):
         if img[i][j] == 255:
             nobjects += 1
             if(nobjects > 255):
@@ -154,13 +154,13 @@ print('{}x{}'.format(width, height))
 nobjects = 0
 
 # Mudando o valor das bordas para 0
-for i in range(0, width):
+for i in range(width):
     if img[0][i] == 255:
         cv.floodFill(img, None, (i, 0), 0)
     if img[height - 1][i] == 255:
         cv.floodFill(img, None, (i, height-1), 0)
 
-for i in range(0, height):
+for i in range(height):
     if img[i][0] == 255:
         cv.floodFill(img, None, (0, i), 0)
     if img[i][width - 1] == 255:
@@ -169,8 +169,8 @@ for i in range(0, height):
 img2 = img.copy()
 
 # Busca objetos presentes
-for i in range(0, height):
-    for j in range(0, width):
+for i in range(height):
+    for j in range(width):
         if img[i][j] == 255:
             nobjects += 1
             cv.floodFill(img, None, (j, i), nobjects)
@@ -187,8 +187,8 @@ comFuro = 0
 semFuro = 0
 
 # Contar objetos com e sem furos
-for i in range(0, height):
-    for j in range(0, width):
+for i in range(height):
+    for j in range(width):
         if img[i][j] == 0:
             comFuro += 1
             cv.floodFill(img, None, (j, i), 255)
@@ -219,13 +219,13 @@ A lógica utilizada para resolver o problema é a seguinte: primeiro vamos remov
 {% highlight python %}
 
 # Mudando o valor das bordas para 0
-for i in range(0, width):
+for i in range(width):
     if img[0][i] == 255:
         cv.floodFill(img, None, (i, 0), 0)
     if img[height - 1][i] == 255:
         cv.floodFill(img, None, (i, height-1), 0)
 
-for i in range(0, height):
+for i in range(height):
     if img[i][0] == 255:
         cv.floodFill(img, None, (0, i), 0)
     if img[i][width - 1] == 255:
@@ -237,8 +237,8 @@ Aqui, ao encontrar um pixel com valor `255` em alguma das bordas da cena, preenc
 {% highlight python %}
 
 # Busca objetos presentes
-for i in range(0, height):
-    for j in range(0, width):
+for i in range(height):
+    for j in range(width):
         if img[i][j] == 255:
             nobjects += 1
             cv.floodFill(img, None, (j, i), nobjects)
@@ -260,8 +260,8 @@ Nesta linha nós fazemos com que o fundo da cena se torne branco ("255"), é imp
 {% highlight python %}
 
 # Contar objetos com e sem furos
-for i in range(0, height):
-    for j in range(0, width):
+for i in range(height):
+    for j in range(width):
         if img[i][j] == 0:
             comFuro += 1
             cv.floodFill(img, None, (j, i), 255)

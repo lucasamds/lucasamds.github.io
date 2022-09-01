@@ -176,7 +176,7 @@ meiov = len(img)//2
 
 
 #Modificando quadrantes
-for i in range(0,meiov):
+for i in range(meiov):
     for j in range(meioh,len(img[0])):
         img2[i][j] = img[meiov + i][j - meioh]
 
@@ -184,12 +184,12 @@ for i in range(meiov,len(img)):
     for j in range(meioh,len(img[0])):
         img2[i][j] = img[i - meiov][j - meioh]
 
-for i in range(0,meiov):
-    for j in range(0,meioh):
+for i in range(meiov):
+    for j in range(meioh):
         img2[i][j] = img[meiov + i][meioh + j]
 
 for i in range(meiov,len(img)):
-    for j in range(0,meioh):
+    for j in range(meioh):
         img2[i][j] = img[i-meiov][meioh + j]
 
 #Aprensentando a imagem
@@ -215,7 +215,7 @@ meiov = len(img)//2
 Aqui criamos um array utilizando a função `zeros()` da biblioteca Numpy, a ideia é criar uma nova imagem que possua as regiões trocadas, levando em conta a figura de entrada como base, tendo isso em mente passamos as dimensões da imagem lida como parâmetros de criação do array, também indicamos que o tipo de dado que desejamos armazenar no array é o `numpy.uint8`, já que estamos interessados apenas nos valores entre 0 e 255. O próximo passo após criar o array é localizar o centro da imagem, tornando possível criar intervalos que dividem a imagem em partes iguais.
 {% highlight python %}
 
-for i in range(0,meiov):
+for i in range(meiov):
     for j in range(meioh,len(img[0])):
         img2[i][j] = img[meiov + i][j - meioh]
 
